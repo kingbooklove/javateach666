@@ -337,12 +337,12 @@
     /**
      * 创建课程的下拉框
      */
-    /* $('#courseId').combobox({
+    $('#courseId').combobox({
         url: 'courseServlet.do?method=getCourseByUserId',
         valueField: 'id',
         textField: 'name',
         panelMaxHeight: '100',
-    }); */
+    }); 
 </script>
 </body>
 </html>
