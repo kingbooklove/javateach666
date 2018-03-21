@@ -3,7 +3,6 @@ package com.ctbu.javateach666.common.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.ctbu.javateach666.common.dao.BaseDao;
 import com.ctbu.javateach666.common.entity.DataEntity;
@@ -13,7 +12,7 @@ import com.ctbu.javateach666.common.entity.DataEntity;
  * @author king
  *
  */
-public class BaseService<D extends BaseDao<T>,T extends DataEntity<T>> {
+public abstract class BaseServiceImpl<D extends BaseDao<T>,T extends DataEntity<T>> implements BaseService<D,T> {
 	
 	/**
 	 * 持久化对象层
@@ -77,7 +76,6 @@ public class BaseService<D extends BaseDao<T>,T extends DataEntity<T>> {
 	 * @param entitys
 	 * @return 
 	 */
-	@Transactional(readOnly = false)
 	public int deleteByLogic(T entity) {
 		entity.setIsDelete(1);
 		return dao.deleteByLogic(entity);

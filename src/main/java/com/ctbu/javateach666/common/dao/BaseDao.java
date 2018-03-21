@@ -2,12 +2,15 @@ package com.ctbu.javateach666.common.dao;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 /**
  * dao基础接口
  * @author Administrator
  *
  * @param <T>
  */
+@Component
 public interface BaseDao<T> {
 	
 	/**

@@ -8,9 +8,11 @@
 	<%@include file="/common/easyui.jspf"%>
 </head>
 <body>
-	helloword LKKKKK222！！！
+	<a href="${basePath }/single/singlechoice">单选题</a>
+	<a href="${basePath }/multiple/multiplechoice">多选题</a>
+	<a href="${basePath }/judgment/judge">判断题</a>
 	
-	<div id="cc" class="easyui-layout" data-options="fit:true" style="width:600px;height:400px;">
+	<%-- <div id="cc" class="easyui-layout" data-options="fit:true" style="width:600px;height:400px;">
 			<div data-options="region:'north'" style="height:100px;">
 				头部
 
@@ -35,6 +37,6 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> --%>
 </body>
 </html>

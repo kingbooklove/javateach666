@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
+         pageEncoding="UTF-8" isELIgnored="false"%>
 <%@include file="/common/easyui.jspf" %>
 <!DOCTYPE html>
 <html>
@@ -121,13 +121,13 @@
         });
     }
 
-    $(function () {
+     $(function () {
         $('#judge-import-form-input').filebox({
             buttonText: '选择导入的excel文件',
             buttonAlign: 'right',
             height: 40,
         })
-    });
+    }); 
 
 
     /**
@@ -251,7 +251,7 @@
      * Name 载入数据
      */
     $('#judge-datagrid').datagrid({
-        url: 'judge.do?method=queryJudge',
+        url: 'judgement',
         queryParams: formJudgeJson(),
         rownumbers: true,
         singleSelect: false,
@@ -263,19 +263,11 @@
         columns: [[
             {field: '', checkbox: true},
             {field: 'judgeId', title: '编号', width: 50, sortable: true, hidden: true},
-            {field: 'courseId', title: '科目', width: 50, sortable: true,formatter:function(value,row,index) {
-                $.ajaxSettings.async = false;
-                var courseName = "";
-                $.get('courseServlet.do?method=getCourseNameById', {'courseId': value}, function (data) {
-                    courseName = data;
-                });
-                $.ajaxSettings.async = true;
-                return courseName;
-            }},
-            {field: 'judgeTitle', title: '题目', width: 180, sortable: true},
-            {field: 'answer', title: '正确答案', width: 100},
-            {field: 'daytime', title: '时间(xx-年xx-月xx-日) ', width: 100}
-            
+            {field: 'courseId', title: '科目', width: 50, sortable: true},
+            {field: 'judgmentTitle', title: '题目', width: 180, sortable: true},
+            {field: 'judgmentAnswer', title: '正确答案', width: 100},
+            {field: 'degree', title: '难度等级', width: 50},
+            {field: 'createTime', title: '时间(xx-年xx-月xx-日) ',sortable: true, width: 135}
         ]]
     });
 
