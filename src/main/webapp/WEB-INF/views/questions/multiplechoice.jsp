@@ -23,8 +23,9 @@
                 <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-ok" onclick="openImportChoice()"
                    plain="true">导入</a>
                 <form id="choice-search-form" style="display: inline-block">
-                    科目：<input class="easyui-textbox" id="choice-course-value"/>
-                    时间：<input type="date" id="daytime-course-value"/>
+			                    科目：<input class="easyui-textbox" id="choice-course-value"/>
+			                     难度等级：<input class="easyui-textbox" id="choice-degree-value"/>
+			                     时间：<input type="date" id="bdaytime-course-value"/>~<input type="date" id="edaytime-course-value"/>
                     <a id="choice-search-btn" class="easyui-linkbutton">搜索</a>
                     <a id="choice-search-reset" class="easyui-linkbutton">重置</a>
                 </form>
@@ -43,12 +44,13 @@
         <table>
             <tr>
 
-                <td><input type="hidden" name="choiceId"/></td>
+                <td><input type="hidden" name="id"/></td>
             </tr>
             <tr>
                 <td width="60" align="right">课程</td>
                 <td>
-                    <input id="courseId" name="courseId" required="required" editable="false" panelMaxHeight="100"/>
+                	<input name="couseId"  panelMaxHeight="100" class="easyui-textbox"/>
+                    <!-- <input id="couseId" name="couseId" required="required" editable="false" panelMaxHeight="100"/> -->
                 </td>
             </tr>
             <tr>
@@ -60,31 +62,47 @@
             <tr>
                 <td align="right">题目</td>
                 <td>
-                	<textarea name="singleTitle" rows="3" cols="28">
+                	<textarea name="multipleTitle" rows="3" cols="28">
 
                 	</textarea>
                 </td>
             </tr>
             <tr>
                 <td align="right">答案A</td>
-                <td><input type="text" name="answera" class="easyui-textbox"/></td>
+                <td>
+                	<textarea name="answera" rows="3" cols="28">
+
+                	</textarea>
+                </td>
             </tr>
 
             <tr>
                 <td align="right">答案B</td>
-                <td><input type="text" name="answerb" class="easyui-textbox"/></td>
+                <td>
+                	<textarea name="answerb" rows="3" cols="28">
+
+                	</textarea>
+                </td>
             </tr>
             <tr>
                 <td align="right">答案C</td>
-                <td><input type="text" name="answerc" class="easyui-textbox"/></td>
+                <td>
+                	<textarea name="answerc" rows="3" cols="28">
+
+                	</textarea>
+                </td>
             </tr>
             <tr>
                 <td align="right">答案D</td>
-                <td><input type="text" name="answerd" class="easyui-textbox"/></td>
+                <td>
+                	<textarea name="answerd" rows="3" cols="28">
+
+                	</textarea>
+                </td>
             </tr>
             <tr>
                 <td align="right">正确答案</td>
-                <td><input type="text" name="singleAnswer" class="easyui-textbox"/></td>
+                <td><input type="text" name="multipleAnswer" class="easyui-textbox"/></td>
             </tr>
         </table>
     </form>
@@ -171,7 +189,7 @@
                     $(items).each(function () {
                         ids.push(this.choiceId)
                     });
-                    var url = 'choices.do?method=deleteChoice';
+                    var url = 'deleteMultipleChoice';
                     $.get(url, {stuId: ids.toString()}, function (data) {
                         if (data == "OK") {
                             $.messager.alert('信息提示', '删除成功！', 'info');
@@ -206,7 +224,7 @@
                 iconCls: 'icon-ok',
                 handler: function () {
                     $("#choice-form").form('submit', {
-                        url: 'choices.do?method=addChoice',
+                        url: 'addMultipleChoice',
                         onSubmit: function () {
 
                         },
@@ -250,7 +268,7 @@
                     iconCls: 'icon-ok',
                     handler: function () {
                         $('#choice-form').form('submit', {
-                            url: 'choices.do?method=updateChoice',
+                            url: 'updateMultipleChoice',
                             success: function (data) {
                                 if (data == "OK") {
                                     $.messager.alert('信息提示', '修改成功！');
@@ -295,14 +313,21 @@
             {field: '', checkbox: true, hidden: true},
             {field: 'id', title: '编号', width: 50, hidden: true},
             {field: 'couseId', title: '科目', width: 100 },
-            {field: 'singleTitle', title: '题目', width: 180},
+            {field: 'multipleTitle', title: '题目', width: 180},
             {field: 'answera', title: '答案A', width: 100},
             {field: 'answerb', title: '答案B', width: 100},	
             {field: 'answerc', title: '答案C', width: 100},
             {field: 'answerd', title: '答案D', width: 100},
-            {field: 'singleAnswer', title: '正确答案', width: 50},
+            {field: 'multipleAnswer', title: '正确答案', width: 50},
             {field: 'degree', title: '难度等级', width: 50},
-            {field: 'createTime', title: '时间(xx-年xx-月xx-日) ',sortable: true, width: 135}
+            {field: 'createTime', title: '时间(xx-年xx-月xx-日) ',sortable: true, width: 135, formatter: function (value, row, index) {
+            	if(value != null) {
+	            	var date = new Date(value);
+	            	return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+            	} else {
+            		return "";
+            	}
+            }}
         ]]
     });
     /* 搜索方法*/
@@ -330,7 +355,8 @@
     /*重置方法*/
     $("#choice-search-reset").click(function () {
         $("#choice-search-form").form('clear');
-        $("#daytime-course-value").val('');
+        $("#bdaytime-course-value").val('');
+        $("#edaytime-course-value").val('');
         $('#choice-datagrid').datagrid({
             queryParams: formChoiceJson()
         });
@@ -338,8 +364,10 @@
     //将表单数据转为json
     function formChoiceJson() {
         var bChoiceName = $("#choice-course-value").val();
-        var bChoicedaytimeName = $("#daytime-course-value").val();
-        return {"bChoiceName": bChoiceName, "bChoicedaytime": bChoicedaytimeName};
+        var degree = $("#choice-degree-value").val();
+        var bTime = $("#bdaytime-course-value").val();
+        var eTime = $("#edaytime-course-value").val();
+        return {"couseId": bChoiceName,"degree":degree, "bTime": bTime,"eTime":eTime};
     }
     /**
      * 创建课程的下拉框

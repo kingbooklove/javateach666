@@ -11,6 +11,8 @@
 	<a href="${basePath }/single/singlechoice">单选题</a>
 	<a href="${basePath }/multiple/multiplechoice">多选题</a>
 	<a href="${basePath }/judgment/judge">判断题</a>
+	<a href="${basePath }/completion/completion">填空题</a>
+	<a href="${basePath }/subjective/subjective">填空题</a>
 	
 	<%-- <div id="cc" class="easyui-layout" data-options="fit:true" style="width:600px;height:400px;">
 			<div data-options="region:'north'" style="height:100px;">

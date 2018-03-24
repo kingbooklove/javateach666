@@ -18,6 +18,10 @@ public class Completion extends DataEntity<Completion>{
 	private String completionAnswer;	// 填空答案
 	private String degree;				// 题目难度系数
 	private Date createTime;			// 创建时间
+	
+	// 查询条件
+	private Date bTime;				// 查询开始时间
+	private Date eTime;				// 查询结束时间 
 	public String getCouseId() {
 		return couseId;
 	}
@@ -47,6 +51,18 @@ public class Completion extends DataEntity<Completion>{
 	}
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+	public Date getbTime() {
+		return bTime;
+	}
+	public void setbTime(Date bTime) {
+		this.bTime = bTime;
+	}
+	public Date geteTime() {
+		return eTime;
+	}
+	public void seteTime(Date eTime) {
+		this.eTime = eTime;
 	}
 	
 	

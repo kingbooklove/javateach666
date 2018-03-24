@@ -9,7 +9,7 @@ public class DataEntity<T> implements Serializable {
 	/**
 	 * 实体唯一编号
 	 */
-	protected int id;
+	protected Integer id;
 	/**
 	 * 逻辑删除（0未删除，1已删除）
 	 */
@@ -21,10 +21,10 @@ public class DataEntity<T> implements Serializable {
 		super();
 		this.isDelete = 0;
 	}
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public int getIsDelete() {

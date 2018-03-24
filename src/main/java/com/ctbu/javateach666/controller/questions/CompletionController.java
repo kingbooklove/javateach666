@@ -13,46 +13,45 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ctbu.javateach666.pojo.po.questions.Judgment;
-import com.ctbu.javateach666.pojo.po.questions.SingleChoice;
-import com.ctbu.javateach666.service.interfac.questions.JudgmentService;
+import com.ctbu.javateach666.pojo.po.questions.Completion;
+import com.ctbu.javateach666.service.interfac.questions.CompletionService;
 import com.ctbu.javateach666.util.PageUtil;
 
 /**
- * 多选题control
+ * 单选题control
  * @author king
  *
  */
 @Controller
-@RequestMapping("/judgment")
-public class JudgmentController {
+@RequestMapping("/completion")
+public class CompletionController {
 	
 	@Autowired
-	private JudgmentService JudgmentService;
+	private CompletionService CompletionService;
 	
 	/**
-	 * 转发到选择题页面
+	 * 转发到填空题页面
 	 * @return
 	 */
-	@RequestMapping("/judge")
-	public String judgment() {
-		return "questions/judge";
+	@RequestMapping("/completion")
+	public String completion() {
+		return "questions/completion";
 	}
 	
 	/**
-	 * 加载判断题题目
+	 * 加载填空题题目
 	 * @param request
 	 * @param response
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/judgement")
-	public String listJudgment(HttpServletRequest request,HttpServletResponse response) {
+	@RequestMapping("/completions")
+	public String listCompletion(HttpServletRequest request,HttpServletResponse response) {
 		// 获取传入当前页和每页显示数
         Integer page = Integer.valueOf(request.getParameter("page"));
         Integer rows = Integer.valueOf(request.getParameter("rows"));
-
-        Judgment judgment = new Judgment();
+        
+        Completion completion = new Completion();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         
         // 查询参数
@@ -61,59 +60,61 @@ public class JudgmentController {
         String bTime = request.getParameter("bTime");
         String eTime = request.getParameter("eTime");
         if(couseId != null && !"".equals(couseId)) {
-        	judgment.setCouseId(couseId);
+        	completion.setCouseId(couseId);
         }
         if(degree != null && !"".equals(degree)) {
-        	judgment.setDegree(degree);
+        	completion.setDegree(degree);
         }
         if(bTime != null && !"".equals(bTime)) {
         	try {
-				judgment.setbTime(format.parse(bTime));
+				completion.setbTime(format.parse(bTime));
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
         }
         if(eTime != null && !"".equals(eTime)) {
         	try {
-        		judgment.seteTime(format.parse(eTime));
+        		completion.seteTime(format.parse(eTime));
         	} catch (ParseException e) {
         		e.printStackTrace();
         	}
         }
         
         
-        List<Judgment> list = JudgmentService.findList(judgment);
+        List<Completion> list = CompletionService.findList(completion);
 		String json = PageUtil.findPage(page, rows, list);
 		return json;
 	}
+	
+	
 	/**
-	 * 逻辑删除判断题
+	 * 逻辑删除单选题
 	 * @param request
 	 * @param response
 	 */
 	@ResponseBody
-	@RequestMapping("/deleteJudgment")
-	public String deleteJudgment(HttpServletRequest request,HttpServletResponse response) {
-		String ids = request.getParameter("judgeids");
+	@RequestMapping("/deleteCompletion")
+	public String deleteCompletion(HttpServletRequest request,HttpServletResponse response) {
+		String ids = request.getParameter("completionids");
 		String[] idarr = ids.split(",");
 		for(String id : idarr) {
-			Judgment judgment = new Judgment();
-			judgment.setId(Integer.valueOf(id));
-			JudgmentService.deleteByLogic(judgment);
+			Completion completion = new Completion();
+			completion.setId(Integer.valueOf(id));
+			CompletionService.deleteByLogic(completion);
 		}
 		return "OK";
 	}
 	
 	/**
 	 * 添加信息
-	 * @param Judgment
+	 * @param completion
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/addJudgment")
-	public String addJudgment(Judgment judgment) {
-		judgment.setCreateTime(new Date());
-		int row = JudgmentService.insert(judgment);
+	@RequestMapping("addCompletion")
+	public String addCompletion(Completion completion) {
+		completion.setCreateTime(new Date());
+		int row = CompletionService.insert(completion);
 		if(row == 1) {
 			return "OK";
 		} else {
@@ -123,21 +124,19 @@ public class JudgmentController {
 	
 	/**
 	 * 修改信息
-	 * @param Judgment
+	 * @param completion
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/updateJudgment")
-	public String updateJudgment(Judgment judgment) {
-		judgment.setCreateTime(new Date());
-		int row = JudgmentService.update(judgment);
+	@RequestMapping("/updateCompletion")
+	public String updateCompletion(Completion completion) {
+		completion.setCreateTime(new Date());
+		int row = CompletionService.update(completion);
 		if(row == 1) {
 			return "OK";
 		} else {
 			return "NO";
 		}
 	}
-	
-	
 	
 }

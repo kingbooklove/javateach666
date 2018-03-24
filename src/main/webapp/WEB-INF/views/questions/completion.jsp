@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
+         pageEncoding="UTF-8" isELIgnored="false"%>
 <%@include file="/common/easyui.jspf" %>
 <!DOCTYPE html >
 <html>
@@ -23,8 +23,9 @@
                    plain="true">导入</a>
                 
                 <form id="blank-search-form" style="display: inline-block">
-                     科目：<input class="easyui-textbox" id="blank-course-value"/>
-                     时间：<input type="date" id="daytimeblank-course-value"/>
+			                     科目：<input class="easyui-textbox" id="blank-course-value"/>
+			                    难度等级：<input class="easyui-textbox" id="choice-degree-value"/>
+			                     时间：<input type="date" id="bdaytime-course-value"/>~<input type="date" id="edaytime-course-value"/>
                     <a id="blank-search-btn" class="easyui-linkbutton">搜索</a>
                     <a id="blank-search-reset" class="easyui-linkbutton">重置</a>
                 </form>
@@ -42,26 +43,33 @@
     <form id="blank-form" method="post">
         <table>
             <tr>
-                <td><input type="hidden" name="blankId"/></td>
+                <td><input type="hidden" name="id" id="id"/></td>
             </tr>
             <tr>
                 <td width="60" align="right">课程</td>
-                <td><input type="text" name="courseId" id="courseId"required="required" editable="false" panelMaxHeight="100"/></td>
+                <td>
+                	<input name="couseId"  panelMaxHeight="100" class="easyui-textbox"/>
+                	<!-- <input type="text" name="courseId" id="courseId"required="required" editable="false" panelMaxHeight="100"/> -->
+                </td>
+            </tr>
+            <tr>
+                <td width="60" align="right">题目难度</td>
+                <td>
+                    <input id="degree" name="degree"  class="easyui-textbox"/>
+                </td>
             </tr>
             <tr>
                 <td align="right">题目</td>
                 <td>
-                    <textarea name="blankTitle" rows="3" cols="28"></textarea>
-
+                    <textarea name="completionTitle" rows="3" cols="28"></textarea>
+				</td>
             </tr>
             <tr>
                 <td align="right">正确答案</td>
-                <td><input type="text" name="answer" class="easyui-textbox"/></td>
+                <td>
+                	<textarea name="completionAnswer" rows="3" cols="28"></textarea>
+                </td>
             </tr>
-            <%--<tr>--%>
-                <%--<td align="right">时间</td>--%>
-                <%--<td><input type="text" name="daytime" class="easyui-textbox"/></td>--%>
-            <%--</tr>--%>
         </table>
     </form>
 </div>
@@ -143,8 +151,8 @@
                     $(items).each(function () {
                         ids.push(this.blankId);
                     });
-                    var url = 'blank.do?method=deleteBlank';
-                    $.get(url, {stuId: ids.toString()}, function (data) {
+                    var url = 'deleteCompletion';
+                    $.get(url, {"completionids": ids.toString()}, function (data) {
                         if (data == "OK") {
                             $.messager.alert('信息提示', '删除成功！', 'info');
                             $("#blank-datagrid").datagrid("reload");// 重新加载数据库
@@ -176,9 +184,9 @@
                 iconCls: 'icon-ok',
                 handler: function () {
                     $("#blank-form").form('submit', {
-                        url: 'blank.do?method=addBlank',
+                        url: 'addCompletion',
                         onSubmit: function () {
-
+							
                         },
                         success: function (data) {
                             if (data == "OK") {
@@ -220,7 +228,7 @@
                     iconCls: 'icon-ok',
                     handler: function () {
                         $('#blank-form').form('submit', {
-                            url: 'blank.do?method=updateBlank',
+                            url: 'updateCompletion',
                             success: function (data) {
                                 if (data == "OK") {
                                     $.messager.alert('信息提示', '修改成功！');
@@ -252,8 +260,7 @@
      * Name 载入数据
      */
     $('#blank-datagrid').datagrid({
-        url: 'blank.do?method=queryBlank',
-
+        url: 'completions',
         rownumbers: true,
         singleSelect: false,
         pageSize: 20,
@@ -264,19 +271,19 @@
         fit: true,
         columns: [[
             {field: '', checkbox: true},
-            {field: 'blankId', title: '编号', width: 50, sortable: true, hidden: true},
-            {field: 'courseId', title: '科目', width: 50, sortable: true,formatter:function(value,row,index) {
-                $.ajaxSettings.async = false;
-                var courseName = "";
-                $.get('courseServlet.do?method=getCourseNameById', {'courseId': value}, function (data) {
-                    courseName = data;
-                });
-                $.ajaxSettings.async = true;
-                return courseName;
-            }},
-            {field: 'blankTitle', title: '题目', width: 180, sortable: true},
-            {field: 'answer', title: '正确答案', width: 100},
-            {field: 'daytime', title: '时间(xx-年xx-月xx-日) ', width: 100}
+            {field: 'id', title: '编号', width: 50, sortable: true, hidden: true},
+            {field: 'couseId', title: '科目', width: 50, sortable: true},
+            {field: 'completionTitle', title: '题目', width: 180, sortable: true},
+            {field: 'completionAnswer', title: '正确答案', width: 100},
+            {field: 'degree', title: '难度等级', width: 50},
+            {field: 'createTime', title: '时间(xx-年xx-月xx-日) ', width: 100, formatter: function (value, row, index) {
+            	if(value != null) {
+	            	var date = new Date(value);
+	            	return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+            	} else {
+            		return "";
+            	}
+            }}
         ]]
     });
 
@@ -296,7 +303,8 @@
     /*重置方法*/
     $("#blank-search-reset").click(function(){
         $("#blank-search-form").form('clear');
-        $("#daytimeblank-course-value").val('');
+        $("#bdaytime-course-value").val('');
+        $("#edaytime-course-value").val('');
         // 重新加载数据
         $('#blank-datagrid').datagrid({
             queryParams: formBlankJson()
@@ -306,8 +314,10 @@
     //将表单数据转为json
     function formBlankJson() {
         var bCourseName = $("#blank-course-value").val();
-        var daytimeblank = $("#daytimeblank-course-value").val();
-        return {"bCourseName":bCourseName,daytimeblank:daytimeblank};
+        var degree = $("#choice-degree-value").val();
+        var bTime = $("#bdaytime-course-value").val();
+        var eTime = $("#edaytime-course-value").val();
+        return {"couseId": bCourseName,"degree":degree, "bTime": bTime,"eTime":eTime};
     }
     /**
      * 创建课程的下拉框

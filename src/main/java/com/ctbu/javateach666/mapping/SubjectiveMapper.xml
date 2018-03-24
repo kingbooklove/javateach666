@@ -1,37 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ctbu.javateach666.dao.MultipleChoiceDao">
+<mapper namespace="com.ctbu.javateach666.dao.SubjectiveDao">
     
-	<sql id="MultipleColumns">
+	<sql id="SubjectiveColumns">
 	a.id AS "id",
 	a.couse_id AS "couseId",
-	a.multiple_title AS "multipleTitle",
-	a.answerA AS "answera",
-	a.answerB AS "answerb",
-	a.answerC AS "answerc",
-	a.answerD AS "answerd",
-	a.multiple_answer AS "multipleAnswer",
+	a.subjective_title AS "subjectiveTitle",
+	a.subjective_answer AS "subjectiveAnswer",
 	a.degree AS "degree",
 	a.create_time AS "createTime",
 	a.is_delete AS "isDelete"
 	</sql>
 	
-	<sql id="MultipleJoins">
+	<sql id="SubjectiveJoins">
 	</sql>
 	
-	<select id="get" resultType="com.ctbu.javateach666.pojo.po.questions.MultipleChoice">
+	<select id="get" resultType="com.ctbu.javateach666.pojo.po.questions.Subjective">
 		SELECT 
-			<include refid="MultipleColumns"/>
-		FROM multiplechoice a
-		<include refid="MultipleJoins"/>
+			<include refid="SubjectiveColumns"/>
+		FROM subjective a
+		<include refid="SubjectiveJoins"/>
 		WHERE a.id = #{id}
 	</select>
 	
-	<select id="findList" resultType="com.ctbu.javateach666.pojo.po.questions.MultipleChoice">
+	<select id="findList" resultType="com.ctbu.javateach666.pojo.po.questions.Subjective">
 		SELECT 
-			<include refid="MultipleColumns"/>
-		FROM multiplechoice a
-		<include refid="MultipleJoins"/>
+			<include refid="SubjectiveColumns"/>
+		FROM subjective a
+		<include refid="SubjectiveJoins"/>
 		<where>
 		 a.is_delete = '0'
 		 <if test="couseId !=null and couseId !=''">
@@ -50,41 +46,29 @@
 	</select>
 	
 	<insert id="insert">
-		INSERT INTO multiplechoice(
+		INSERT INTO subjective(
 			id,
 			couse_id,
-			multiple_title,
-			answerA,
-			answerB,
-			answerC,
-			answerD,
-			multiple_answer,
+			subjective_title,
+			subjective_answer,
 			degree,
 			create_time,
 			is_delete
 		) VALUES (
 			#{id},
 			#{couseId},
-			#{multipleTitle},
-			#{answera},
-			#{answerb},
-			#{answerc},
-			#{answerd},
-			#{multipleAnswer},
+			#{subjectiveTitle},
+			#{subjectiveAnswer},
 			#{degree},
 			#{createTime},
 			0
 		)
 	</insert>
 	<update id="update">
-		UPDATE multiplechoice SET 	
+		UPDATE subjective SET 	
 			couse_id = #{couseId},
-			multiple_title = #{multipleTitle},
-			answerA = #{answera},
-			answerB = #{answerb},
-			answerC = #{answerc},
-			answerD = #{answerd},
-			multiple_answer = #{multipleAnswer},
+			subjective_title = #{subjectiveTitle},
+			subjective_answer = #{subjectiveAnswer},
 			degree = #{degree},
 			create_time = #{createTime}
 		WHERE id = #{id}
@@ -92,14 +76,14 @@
 	
 	
 	<!--物理删除-->
-	<update id="delete">
-		DELETE FROM multiplechoice
+	<delete id="delete">
+		DELETE FROM subjective
 		WHERE id = #{id}
-	</update>
+	</delete>
 	
 	<!--逻辑删除-->
 	<update id="deleteByLogic">
-		UPDATE multiplechoice SET 
+		UPDATE subjective SET 
 			is_delete = 1
 		WHERE id = #{id}
 	</update>
