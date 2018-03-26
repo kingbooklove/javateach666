@@ -12,28 +12,30 @@ public class ExamRule extends DataEntity<ExamRule>{
 
 	private static final long serialVersionUID = 1L;
 	
-	private int couseId;				// 课程id
-	private String ruleName;			// 规则名
-	private String singleRules;			// 单选规则
-	private int singleNum;				// 单选数量
-	private int singleScore;			// 单选分数
-	private String multipleRules;		// 多选规则
-	private int multipleNum;			// 多选数量
-	private int multipleScore;			// 多选分数
-	private String judgmentRules;		// 判断规则
-	private int judgmentNum;			// 判断数量
-	private int judgmentScore;			// 判断分数
-	private String completionRules;		// 填空规则
-	private int completionNum;			// 填空数量
-	private int completionScore;		// 填空分数
-	private String subjectiveRules;		// 主观规则
-	private int subjectiveNum;			// 主观数量
-	private int subjectiveScore;		// 主观分数
+	private Integer couseId;				// 课程id
+	private String ruleName;				// 规则名
+	private String singleRules;				// 单选规则
+	private Integer singleNum;				// 单选数量
+	private Integer singleScore;			// 单选分数
+	private String multipleRules;			// 多选规则
+	private Integer multipleNum;			// 多选数量
+	private Integer multipleScore;			// 多选分数
+	private String judgmentRules;			// 判断规则
+	private Integer judgmentNum;			// 判断数量
+	private Integer judgmentScore;			// 判断分数
+	private String completionRules;			// 填空规则
+	private Integer completionNum;			// 填空数量
+	private Integer completionScore;		// 填空分数
+	private String subjectiveRules;			// 主观规则
+	private Integer subjectiveNum;			// 主观数量
+	private Integer subjectiveScore;		// 主观分数
+	private Integer allScore;				// 总分数
+	private Integer ruleType;				// 规则类型
 	
-	public int getCouseId() {
+	public Integer getCouseId() {
 		return couseId;
 	}
-	public void setCouseId(int couseId) {
+	public void setCouseId(Integer couseId) {
 		this.couseId = couseId;
 	}
 	public String getRuleName() {
@@ -48,16 +50,16 @@ public class ExamRule extends DataEntity<ExamRule>{
 	public void setSingleRules(String singleRules) {
 		this.singleRules = singleRules;
 	}
-	public int getSingleNum() {
+	public Integer getSingleNum() {
 		return singleNum;
 	}
-	public void setSingleNum(int singleNum) {
+	public void setSingleNum(Integer singleNum) {
 		this.singleNum = singleNum;
 	}
-	public int getSingleScore() {
+	public Integer getSingleScore() {
 		return singleScore;
 	}
-	public void setSingleScore(int singleScore) {
+	public void setSingleScore(Integer singleScore) {
 		this.singleScore = singleScore;
 	}
 	public String getMultipleRules() {
@@ -66,16 +68,16 @@ public class ExamRule extends DataEntity<ExamRule>{
 	public void setMultipleRules(String multipleRules) {
 		this.multipleRules = multipleRules;
 	}
-	public int getMultipleNum() {
+	public Integer getMultipleNum() {
 		return multipleNum;
 	}
-	public void setMultipleNum(int multipleNum) {
+	public void setMultipleNum(Integer multipleNum) {
 		this.multipleNum = multipleNum;
 	}
-	public int getMultipleScore() {
+	public Integer getMultipleScore() {
 		return multipleScore;
 	}
-	public void setMultipleScore(int multipleScore) {
+	public void setMultipleScore(Integer multipleScore) {
 		this.multipleScore = multipleScore;
 	}
 	public String getJudgmentRules() {
@@ -84,16 +86,16 @@ public class ExamRule extends DataEntity<ExamRule>{
 	public void setJudgmentRules(String judgmentRules) {
 		this.judgmentRules = judgmentRules;
 	}
-	public int getJudgmentNum() {
+	public Integer getJudgmentNum() {
 		return judgmentNum;
 	}
-	public void setJudgmentNum(int judgmentNum) {
+	public void setJudgmentNum(Integer judgmentNum) {
 		this.judgmentNum = judgmentNum;
 	}
-	public int getJudgmentScore() {
+	public Integer getJudgmentScore() {
 		return judgmentScore;
 	}
-	public void setJudgmentScore(int judgmentScore) {
+	public void setJudgmentScore(Integer judgmentScore) {
 		this.judgmentScore = judgmentScore;
 	}
 	public String getCompletionRules() {
@@ -102,16 +104,16 @@ public class ExamRule extends DataEntity<ExamRule>{
 	public void setCompletionRules(String completionRules) {
 		this.completionRules = completionRules;
 	}
-	public int getCompletionNum() {
+	public Integer getCompletionNum() {
 		return completionNum;
 	}
-	public void setCompletionNum(int completionNum) {
+	public void setCompletionNum(Integer completionNum) {
 		this.completionNum = completionNum;
 	}
-	public int getCompletionScore() {
+	public Integer getCompletionScore() {
 		return completionScore;
 	}
-	public void setCompletionScore(int completionScore) {
+	public void setCompletionScore(Integer completionScore) {
 		this.completionScore = completionScore;
 	}
 	public String getSubjectiveRules() {
@@ -120,17 +122,29 @@ public class ExamRule extends DataEntity<ExamRule>{
 	public void setSubjectiveRules(String subjectiveRules) {
 		this.subjectiveRules = subjectiveRules;
 	}
-	public int getSubjectiveNum() {
+	public Integer getSubjectiveNum() {
 		return subjectiveNum;
 	}
-	public void setSubjectiveNum(int subjectiveNum) {
+	public void setSubjectiveNum(Integer subjectiveNum) {
 		this.subjectiveNum = subjectiveNum;
 	}
-	public int getSubjectiveScore() {
+	public Integer getSubjectiveScore() {
 		return subjectiveScore;
 	}
-	public void setSubjectiveScore(int subjectiveScore) {
+	public void setSubjectiveScore(Integer subjectiveScore) {
 		this.subjectiveScore = subjectiveScore;
+	}
+	public Integer getAllScore() {
+		return allScore;
+	}
+	public void setAllScore(Integer allScore) {
+		this.allScore = allScore;
+	}
+	public Integer getRuleType() {
+		return ruleType;
+	}
+	public void setRuleType(Integer ruleType) {
+		this.ruleType = ruleType;
 	}
 	
 }
