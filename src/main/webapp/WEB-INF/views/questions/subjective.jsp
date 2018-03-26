@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
+         pageEncoding="UTF-8" isELIgnored="false"%>
 <%@include file="/common/easyui.jspf" %>
 <!DOCTYPE html >
 <html>
@@ -21,9 +21,9 @@
                 <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-ok" onclick="opernImportSub()"
                    plain="true">导入</a>
                 <form id="sub-search-form" style="display: inline-block">
-                    科目：<input class="easyui-textbox" id="sub-course-value"/>
-                    时间：<input type="date" id="dayitmesub-course-value"/>
-                    
+			                    科目：<input class="easyui-textbox" id="sub-course-value"/>
+			                    难度等级：<input class="easyui-textbox" id="subjective-degree-value"/>
+			                     时间：<input type="date" id="bdaytime-course-value"/>~<input type="date" id="edaytime-course-value"/>
                     <a id="sub-search-btn" class="easyui-linkbutton">搜索</a>
                     <a id="sub-search-reset" class="easyui-linkbutton">重置</a>
                 </form>
@@ -40,28 +40,33 @@
     <form id="subjective-form" method="post">
         <table>
             <tr>
-                <td><input type="hidden" name="subId" /></td>
+                <td><input type="hidden" name="id" /></td>
             </tr>
             <tr>
                 <td width="60" align="right">课程</td>
-                <td><input type="text" name="courseId" id="courseId"required="required" editable="false" panelMaxHeight="100"/></td>
+                <td>
+                	<input name="couseId"  panelMaxHeight="100" class="easyui-textbox"/>
+                	<!-- <input type="text" name="couseId" id="courseId"required="required" editable="false" panelMaxHeight="100"/> -->
+                </td>
+            </tr>
+            <tr>
+                <td width="60" align="right">题目难度</td>
+                <td>
+                    <input id="degree" name="degree"  class="easyui-textbox"/>
+                </td>
             </tr>
             <tr>
                 <td align="right">题目</td>
 
                 <td>
-                    <textarea name="subTitle" rows="3" cols="28"></textarea>
-
+                    <textarea name="subjectiveTitle" rows="3" cols="28"></textarea>
+				</td>
             </tr>
             <tr>
                 <td align="right">正确答案</td>
                 <td>
-                    <textarea name="answer" rows="3" cols="28"></textarea>
+                    <textarea name="subjectiveAnswer" rows="3" cols="28"></textarea>
             </tr>
-            <%--<tr>--%>
-                <%--<td align="right">时间</td>--%>
-                <%--<td><input type="text" name="daytime" class="easyui-textbox"/></td>--%>
-            <%--</tr>--%>
         </table>
     </form>
 </div>
@@ -140,10 +145,10 @@
                 if (result) {
                     var ids = [];
                     $(items).each(function () {
-                        ids.push(this.subId);
+                        ids.push(this.id);
                     });
-                    var url = 'subjective.do?method=deleteSubjective';
-                    $.get(url, {stuId: ids.toString()}, function (data) {
+                    var url = 'deleteSubjective';
+                    $.get(url, {subjectiveids: ids.toString()}, function (data) {
                         if (data == "OK") {
                             $.messager.alert('信息提示', '删除成功！', 'info');
                             $("#subjective-datagrid").datagrid("reload");// 重新加载数据库
@@ -175,7 +180,7 @@
                 iconCls: 'icon-ok',
                 handler: function () {
                     $("#subjective-form").form('submit', {
-                        url: 'subjective.do?method=addSubjective',
+                        url: 'addSubjective',
                         onSubmit: function () {
 
                         },
@@ -219,7 +224,7 @@
                     iconCls: 'icon-ok',
                     handler: function () {
                         $('#subjective-form').form('submit', {
-                            url: 'subjective.do?method=updateSubjective',
+                            url: 'updateSubjective',
                             success: function (data) {
                                 if (data == "OK") {
                                     $.messager.alert('信息提示', '修改成功！');
@@ -251,7 +256,7 @@
      * Name 载入数据
      */
     $('#subjective-datagrid').datagrid({
-        url: 'subjective.do?method=sbujectiveQuery',
+        url: 'subjectives',
         queryParams: formSubJson(),
         rownumbers: true,
         singleSelect: false,
@@ -262,19 +267,19 @@
         fit: true,
         columns: [[
             {field: '', checkbox: true},
-            {field: 'subId', title: '编号', width: 50, sortable: true, hidden: true},
-            {field: 'courseId', title: '科目', width: 50, sortable: true,formatter:function(value,row,index) {
-                $.ajaxSettings.async = false;
-                var courseName = "";
-                $.get('courseServlet.do?method=getCourseNameById', {'courseId': value}, function (data) {
-                    courseName = data;
-                });
-                $.ajaxSettings.async = true;
-                return courseName;
-            }},
-            {field: 'subTitle', title: '题目', width: 180, sortable: true},
-            {field: 'answer', title: '正确答案', width: 100},
-            {field: 'daytime', title: '时间(xx-年xx-月xx-日) ', width: 100}
+            {field: 'id', title: '编号', width: 50, sortable: true, hidden: true},
+            {field: 'couseId', title: '科目', width: 50, sortable: true},
+            {field: 'subjectiveTitle', title: '题目', width: 180, sortable: true},
+            {field: 'subjectiveAnswer', title: '正确答案', width: 100},
+            {field: 'degree', title: '难度等级', width: 50},
+            {field: 'createTime', title: '时间(xx-年xx-月xx-日) ', width: 100, formatter: function (value, row, index) {
+            	if(value != null) {
+	            	var date = new Date(value);
+	            	return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+            	} else {
+            		return "";
+            	}
+            }}
         ]]
     });
     /* 搜索方法*/
@@ -288,7 +293,8 @@
     /*重置方法*/
     $("#sub-search-reset").click(function () {
         $("#sub-search-form").form('clear');
-        $("#dayitmesub-course-value").val('');
+        $("#bdaytime-course-value").val('');
+        $("#edaytime-course-value").val('');
 
         // 重新加载数据
         $('#subjective-datagrid').datagrid({
@@ -299,8 +305,10 @@
     //将表单数据转为json
     function formSubJson() {
         var bSubName = $("#sub-course-value").val();
-        var daytimesub = $("#dayitmesub-course-value").val();
-        return {"bSubName": bSubName,daytimesub:daytimesub};
+        var degree = $("#subjective-degree-value").val();
+        var bTime = $("#bdaytime-course-value").val();
+        var eTime = $("#edaytime-course-value").val();
+        return {"couseId": bSubName,"degree":degree, "bTime": bTime,"eTime":eTime};
     }
 
     /**

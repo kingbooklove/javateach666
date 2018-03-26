@@ -13,10 +13,13 @@
 	a.single_answer AS "singleAnswer",
 	a.degree AS "degree",
 	a.create_time AS "createTime",
-	a.is_delete AS "isDelete"
+	a.is_delete AS "isDelete",
+	
+	b.couname AS "couname"
 	</sql>
 	
 	<sql id="SingleJoins">
+	left join course b on b.id = a.couse_id
 	</sql>
 	
 	<select id="get" resultType="com.ctbu.javateach666.pojo.po.questions.SingleChoice">

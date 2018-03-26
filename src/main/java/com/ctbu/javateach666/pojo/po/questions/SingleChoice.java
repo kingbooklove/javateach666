@@ -21,8 +21,6 @@ public class SingleChoice extends DataEntity<SingleChoice>{
 	private String answerd;			// D选项
 	private String singleAnswer;	// 单选答案
 	private String degree;			// 题目难度系数
-	private String thc;
-	private String qqq;
 	private Date createTime;		// 创建时间
 	
 	// 查询条件

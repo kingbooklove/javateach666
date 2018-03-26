@@ -30,9 +30,18 @@
 		<include refid="JudgmentJoins"/>
 		<where>
 		 a.is_delete = '0'
-		 <!-- <if test="enterpriseName !=null and enterpriseName !=''">
-		  and a.enterprise_name like CONCAT ('%',#{enterpriseName},'%')
-		 </if> -->
+		 <if test="couseId !=null and couseId !=''">
+		  and a.couse_id = #{couseId}
+		 </if>
+		 <if test="degree !=null and degree !=''">
+		  and a.degree = #{degree}
+		 </if>
+		 <if test="bTime !=null and bTime !=''">
+		  and a.create_time &gt;= #{bTime}
+		 </if>
+		 <if test="eTime !=null and eTime !=''">
+		  and a.create_time &lt;= #{eTime}
+		 </if>
 		</where>
 	</select>
 	

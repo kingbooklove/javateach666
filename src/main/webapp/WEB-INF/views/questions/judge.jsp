@@ -22,8 +22,9 @@
                 <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-ok" onclick="openImportJudge()"
                    plain="true">导入</a>
                 <form id="judge-search-form" style="display: inline-block">
-                    科目：<input class="easyui-textbox" id="judge-course-value"/>
-                    科目：<input type="date" id="daytimejudge-course-value"/>
+			                    科目：<input class="easyui-textbox" id="judge-course-value"/>
+			                    难度等级：<input class="easyui-textbox" id="judge-degree-value"/>
+			                     时间：<input type="date" id="bdaytime-course-value"/>~<input type="date" id="edaytime-course-value"/>
                     <a id="judge-search-btn" class="easyui-linkbutton">搜索</a>
                     <a id="judge-search-reset" class="easyui-linkbutton">重置</a>
                 </form>
@@ -41,27 +42,33 @@
     <form id="judge-form" method="post">
         <table>
             <tr>
-                <td><input type="hidden" name="judgeId" /></td>
+                <td><input type="hidden" name="id" /></td>
             </tr>
             <tr>
                 <td width="60" align="right">课程</td>
-                <td><input type="text" name="courseId" id="courseId"required="required" class="easyui-textbox"editable="false" panelMaxHeight="100"/></td>
+                <td>
+                	<input name="couseId"  panelMaxHeight="100" class="easyui-textbox"/>
+                	<!-- <input type="text" name="couseId" id="courseId"required="required" class="easyui-textbox"editable="false" panelMaxHeight="100"/> -->
+                </td>
+            </tr>
+            <tr>
+                <td width="60" align="right">题目难度</td>
+                <td>
+                    <input id="degree" name="degree"  class="easyui-textbox"/>
+                </td>
             </tr>
             <tr>
                 <td align="right">题目</td>
                 <td>
-                    <textarea name="judgeTitle" rows="3" cols="28"></textarea>
-
+                    <textarea name="judgmentTitle" rows="3" cols="28"></textarea>
+				</td>
             </tr>
             <tr>
                 <td align="right">正确答案</td>
-                <td><input type="text" name="answer" class="easyui-textbox"/></td>
+                <td>
+                	<textarea name="judgmentAnswer" rows="3" cols="28"></textarea>
+                </td>
             </tr>
-            
-            <%--<tr>--%>
-                <%--<td align="right">时间</td>--%>
-                <%--<td><input type="text" name="daytime" class="easyui-textbox"/></td>--%>
-            <%--</tr>--%>
         </table>
     </form>
 </div>
@@ -140,10 +147,10 @@
                 if (result) {
                     var ids = [];
                     $(items).each(function () {
-                        ids.push(this.judgeId);
+                        ids.push(this.id);
                     });
-                    var url = 'judge.do?method=deleteJudge';
-                    $.get(url, {stuId: ids.toString()}, function (data) {
+                    var url = 'deleteJudgment';
+                    $.get(url, {judgeids: ids.toString()}, function (data) {
                         if (data == "OK") {
                             $.messager.alert('信息提示', '删除成功！', 'info');
                             $("#judge-datagrid").datagrid("reload");// 重新加载数据库
@@ -175,7 +182,7 @@
                 iconCls: 'icon-ok',
                 handler: function () {
                     $("#judge-form").form('submit', {
-                        url: 'judge.do?method=addJudge',
+                        url: 'addJudgment',
                         onSubmit: function () {
 
                         },
@@ -219,7 +226,7 @@
                     iconCls: 'icon-ok',
                     handler: function () {
                         $('#judge-form').form('submit', {
-                            url: 'judge.do?method=updateJudge',
+                            url: 'updateJudgment',
                             success: function (data) {
                                 if (data == "OK") {
                                     $.messager.alert('信息提示', '修改成功！');
@@ -262,12 +269,19 @@
         fit: true,
         columns: [[
             {field: '', checkbox: true},
-            {field: 'judgeId', title: '编号', width: 50, sortable: true, hidden: true},
-            {field: 'courseId', title: '科目', width: 50, sortable: true},
+            {field: 'id', title: '编号', width: 50, sortable: true, hidden: true},
+            {field: 'couseId', title: '科目', width: 50, sortable: true},
             {field: 'judgmentTitle', title: '题目', width: 180, sortable: true},
             {field: 'judgmentAnswer', title: '正确答案', width: 100},
             {field: 'degree', title: '难度等级', width: 50},
-            {field: 'createTime', title: '时间(xx-年xx-月xx-日) ',sortable: true, width: 135}
+            {field: 'createTime', title: '时间(xx-年xx-月xx-日) ',sortable: true, width: 135, formatter: function (value, row, index) {
+            	if(value != null) {
+	            	var date = new Date(value);
+	            	return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+            	} else {
+            		return "";
+            	}
+            }}
         ]]
     });
 
@@ -287,7 +301,8 @@
     /*重置方法*/
     $("#judge-search-reset").click(function () {
         $("#judge-search-form").form('clear');
-        $("daytimejudge-course-value").val('')
+        $("#bdaytime-course-value").val('');
+        $("#edaytime-course-value").val('');
         // 重新加载数据
         $('#judge-datagrid').datagrid({
             queryParams: formJudgeJson()
@@ -297,8 +312,10 @@
     //将表单数据转为json
     function formJudgeJson() {
         var bJudgeName = $("#judge-course-value").val();
-        var daytimejudge=$("daytimejudge-course-value").val();
-        return {"bJudgeName":bJudgeName,daytimejudge:daytimejudge};
+        var degree = $("#judge-degree-value").val();
+        var bTime = $("#bdaytime-course-value").val();
+        var eTime = $("#edaytime-course-value").val();
+        return {"couseId": bJudgeName,"degree":degree, "bTime": bTime,"eTime":eTime};
     }
 
     /**

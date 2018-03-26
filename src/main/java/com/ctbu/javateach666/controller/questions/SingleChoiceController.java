@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ctbu.javateach666.pojo.po.questions.SingleChoice;
-import com.ctbu.javateach666.service.impl.questions.SingleChoiceServiceImpl;
+import com.ctbu.javateach666.service.interfac.questions.SingleChoiceService;
 import com.ctbu.javateach666.util.PageUtil;
 
 /**
@@ -27,7 +27,7 @@ import com.ctbu.javateach666.util.PageUtil;
 public class SingleChoiceController {
 	
 	@Autowired
-	private SingleChoiceServiceImpl SingleChoiceService;
+	private SingleChoiceService SingleChoiceService;
 	
 	/**
 	 * 转发到选择题页面
@@ -128,7 +128,7 @@ public class SingleChoiceController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("updateSingleChoice")
+	@RequestMapping("/updateSingleChoice")
 	public String updateSingleChoice(SingleChoice singleChoice) {
 		singleChoice.setCreateTime(new Date());
 		int row = SingleChoiceService.update(singleChoice);
