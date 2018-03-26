@@ -100,51 +100,193 @@
 						</ul>
 					</li>
 				</security:authorize>
+				<!-- 管理员菜单 -->
 				<security:authorize ifAnyGranted="ADMIN" >
 					<li class="nav_top">
 						<a class="nav_top_link">
-							<span class="down">网上选课管理员1</span>
+							<span class="down">个人设置</span>
 						</a>
 						
 						<ul class="sub">
 							<li>
-								<a href="#">全校性选课</a>
+								<a href="admininfo" target="_son">个人资料</a>
 							</li>
 							<li>
-								<a href="#">课程行课情况查询</a>
+								<a href="adminsetpass" target="_son">密码管理</a>
 							</li>
 						</ul>
 					</li>
 					<li class="nav_top">
 						<a class="nav_top_link">
-							<span class="down">网上选课管理员2</span>
+							<span class="down">首页管理</span>
 						</a>
 						
 						<ul class="sub">
 							<li>
-								<a href="#">全校性选课</a>
+								<a href="indeximg" target="_son">轮播图片信息</a>
 							</li>
 							<li>
-								<a href="#">课程行课情况查询</a>
+								<a href="gonewsinfo" target="_son">新闻信息</a>
+							</li>
+							<li>
+								<a href="gopubinfo" target="_son">公告信息</a>
+							</li>
+						</ul>
+					</li>
+					<li class="nav_top">
+						<a class="nav_top_link">
+							<span class="down">教师信息管理</span>
+						</a>
+						
+						<ul class="sub">
+							<li>
+								<a href="#">教师账户信息</a>
+							</li>
+							<li>
+								<a href="#">教师职位信息</a>
+							</li>
+						</ul>
+					</li>
+					<li class="nav_top">
+						<a class="nav_top_link">
+							<span class="down">学生信息管理</span>
+						</a>
+						
+						<ul class="sub">
+							<li>
+								<a href="#">学生账户信息</a>
+							</li>
+						</ul>
+					</li>
+					<li class="nav_top">
+						<a class="nav_top_link">
+							<span class="down">数据字典管理</span>
+						</a>
+						
+						<ul class="sub">
+							<li>
+								<a href="godiclist" target="_son">数据字典信息</a>
+							</li>
+						</ul>
+					</li>
+					<li class="nav_top">
+						<a class="nav_top_link">
+							<span class="down">学科管理</span>
+						</a>
+						
+						<ul class="sub">
+							<li>
+								<a href="#">学科信息</a>
+							</li>
+						</ul>
+					</li>
+					<li class="nav_top">
+						<a class="nav_top_link">
+							<span class="down">我的通知</span>
+						</a>
+						
+						<ul class="sub">
+							<li>
+								<a href="#">通知信息</a>
 							</li>
 						</ul>
 					</li>
 				</security:authorize>
+				<!-- 教师菜单 -->
 				<security:authorize ifAnyGranted="TEACHER" >
 					<li class="nav_top">
 						<a class="nav_top_link">
-							<span class="down">网上选课教师</span>
+							<span class="down">个人设置</span>
 						</a>
 						
 						<ul class="sub">
 							<li>
-								<a href="#">全校性选课</a>
+								<a href="#">个人资料</a>
 							</li>
 							<li>
-								<a href="#">课程行课情况查询</a>
+								<a href="#">密码管理</a>
 							</li>
 						</ul>
-					</li>	
+					</li>
+					<li class="nav_top">
+						<a class="nav_top_link">
+							<span class="down">通知管理</span>
+						</a>
+						
+						<ul class="sub">
+							<li>
+								<a href="#">发布通知</a>
+							</li>
+							<li>
+								<a href="#">通知管理</a>
+							</li>
+						</ul>
+					</li>
+					<li class="nav_top">
+						<a class="nav_top_link">
+							<span class="down">资料管理</span>
+						</a>
+						
+						<ul class="sub">
+							<li>
+								<a href="#">资料上传</a>
+							</li>
+							<li>
+								<a href="#">资料管理</a>
+							</li>
+						</ul>
+					</li>
+					<li class="nav_top">
+						<a class="nav_top_link">
+							<span class="down">课程管理</span>
+						</a>
+						
+						<ul class="sub">
+							<li>
+								<a href="#">发布选课</a>
+							</li>
+							<li>
+								<a href="#">学生选课信息</a>
+							</li>
+							<li>
+								<a href="#">教师课表</a>
+							</li>
+							<li>
+								<a href="#">查看教学评价</a>
+							</li>
+						</ul>
+					</li>
+					<li class="nav_top">
+						<a class="nav_top_link">
+							<span class="down">职称管理</span>
+						</a>
+						
+						<ul class="sub">
+							<li>
+								<a href="#">升职请求</a>
+							</li>
+							<li>
+								<a href="#">查看升职情况</a>
+							</li>
+							<li>
+								<a href="#">查看升职请求记录</a>
+							</li>
+						</ul>
+					</li>
+					<li class="nav_top">
+						<a class="nav_top_link">
+							<span class="down">考试管理</span>
+						</a>
+						
+						<ul class="sub">
+							<li>
+								<a href="#">考试管理</a>
+							</li>
+							<li>
+								<a href="#">考试管理</a>
+							</li>
+						</ul>
+					</li>											
 				</security:authorize>
 			</ul>
 			<!--选项卡-->
