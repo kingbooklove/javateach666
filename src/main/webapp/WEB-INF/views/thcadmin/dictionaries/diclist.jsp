@@ -48,6 +48,7 @@
         </div>
         <!-- End of toolbar -->
         <table id="dicinfo-datagrid" toolbar="#dicinfo-toolbar"></table>
+        123
         
 		<div id="dd">Dialog Content.</div>  
     </div>
