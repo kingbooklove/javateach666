@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ctbu.javateach666.pojo.po.THCCoursePO;
 import com.ctbu.javateach666.pojo.po.questions.Completion;
 import com.ctbu.javateach666.service.interfac.questions.CompletionService;
 import com.ctbu.javateach666.util.PageUtil;
@@ -60,7 +61,9 @@ public class CompletionController {
         String bTime = request.getParameter("bTime");
         String eTime = request.getParameter("eTime");
         if(couseId != null && !"".equals(couseId)) {
-        	completion.setCouseId(couseId);
+        	THCCoursePO course = new THCCoursePO();
+        	course.setId(Integer.valueOf(couseId));
+        	completion.setCourse(course);
         }
         if(degree != null && !"".equals(degree)) {
         	completion.setDegree(degree);

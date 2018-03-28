@@ -3,6 +3,7 @@ package com.ctbu.javateach666.pojo.po.questions;
 import java.util.Date;
 
 import com.ctbu.javateach666.common.entity.DataEntity;
+import com.ctbu.javateach666.pojo.po.THCCoursePO;
 
 /**
  * 填空题题库
@@ -13,7 +14,8 @@ public class Completion extends DataEntity<Completion>{
 
 	private static final long serialVersionUID = 1L;
 	
-	private String couseId;				// 课程id
+	private THCCoursePO course;			// 课程
+	private String couname;				// 课程名
 	private String completionTitle;		// 填空题目
 	private String completionAnswer;	// 填空答案
 	private String degree;				// 题目难度系数
@@ -22,12 +24,6 @@ public class Completion extends DataEntity<Completion>{
 	// 查询条件
 	private Date bTime;				// 查询开始时间
 	private Date eTime;				// 查询结束时间 
-	public String getCouseId() {
-		return couseId;
-	}
-	public void setCouseId(String couseId) {
-		this.couseId = couseId;
-	}
 	public String getCompletionTitle() {
 		return completionTitle;
 	}
@@ -63,6 +59,18 @@ public class Completion extends DataEntity<Completion>{
 	}
 	public void seteTime(Date eTime) {
 		this.eTime = eTime;
+	}
+	public THCCoursePO getCourse() {
+		return course;
+	}
+	public void setCourse(THCCoursePO course) {
+		this.course = course;
+	}
+	public String getCouname() {
+		return couname;
+	}
+	public void setCouname(String couname) {
+		this.couname = couname;
 	}
 	
 	

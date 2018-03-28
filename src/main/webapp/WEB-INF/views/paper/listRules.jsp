@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" isELIgnored="false"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<%@include file="/common/easyui.jspf"%>
 </head>
 <body>
 	<div class="easyui-layout" data-options="fit:true">
@@ -66,7 +67,7 @@
     		height:600,
     		top:100,
     		title:'手动添加试卷',
-    		href:"paper.do?method=initHandPaper",
+    		href:"initHandPaper",
     		modal:true,
     		onLoad:function(){
     			clear();
@@ -224,8 +225,8 @@
         fit: true,
         columns: [[
             {field:'',checkbox: true},
-            {field: 'id', title: '编号', width: 50, sortable: true},
-            {field: 'couseId', title: '课程名', width: 50},
+            {field: 'id', title: '编号', width: 50, hidden: true},
+            {field: 'couseId', title: '课程', width: 50},
             {field: 'ruleName', title: '规则名', width: 110},
             {field: 'singleNum', title: '单选题数量', width: 100},
             {field: 'singleScore', title: '单选题分数', width: 100},

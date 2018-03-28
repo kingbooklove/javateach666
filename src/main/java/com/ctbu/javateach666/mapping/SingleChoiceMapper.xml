@@ -4,7 +4,7 @@
     
 	<sql id="SingleColumns">
 	a.id AS "id",
-	a.couse_id AS "couseId",
+	a.couse_id AS "course.id",
 	a.single_title AS "singleTitle",
 	a.answerA AS "answera",
 	a.answerB AS "answerb",
@@ -15,6 +15,7 @@
 	a.create_time AS "createTime",
 	a.is_delete AS "isDelete",
 	
+	b.couname AS "course.couname",
 	b.couname AS "couname"
 	</sql>
 	
@@ -37,8 +38,11 @@
 		<include refid="SingleJoins"/>
 		<where>
 		 a.is_delete = '0'
-		 <if test="couseId !=null and couseId !=''">
-		  and a.couse_id = #{couseId}
+		 <if test="course != null and course.id !=null and course.id !=''">
+		  and a.couse_id = #{course.id}
+		 </if>
+		 <if test="singleTitle !=null and singleTitle !=''">
+		  and a.single_title LIKE CONCAT('%',#{singleTitle},'%')  
 		 </if>
 		 <if test="degree !=null and degree !=''">
 		  and a.degree = #{degree}
@@ -67,7 +71,7 @@
 			is_delete
 		) VALUES (
 			#{id},
-			#{couseId},
+			#{course.id},
 			#{singleTitle},
 			#{answera},
 			#{answerb},
@@ -81,7 +85,7 @@
 	</insert>
 	<update id="update">
 		UPDATE singlechoice SET 	
-			couse_id = #{couseId},
+			couse_id = #{course.id},
 			single_title = #{singleTitle},
 			answerA = #{answera},
 			answerB = #{answerb},

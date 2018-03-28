@@ -4,15 +4,19 @@
     
 	<sql id="CompletionColumns">
 	a.id AS "id",
-	a.couse_id AS "couseId",
+	a.couse_id AS "course.id",
 	a.completion_title AS "completionTitle",
 	a.completion_answer AS "completionAnswer",
 	a.degree AS "degree",
 	a.create_time AS "createTime",
-	a.is_delete AS "isDelete"
+	a.is_delete AS "isDelete",
+	
+	b.couname AS "course.couname",
+	b.couname AS "couname"
 	</sql>
 	
 	<sql id="CompletionJoins">
+	left join course b on b.id = a.couse_id
 	</sql>
 	
 	<select id="get" resultType="com.ctbu.javateach666.pojo.po.questions.Completion">
@@ -30,8 +34,11 @@
 		<include refid="CompletionJoins"/>
 		<where>
 		 a.is_delete = '0'
-		 <if test="couseId !=null and couseId !=''">
-		  and a.couse_id = #{couseId}
+		 <if test="course != null and course.id !=null and course.id !=''">
+		  and a.couse_id = #{course.id}
+		 </if>
+		 <if test="completionTitle !=null and completionTitle !=''">
+		  and a.completion_title LIKE CONCAT('%', #{completionTitle},'%')  
 		 </if>
 		 <if test="degree !=null and degree !=''">
 		  and a.degree = #{degree}
@@ -56,7 +63,7 @@
 			is_delete
 		) VALUES (
 			#{id},
-			#{couseId},
+			#{course.id},
 			#{completionTitle},
 			#{completionAnswer},
 			#{degree},
@@ -66,7 +73,7 @@
 	</insert>
 	<update id="update">
 		UPDATE completion SET 	
-			couse_id = #{couseId},
+			couse_id = #{course.id},
 			completion_title = #{completionTitle},
 			completion_answer = #{completionAnswer},
 			degree = #{degree},

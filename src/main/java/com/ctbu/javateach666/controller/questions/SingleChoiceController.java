@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ctbu.javateach666.pojo.po.THCCoursePO;
 import com.ctbu.javateach666.pojo.po.questions.SingleChoice;
 import com.ctbu.javateach666.service.interfac.questions.SingleChoiceService;
 import com.ctbu.javateach666.util.PageUtil;
@@ -60,7 +61,9 @@ public class SingleChoiceController {
         String bTime = request.getParameter("bTime");
         String eTime = request.getParameter("eTime");
         if(couseId != null && !"".equals(couseId)) {
-        	singleChoice.setCouseId(couseId);
+        	THCCoursePO course = new THCCoursePO();
+        	course.setId(Integer.valueOf(couseId));
+        	singleChoice.setCourse(course);
         }
         if(degree != null && !"".equals(degree)) {
         	singleChoice.setDegree(degree);
