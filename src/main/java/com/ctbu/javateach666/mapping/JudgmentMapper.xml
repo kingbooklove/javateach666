@@ -9,10 +9,14 @@
 	a.judgment_answer AS "judgmentAnswer",
 	a.degree AS "degree",
 	a.create_time AS "createTime",
-	a.is_delete AS "isDelete"
+	a.is_delete AS "isDelete",
+	
+	b.couname AS "course.couname",
+	b.couname AS "couname"
 	</sql>
 	
 	<sql id="JudgmentJoins">
+	left join course b on b.id = a.couse_id
 	</sql>
 	
 	<select id="get" resultType="com.ctbu.javateach666.pojo.po.questions.Judgment">
@@ -30,8 +34,11 @@
 		<include refid="JudgmentJoins"/>
 		<where>
 		 a.is_delete = '0'
-		 <if test="couseId !=null and couseId !=''">
-		  and a.couse_id = #{couseId}
+		 <if test="course != null and course.id !=null and course.id !=''">
+		  and a.couse_id = #{course.id}
+		 </if>
+		 <if test="judgmentTitle !=null and judgmentTitle !=''">
+		  and a.judgment_title LIKE CONCAT('%',#{judgmentTitle},'%')   
 		 </if>
 		 <if test="degree !=null and degree !=''">
 		  and a.degree = #{degree}
@@ -56,7 +63,7 @@
 			is_delete
 		) VALUES (
 			#{id},
-			#{couseId},
+			#{course.id},
 			#{judgmentTitle},
 			#{judgmentAnswer},
 			#{degree},
@@ -66,7 +73,7 @@
 	</insert>
 	<update id="update">
 		UPDATE judgment SET 	
-			couse_id = #{couseId},
+			couse_id = #{course.id},
 			judgment_title = #{judgmentTitle},
 			judgment_answer = #{judgmentAnswer},
 			degree = #{degree},

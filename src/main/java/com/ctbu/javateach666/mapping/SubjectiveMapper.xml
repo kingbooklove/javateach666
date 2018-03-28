@@ -4,15 +4,19 @@
     
 	<sql id="SubjectiveColumns">
 	a.id AS "id",
-	a.couse_id AS "couseId",
+	a.couse_id AS "course.id",
 	a.subjective_title AS "subjectiveTitle",
 	a.subjective_answer AS "subjectiveAnswer",
 	a.degree AS "degree",
 	a.create_time AS "createTime",
-	a.is_delete AS "isDelete"
+	a.is_delete AS "isDelete",
+	
+	b.couname AS "course.couname",
+	b.couname AS "couname"
 	</sql>
 	
 	<sql id="SubjectiveJoins">
+	left join course b on b.id = a.couse_id
 	</sql>
 	
 	<select id="get" resultType="com.ctbu.javateach666.pojo.po.questions.Subjective">
@@ -30,8 +34,11 @@
 		<include refid="SubjectiveJoins"/>
 		<where>
 		 a.is_delete = '0'
-		 <if test="couseId !=null and couseId !=''">
-		  and a.couse_id = #{couseId}
+		 <if test="course != null and course.id !=null and course.id !=''">
+		  and a.couse_id = #{course.id}
+		 </if>
+		 <if test="subjectiveTitle !=null and subjectiveTitle !=''">
+		  and a.subjective_title LIKE CONCAT('%',#{subjectiveTitle},'%')
 		 </if>
 		 <if test="degree !=null and degree !=''">
 		  and a.degree = #{degree}
@@ -56,7 +63,7 @@
 			is_delete
 		) VALUES (
 			#{id},
-			#{couseId},
+			#{course.id},
 			#{subjectiveTitle},
 			#{subjectiveAnswer},
 			#{degree},
@@ -66,7 +73,7 @@
 	</insert>
 	<update id="update">
 		UPDATE subjective SET 	
-			couse_id = #{couseId},
+			couse_id = #{course.id},
 			subjective_title = #{subjectiveTitle},
 			subjective_answer = #{subjectiveAnswer},
 			degree = #{degree},

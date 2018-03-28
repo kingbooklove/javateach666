@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
+	pageEncoding="UTF-8" isELIgnored="false"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<%@include file="/common/easyui.jspf"%>
 </head>
 <body>
 	<style>
@@ -105,31 +105,31 @@
 				<span>题号和分数:</span>
                 <input type="text" name="choiceIds" readonly
                        style="cursor: pointer;" id="choiceIds" placeholder="点击这里获取试题"
-                       onclick="getExam('paper.do?method=getChoice','choiceIds')">
+                       onclick="getExam('getChoice','choiceIds')">
 				<span>单选择题总分:</span> <input type="text" class="handScore" name="choiceIdsScore" value="0" id="choiceIdsScore" readonly>
 				<input type="hidden" name="choiceIdsNum" class="handNum" value="0" id="choiceIdsNum">
 			</label> 
 			<span style="margin-left: 37%;display:inline-block;">---------------------------多选择题---------------------------</span>
 			<label> 
-				<span>题号和分数:</span> <input type="text" name="multipleId" readonly style="cursor: pointer;" id="multipleIds" placeholder="点击这里获取试题" onclick="getExam('paper.do?method=getMultiple','multipleIds')">
+				<span>题号和分数:</span> <input type="text" name="multipleId" readonly style="cursor: pointer;" id="multipleIds" placeholder="点击这里获取试题" onclick="getExam('getMultiple','multipleIds')">
 				<span>多选择题总分:</span> <input type="text" class="handScore" name="multipleIdsScore" value="0" id="multipleIdsScore" readonly>
 				<input type="hidden" name="multipleIdsNum" class="handNum" value="0" id="multipleIdsNum">
 			</label> 
 			<span style="margin-left: 37%;display:inline-block;">---------------------------填空题---------------------------</span>
 			<label> 
-				<span>题号和分数:</span> <input type="text" name="blankIds" readonly style="cursor: pointer;" id="blankIds" placeholder="点击这里获取试题" onclick="getExam('paper.do?method=getBlank','blankIds')">
+				<span>题号和分数:</span> <input type="text" name="blankIds" readonly style="cursor: pointer;" id="blankIds" placeholder="点击这里获取试题" onclick="getExam('getBlank','blankIds')">
 				<span>填空题总分:</span> <input type="text" class="handScore" name="blankIdsScore" value="0" id="blankIdsScore" readonly>
 				<input type="hidden" name="blankIdsNum" class="handNum" value="0" id="blankIdsNum">
 			</label> 
 			<span style="margin-left: 37%;display:inline-block;">---------------------------判断题---------------------------</span>
 			<label> 
-				<span>题号和分数:</span> <input type="text" name="judgeIds" readonly style="cursor: pointer;" id="judgeIds" placeholder="点击这里获取试题" onclick="getExam('paper.do?method=getJudge','judgeIds')">
+				<span>题号和分数:</span> <input type="text" name="judgeIds" readonly style="cursor: pointer;" id="judgeIds" placeholder="点击这里获取试题" onclick="getExam('getJudge','judgeIds')">
 				<span>判断题总分:</span> <input type="text" class="handScore" name="judgeIdsScore" value="0" id="judgeIdsScore" readonly>
 				<input type="hidden" name="judgeIdsNum" class="handNum" value="0" id="judgeIdsNum">
 			</label> 
 			<span style="margin-left: 37%;display:inline-block;">---------------------------主观题---------------------------</span>
 			<label> 
-				<span>题号和分数:</span> <input type="text" name="subjectiveIds" readonly style="cursor: pointer;" id="subjectiveIds" placeholder="点击这里获取试题" onclick="getExam('paper.do?method=getSubjective','subjectiveIds')">
+				<span>题号和分数:</span> <input type="text" name="subjectiveIds" readonly style="cursor: pointer;" id="subjectiveIds" placeholder="点击这里获取试题" onclick="getExam('getSubjective','subjectiveIds')">
 				<span>主观题总分:</span> <input type="text" class="handScore" name="subjectiveIdsScore" value="0" id="subjectiveIdsScore" readonly>
 				<input type="hidden" name="subjectiveIdsNum" class="handNum" value="0" id="subjectiveIdsNum">
 			</label> 
@@ -150,17 +150,18 @@
 	
 	<script>
 		function getExam(url,name){
-			var courseId = null;
-			courseId = $("#coursIDHand").combobox('getValue');
+			var courseId = 0;
+			// courseId = $("#coursIDHand").combobox('getValue');  
 			$("#promptDiv").dialog({
 				title:"题型窗口",
-				width:800,
+				width:1000,
 				height:600,
-				left:300,
-				top:100,
+				left:200,
+				top:50,
 				closed:false,
 				modal:true,
-				href:url+"&courseId="+courseId,
+				href:url,
+				queryParams:{courseId:1},			// 传入课程编号
 				onLoad:function(){
 					var data =$("#"+name).val();
 					if(data != ""){
@@ -168,8 +169,47 @@
 						for(var i = 0 ; i < checked.length; i++) {
 							var id = checked[i].id;
 							var score = checked[i].score;
-							$("#"+ id).attr('checked',true);
-							$("#score"+id).attr('value',score);
+							if(name == "choiceIds") {
+								$.ajaxSettings.async = false;
+								var title = "";
+								$.post("getSingleChoiceById",{choiceId:id},function(choicetitle) {
+									title = choicetitle;
+								}); 
+								$.ajaxSettings.async = true;
+								$("#singles").append("<tr><td><input type='checkbox' checked='checked' style='display:none;' id ='"+id+"' value='"+id+"'/>"+title+"</td><td><input type='text' id ='score"+id+"' placeholder='输入分数' name='score' size='4' value='"+score+"'/></td><td><a href='#' onclick='removeTitle(this);' >删除</a></td></tr>");
+							} else if(name == "multipleIds") {
+								$.ajaxSettings.async = false;
+								var title = "";
+								$.post("getMultipleChoiceById",{choiceId:id},function(choicetitle) {
+									title = choicetitle;
+								}); 
+								$.ajaxSettings.async = true;
+								$("#multiples").append("<tr><td><input type='checkbox' checked='checked' style='display:none;' id ='"+id+"' value='"+id+"'/>"+title+"</td><td><input type='text' id ='score"+id+"' placeholder='输入分数' name='score' size='4' value='"+score+"'/></td><td><a href='#' onclick='removeTitle(this);' >删除</a></td></tr>");
+							} else if(name == "blankIds") {
+								$.ajaxSettings.async = false;
+								var title = "";
+								$.post("getCompletionById",{choiceId:id},function(choicetitle) {
+									title = choicetitle;
+								}); 
+								$.ajaxSettings.async = true;
+								$("#completion").append("<tr><td><input type='checkbox' checked='checked' style='display:none;' id ='"+id+"' value='"+id+"'/>"+title+"</td><td><input type='text' id ='score"+id+"' placeholder='输入分数' name='score' size='4' value='"+score+"'/></td><td><a href='#' onclick='removeTitle(this);' >删除</a></td></tr>");
+							} else if(name == "judgeIds") {
+								$.ajaxSettings.async = false;
+								var title = "";
+								$.post("getJudgeById",{choiceId:id},function(choicetitle) {
+									title = choicetitle;
+								}); 
+								$.ajaxSettings.async = true;
+								$("#singles").append("<tr><td><input type='checkbox' checked='checked' style='display:none;' id ='"+id+"' value='"+id+"'/>"+title+"</td><td><input type='text' id ='score"+id+"' placeholder='输入分数' name='score' size='4' value='"+score+"'/></td><td><a href='#' onclick='removeTitle(this);' >删除</a></td></tr>");
+							} else if(name == "subjectiveIds") {
+								$.ajaxSettings.async = false;
+								var title = "";
+								$.post("getSubjectiveById",{choiceId:id},function(choicetitle) {
+									title = choicetitle;
+								}); 
+								$.ajaxSettings.async = true;
+								$("#singles").append("<tr><td><input type='checkbox' checked='checked' style='display:none;' id ='"+id+"' value='"+id+"'/>"+title+"</td><td><input type='text' id ='score"+id+"' placeholder='输入分数' name='score' size='4' value='"+score+"'/></td><td><a href='#' onclick='removeTitle(this);' >删除</a></td></tr>");
+							}
 						}
 					}
 				},
@@ -190,7 +230,7 @@
 							// 获取复选框对象vlaue值
 							var value = $ck.val();
 							// 获取分数
-							var score = $ck.next().val();
+							var score = $("#score"+value).val();
 							// 计算总分
 							totalScore += parseFloat(score);
 							json +="{\"id\":"+value+",\"score\":"+score+"},"
@@ -293,12 +333,12 @@
   	 * 创建课程的下拉框
   	 */
   	 
-  	$('#coursIDHand').combobox({    
+  	/* $('#coursIDHand').combobox({    
   	    url:'exam.do?method=getCourseJson',    
   	    valueField:'id',    
   	    textField:'name',
   	  	panelMaxHeight:'100'
-  	}); 
+  	});  */
 	</script>
 	
 		

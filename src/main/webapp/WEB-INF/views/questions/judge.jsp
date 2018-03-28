@@ -47,7 +47,7 @@
             <tr>
                 <td width="60" align="right">课程</td>
                 <td>
-                	<input name="couseId"  panelMaxHeight="100" class="easyui-textbox"/>
+                	<input name="course.id"  panelMaxHeight="100" class="easyui-textbox"/>
                 	<!-- <input type="text" name="couseId" id="courseId"required="required" class="easyui-textbox"editable="false" panelMaxHeight="100"/> -->
                 </td>
             </tr>
@@ -66,7 +66,10 @@
             <tr>
                 <td align="right">正确答案</td>
                 <td>
-                	<textarea name="judgmentAnswer" rows="3" cols="28"></textarea>
+                	<select name="judgmentAnswer" style="width: 170px;height:  22px;">
+                		<option value="1">正确</option>
+                		<option value="0">错误</option>
+                	</select>
                 </td>
             </tr>
         </table>
@@ -270,9 +273,15 @@
         columns: [[
             {field: '', checkbox: true},
             {field: 'id', title: '编号', width: 50, sortable: true, hidden: true},
-            {field: 'couseId', title: '科目', width: 50, sortable: true},
+            {field: 'couname', title: '科目', width: 50, sortable: true},
             {field: 'judgmentTitle', title: '题目', width: 180, sortable: true},
-            {field: 'judgmentAnswer', title: '正确答案', width: 100},
+            {field: 'judgmentAnswer', title: '正确答案', width: 100,formatter:function(value,row,index) {
+            	if(value == "0") {
+            		return "错误";
+            	} else if (value == "1") {
+            		return "正确";
+            	}
+            }},
             {field: 'degree', title: '难度等级', width: 50},
             {field: 'createTime', title: '时间(xx-年xx-月xx-日) ',sortable: true, width: 135, formatter: function (value, row, index) {
             	if(value != null) {

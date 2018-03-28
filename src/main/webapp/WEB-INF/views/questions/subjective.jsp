@@ -45,7 +45,7 @@
             <tr>
                 <td width="60" align="right">课程</td>
                 <td>
-                	<input name="couseId"  panelMaxHeight="100" class="easyui-textbox"/>
+                	<input name="course.id"  panelMaxHeight="100" class="easyui-textbox"/>
                 	<!-- <input type="text" name="couseId" id="courseId"required="required" editable="false" panelMaxHeight="100"/> -->
                 </td>
             </tr>
@@ -268,7 +268,7 @@
         columns: [[
             {field: '', checkbox: true},
             {field: 'id', title: '编号', width: 50, sortable: true, hidden: true},
-            {field: 'couseId', title: '科目', width: 50, sortable: true},
+            {field: 'couname', title: '科目', width: 50, sortable: true},
             {field: 'subjectiveTitle', title: '题目', width: 180, sortable: true},
             {field: 'subjectiveAnswer', title: '正确答案', width: 100},
             {field: 'degree', title: '难度等级', width: 50},

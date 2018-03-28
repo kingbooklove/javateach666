@@ -3,6 +3,7 @@ package com.ctbu.javateach666.pojo.po.questions;
 import java.util.Date;
 
 import com.ctbu.javateach666.common.entity.DataEntity;
+import com.ctbu.javateach666.pojo.po.THCCoursePO;
 
 /**
  * 多选题题库
@@ -13,7 +14,8 @@ public class MultipleChoice extends DataEntity<MultipleChoice>{
 
 	private static final long serialVersionUID = 1L;
 	
-	private String couseId;			// 课程id
+	private THCCoursePO course;		// 课程
+	private String couname;			// 课程名
 	private String multipleTitle;	// 多选题目
 	private String answera;			// A选项
 	private String answerb;			// B选项
@@ -27,12 +29,6 @@ public class MultipleChoice extends DataEntity<MultipleChoice>{
 	private Date bTime;				// 查询开始时间
 	private Date eTime;				// 查询结束时间 
 	
-	public String getCouseId() {
-		return couseId;
-	}
-	public void setCouseId(String couseId) {
-		this.couseId = couseId;
-	}
 	public String getMultipleTitle() {
 		return multipleTitle;
 	}
@@ -92,6 +88,18 @@ public class MultipleChoice extends DataEntity<MultipleChoice>{
 	}
 	public void seteTime(Date eTime) {
 		this.eTime = eTime;
+	}
+	public THCCoursePO getCourse() {
+		return course;
+	}
+	public void setCourse(THCCoursePO course) {
+		this.course = course;
+	}
+	public String getCouname() {
+		return couname;
+	}
+	public void setCouname(String couname) {
+		this.couname = couname;
 	}
 	
 	

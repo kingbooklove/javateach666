@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ctbu.javateach666.dao.SingleChoiceDao">
+<mapper namespace="com.ctbu.javateach666.dao.ExamRuleDao">
     
 	<sql id="ExamRuleColumns">
 	a.id AS "id",
@@ -24,6 +24,7 @@
 	a.rule_type AS "ruleType",
 	a.is_delete AS "isDelete",
 	
+	b.couname AS "course.id",
 	b.couname AS "couname"
 	</sql>
 	
@@ -46,7 +47,7 @@
 		<include refid="ExamRuleJoins"/>
 		<where>
 		 a.is_delete = '0'
-		 <if test="couseId !=null and couseId !=''">
+		 <if test="course != null and course.id !=null and course.id !=''">
 		  and a.couse_id = #{couseId}
 		 </if>
 		</where>
@@ -77,7 +78,7 @@
 			is_delete
 		) VALUES (
 			#{id},
-			#{couseId},
+			#{course.id},
 			#{ruleName},
 			#{singleRules},
 			#{singleNum},
@@ -99,7 +100,7 @@
 	</insert>
 	<update id="update">
 		UPDATE examrule SET 	
-			couse_id = #{couseId},
+			couse_id = #{course.id},
 			rule_name = #{ruleName},
 			single_rules = #{singleRules},
 			single_num = #{singleNum},

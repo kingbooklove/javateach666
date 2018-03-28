@@ -4,7 +4,7 @@
     
 	<sql id="MultipleColumns">
 	a.id AS "id",
-	a.couse_id AS "couseId",
+	a.couse_id AS "course.id",
 	a.multiple_title AS "multipleTitle",
 	a.answerA AS "answera",
 	a.answerB AS "answerb",
@@ -13,10 +13,15 @@
 	a.multiple_answer AS "multipleAnswer",
 	a.degree AS "degree",
 	a.create_time AS "createTime",
-	a.is_delete AS "isDelete"
+	a.is_delete AS "isDelete",
+	
+	
+	b.couname AS "course.couname",
+	b.couname AS "couname"
 	</sql>
 	
 	<sql id="MultipleJoins">
+	left join course b on b.id = a.couse_id
 	</sql>
 	
 	<select id="get" resultType="com.ctbu.javateach666.pojo.po.questions.MultipleChoice">
@@ -34,8 +39,11 @@
 		<include refid="MultipleJoins"/>
 		<where>
 		 a.is_delete = '0'
-		 <if test="couseId !=null and couseId !=''">
-		  and a.couse_id = #{couseId}
+		 <if test="course != null and course.id !=null and course.id !=''">
+		  and a.couse_id = #{course.id}
+		 </if>
+		 <if test="multipleTitle !=null and multipleTitle !=''">
+		  and a.multiple_title LIKE CONCAT('%',#{multipleTitle},'%') 
 		 </if>
 		 <if test="degree !=null and degree !=''">
 		  and a.degree = #{degree}
@@ -64,7 +72,7 @@
 			is_delete
 		) VALUES (
 			#{id},
-			#{couseId},
+			#{course.id},
 			#{multipleTitle},
 			#{answera},
 			#{answerb},
@@ -78,7 +86,7 @@
 	</insert>
 	<update id="update">
 		UPDATE multiplechoice SET 	
-			couse_id = #{couseId},
+			couse_id = #{course.id},
 			multiple_title = #{multipleTitle},
 			answerA = #{answera},
 			answerB = #{answerb},

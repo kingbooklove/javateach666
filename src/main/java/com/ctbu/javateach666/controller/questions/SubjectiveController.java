@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ctbu.javateach666.pojo.po.THCCoursePO;
 import com.ctbu.javateach666.pojo.po.questions.Subjective;
 import com.ctbu.javateach666.service.interfac.questions.SubjectiveService;
 import com.ctbu.javateach666.util.PageUtil;
@@ -60,7 +61,9 @@ public class SubjectiveController {
         String bTime = request.getParameter("bTime");
         String eTime = request.getParameter("eTime");
         if(couseId != null && !"".equals(couseId)) {
-        	subjective.setCouseId(couseId);
+        	THCCoursePO course = new THCCoursePO();
+        	course.setId(Integer.valueOf(couseId));
+        	subjective.setCourse(course);
         }
         if(degree != null && !"".equals(degree)) {
         	subjective.setDegree(degree);

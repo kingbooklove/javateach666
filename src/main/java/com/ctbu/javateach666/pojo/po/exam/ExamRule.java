@@ -1,6 +1,7 @@
 package com.ctbu.javateach666.pojo.po.exam;
 
 import com.ctbu.javateach666.common.entity.DataEntity;
+import com.ctbu.javateach666.pojo.po.THCCoursePO;
 
 
 /**
@@ -12,7 +13,8 @@ public class ExamRule extends DataEntity<ExamRule>{
 
 	private static final long serialVersionUID = 1L;
 	
-	private Integer couseId;				// 课程id
+	private THCCoursePO course;				// 课程
+	private String couname;					// 课程名
 	private String ruleName;				// 规则名
 	private String singleRules;				// 单选规则
 	private Integer singleNum;				// 单选数量
@@ -32,12 +34,6 @@ public class ExamRule extends DataEntity<ExamRule>{
 	private Integer allScore;				// 总分数
 	private Integer ruleType;				// 规则类型
 	
-	public Integer getCouseId() {
-		return couseId;
-	}
-	public void setCouseId(Integer couseId) {
-		this.couseId = couseId;
-	}
 	public String getRuleName() {
 		return ruleName;
 	}
@@ -145,6 +141,18 @@ public class ExamRule extends DataEntity<ExamRule>{
 	}
 	public void setRuleType(Integer ruleType) {
 		this.ruleType = ruleType;
+	}
+	public THCCoursePO getCourse() {
+		return course;
+	}
+	public void setCourse(THCCoursePO course) {
+		this.course = course;
+	}
+	public String getCouname() {
+		return couname;
+	}
+	public void setCouname(String couname) {
+		this.couname = couname;
 	}
 	
 }
