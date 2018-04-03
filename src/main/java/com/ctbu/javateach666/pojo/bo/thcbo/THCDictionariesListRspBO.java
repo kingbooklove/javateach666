@@ -1,4 +1,4 @@
-package com.ctbu.javateach666.pojo.bo;
+package com.ctbu.javateach666.pojo.bo.thcbo;
 
 public class THCDictionariesListRspBO {
 	private int id;

@@ -140,10 +140,13 @@
 						
 						<ul class="sub">
 							<li>
-								<a href="#">教师账户信息</a>
+								<a href="goteaaccount" target="_son">教师账户信息</a>
 							</li>
 							<li>
-								<a href="#">教师职位信息</a>
+								<a href="goteapost" target="_son">教师职位信息</a>
+							</li>
+							<li>
+								<a href="gopostrecord" target="_son">职位申请记录</a>
 							</li>
 						</ul>
 					</li>
@@ -154,7 +157,7 @@
 						
 						<ul class="sub">
 							<li>
-								<a href="#">学生账户信息</a>
+								<a href="gostuaccount" target="_son">学生账户信息</a>
 							</li>
 						</ul>
 					</li>
@@ -176,18 +179,7 @@
 						
 						<ul class="sub">
 							<li>
-								<a href="#">学科信息</a>
-							</li>
-						</ul>
-					</li>
-					<li class="nav_top">
-						<a class="nav_top_link">
-							<span class="down">我的通知</span>
-						</a>
-						
-						<ul class="sub">
-							<li>
-								<a href="#">通知信息</a>
+								<a href="gocourseinfo" target="_son">学科信息</a>
 							</li>
 						</ul>
 					</li>

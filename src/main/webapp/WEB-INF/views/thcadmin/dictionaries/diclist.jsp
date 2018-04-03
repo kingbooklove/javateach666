@@ -28,30 +28,42 @@
         <!-- Begin of toolbar -->
         <div id="dicinfo-toolbar">
             <div class="wu-toolbar-button">
-                <!-- <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-add" onclick="openAddChoice()"
-                   plain="true">添加</a>
-                <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-edit" onclick="openEditChoice()"
-                   plain="true">修改</a>
-                <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-remove" onclick="openRemoveChoice()"
-                   plain="true">删除</a>
-                <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-ok" onclick="openImportChoice()"
-                   plain="true">导入</a> -->
                 <form id="choice-search-form" style="display: inline-block">
 			                    图片名称：<input class="easyui-combobox" value="--请选择--" id="dtype"/>
                     <a id="choice-search-btn" class="easyui-linkbutton">搜索</a>
                     <a id="choice-search-reset" class="easyui-linkbutton">重置</a>
                 </form>
-                <a href="javascript:;" style="text-align: right;" class="easyui-linkbutton" iconAlign="left" iconCls="icon-add" onclick="addImg()"
+                <a href="javascript:;" style="text-align: right;" class="easyui-linkbutton" iconAlign="left" iconCls="icon-add" onclick="addDic()"
                    plain="true">添加字典</a>
             </div>
 
         </div>
         <!-- End of toolbar -->
-        <table id="dicinfo-datagrid" toolbar="#dicinfo-toolbar"></table>
-        123
-        
-		<div id="dd">Dialog Content.</div>  
+        <table id="dicinfo-datagrid" toolbar="#dicinfo-toolbar"></table> 
     </div>
+</div>
+<!-- 添加修改页面 -->
+<div id="adddic-dialog" style="width:600px;height:500px; padding:10px;">
+    <form id="adddic-form" method="post" >
+        <table style="margin:0 auto; height:250px">
+			<tr>
+			  <td>字典类型：</td>
+			  <td><input type="text" id="dtype" name="dtype"/></td>
+			</tr>
+			<tr>
+			  <td>字典名称：</td>
+			  <td><input type="text" id="dicname" name="dicname" /></td>
+			</tr>
+			<tr>
+			  <td>字典值：</td>
+			  <td><input type="text" id="dvalue" name="dvalue" /></td>
+			</tr>
+			<tr>
+			  <td>备注：</td>
+			  <td><input type="text" id="remark" name="remark" /></td>
+			</tr>
+        </table>
+    </form>
 </div>
 	<script type="text/javascript">
 	    $('#dtype').combobox({
@@ -77,6 +89,7 @@
 		        fit: true,
 		        columns: [[
 		            //{field: '', checkbox: true},
+		            {field: 'id', title: '编号', width: 50, sortable: true, hidden: true},
 		            {field: 'dicname', title: '字典名称', width: 50, sortable: true},
 		            {field: 'dtype', title: '字典类型', width: 50, sortable: false},
 		            {field: 'dvalue', title: '字典值', width: 100, sortable: false},
@@ -88,12 +101,13 @@
 		                }	
 		            },
 		            {field: 'operate', title: '操作', align:'center',width:$(this).width()*0.1,formatter:function(value, row, index){  
-						var str = '<a href="#" name="opera" class="easyui-linkbutton" onclick="deleteDic()" ></a>';  
+						var str = '<a href="#" name="edit" class="easyui-linkbutton" onclick="editDic()" ></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" name="del" class="easyui-linkbutton" onclick="deleteDic()" ></a>';  
 						return str;  
 					}}
 				]],
 				onLoadSuccess:function(data){  
-						$("a[name='opera']").linkbutton({text:'删除',plain:true,iconCls:'icon-cancel'});    
+					$("a[name='edit']").linkbutton({text:'编辑',plain:true,iconCls:'icon-edit'});    
+					$("a[name='del']").linkbutton({text:'删除',plain:true,iconCls:'icon-cancel'});   
 				},
 		    });
 		    /* 搜索方法*/
@@ -106,7 +120,6 @@
 		    /*重置方法*/
 		    $("#choice-search-reset").click(function () {
 		        $("#choice-search-form").form('clear');
-		        $("#dicname").val('');
 		        $('#choice-datagrid').datagrid({
 		            queryParams: formChoiceJson()
 		        });
@@ -139,37 +152,89 @@
 				  		$('#dicinfo-datagrid').datagrid('reload');
 		  		});
 		  	}
-		  	function addImg(){
-		  		showMyWindow("添加字典",  
-	                    'goadddic',  
-	                    800, 400);
+		  	function addDic(){
+
+		  		//$('#addnews-form').form('clear');
+		        $('#adddic-dialog').dialog({
+		            closed: false,
+		            modal: true,
+		            width: 500,
+		            height: 350,
+		            title: "添加字典",
+		            buttons: [{
+		                text: '确定',
+		                iconCls: 'icon-ok',
+		                handler: function () {
+		                    $("#adddic-form").form('submit', {
+		                        url: 'adddic',
+		                        onSubmit: function () {
+
+		                        },
+		                        success: function (data) {
+		                            if (data == "OK") {
+		                                $.messager.alert('信息提示', '提交成功！');
+		                                $("#dicinfo-datagrid").datagrid("reload");// 重新加载数据库
+		                                $('#adddic-dialog').dialog('close');
+		                            }
+		                            else {
+		                                $.messager.alert('信息提示', '提交失败！');
+		                            }
+		                        }
+
+		                    });
+		                }
+		            }, {
+		                text: '取消',
+		                iconCls: 'icon-cancel',
+		                handler: function () {
+		                    $('#adddic-dialog').dialog('close');
+		                }
+		            }]
+		        });
 		  	}
-		  	$(function() {
-		        $('body').append('<div id="myWindow" class="easyui-dialog" closed="true"></div>');  
-		    });  
-		    function showMyWindow(title, href, width, height, modal, minimizable,  
-		            maximizable) {
-		        $('#myWindow').window(
-                    {
-                        title : title,  
-                        width : width === undefined ? 800 : width,  
-                        height : height === undefined ? 400 : height,  
-                        content : '<iframe scrolling="yes" frameborder="0"  src="'  
-                                + href  
-                                + '" style="width:100%;height:98%;"></iframe>',  
-                        modal : modal === undefined ? true : modal,  
-                        minimizable : minimizable === undefined ? false  
-                                : minimizable,  
-                        maximizable : maximizable === undefined ? false  
-                                : maximizable,  
-                        shadow : false,  
-                        cache : false,  
-                        closed : false,  
-                        collapsible : false,  
-                        resizable : false,  
-                        loadingMessage : '正在加载数据，请稍等片刻......'  
-                    });  
-		    }  
+		  	//编辑字典
+		  	function editDic(){
+		  		var rows = $('#dicinfo-datagrid').datagrid('getSelections');
+		  		alert(JSON.stringify(rows[0]));
+		  		//$('#addnews-form').form('clear');
+		        $('#adddic-dialog').dialog({
+		            closed: false,
+		            modal: true,
+		            width: 500,
+		            height: 350,
+		            title: "修改字典",
+		            buttons: [{
+		                text: '确定',
+		                iconCls: 'icon-ok',
+		                handler: function () {
+		                    $("#adddic-form").form('submit', {
+		                        url: 'updatedic',
+		                        onSubmit: function () {
+
+		                        },
+		                        success: function (data) {
+		                            if (data == "OK") {
+		                                $.messager.alert('信息提示', '修改成功！');
+		                                $("#dicinfo-datagrid").datagrid("reload");// 重新加载数据库
+		                                $('#adddic-dialog').dialog('close');
+		                            }
+		                            else {
+		                                $.messager.alert('信息提示', '修改失败！');
+		                            }
+		                        }
+
+		                    });
+		                }
+		            }, {
+		                text: '取消',
+		                iconCls: 'icon-cancel',
+		                handler: function () {
+		                    $('#adddic-dialog').dialog('close');
+		                }
+		            }]
+		        });
+		        $('#adddic-form').form('load', rows[0]);
+		  	}
 	</script>
 </body>
 </html>

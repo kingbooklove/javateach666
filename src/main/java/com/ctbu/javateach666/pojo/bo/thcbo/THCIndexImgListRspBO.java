@@ -1,11 +1,6 @@
-package com.ctbu.javateach666.pojo.po;
+package com.ctbu.javateach666.pojo.bo.thcbo;
 
-import java.io.Serializable;
-
-public class THCIndexImgPO implements Serializable{
-
-	private static final long serialVersionUID = 2929070710959003129L;
-
+public class THCIndexImgListRspBO {
 	private int id;//图片id
 	private String imgno;//图片编号
 	private String imgname;//图片名称
@@ -48,4 +43,5 @@ public class THCIndexImgPO implements Serializable{
 	public void setCreate_time(String create_time) {
 		this.create_time = create_time;
 	}
+
 }

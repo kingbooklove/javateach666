@@ -1,9 +1,9 @@
-package com.ctbu.javateach666.pojo.bo;
+package com.ctbu.javateach666.pojo.bo.thcbo;
 
-public class THCIndexImgListRepBO {
+public class THCDictionariesListRepBO {
 	private int page;
 	private int rows;
-	private String imgname;
+	private String dtype;
 	public int getPage() {
 		return page;
 	}
@@ -16,10 +16,10 @@ public class THCIndexImgListRepBO {
 	public void setRows(int rows) {
 		this.rows = rows;
 	}
-	public String getImgname() {
-		return imgname;
+	public String getDtype() {
+		return dtype;
 	}
-	public void setImgname(String imgname) {
-		this.imgname = imgname;
+	public void setDtype(String dtype) {
+		this.dtype = dtype;
 	}
 }

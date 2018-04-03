@@ -256,6 +256,7 @@
      */
     function openEditChoice() {
         var rows = $('#choice-datagrid').datagrid('getSelections');
+        alert(JSON.stringify(rows[0]));
         if (rows.length > 1) {
             $.messager.alert("提示信息", "只能选择一行");
         } else if (rows.length > 0) {

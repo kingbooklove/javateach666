@@ -17,13 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
-import com.ctbu.javateach666.pojo.po.THCCoursePO;
 import com.ctbu.javateach666.pojo.po.exam.ExamRule;
 import com.ctbu.javateach666.pojo.po.questions.Completion;
 import com.ctbu.javateach666.pojo.po.questions.Judgment;
 import com.ctbu.javateach666.pojo.po.questions.MultipleChoice;
 import com.ctbu.javateach666.pojo.po.questions.SingleChoice;
 import com.ctbu.javateach666.pojo.po.questions.Subjective;
+import com.ctbu.javateach666.pojo.po.thcpo.THCCoursePO;
 import com.ctbu.javateach666.service.impl.questions.SubjectiveServiceImpl;
 import com.ctbu.javateach666.service.interfac.paper.ExamRuleService;
 import com.ctbu.javateach666.service.interfac.questions.CompletionService;

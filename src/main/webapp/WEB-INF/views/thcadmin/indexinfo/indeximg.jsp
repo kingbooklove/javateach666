@@ -28,14 +28,6 @@
         <!-- Begin of toolbar -->
         <div id="imginfo-toolbar">
             <div class="wu-toolbar-button">
-                <!-- <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-add" onclick="openAddChoice()"
-                   plain="true">添加</a>
-                <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-edit" onclick="openEditChoice()"
-                   plain="true">修改</a>
-                <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-remove" onclick="openRemoveChoice()"
-                   plain="true">删除</a>
-                <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-ok" onclick="openImportChoice()"
-                   plain="true">导入</a> -->
                 <form id="choice-search-form" style="display: inline-block">
 			                    图片名称：<input class="easyui-textbox" id="imgname"/>
                     <a id="choice-search-btn" class="easyui-linkbutton">搜索</a>
@@ -52,18 +44,22 @@
 </div>
 <div id="addindex-dialog" style="width:600px;height:500px; padding:10px;">
 	<form id="addindex-form" enctype="multipart/form-data" method = "post">
-		<table width="80%" height="100px" bgcolor="#f2f6fb" border="1" style="border-color: #99CCFF; border-collapse : collapse">
+		<table style="margin:0 auto; height:250px;">
 		  <tr>
-		    <td width="20%">图片编号：</td>
-		    <td width="20%"><input type="text" id="imgno" name="imgno"/></td>
-		    <td width="20%">图片名称：</td>
-		    <td width="20%"><input type="text" id="imgname" name="imgname" /></td>
+		    <td>图片编号：</td>
+		    <td><input type="text" class="easyui-textbox" id="imgno" name="imgno"/></td>
+		  </tr>
+		  <tr>
+		    <td>图片名称：</td>
+		    <td><input type="text" class="easyui-textbox" id="imgname" name="imgname" /></td>
 		  </tr>
   		  <tr>
-		    <td width="20%">选择图片：</td>
-		    <td width="20%"><input type="file" id="file" name="file" /></td>
-		    <td width="20%">是否展示：</td>
-		    <td width="20%"><input name="is_pub" type="radio" size="30" value="0" checked>否<input name="is_pub" type="radio" size="30" value="1">是</td>
+		    <td>选择图片：</td>
+		    <td><input type="file" id="file" name="file" /></td>
+		  </tr>
+		  <tr>
+		    <td>是否展示：</td>
+		    <td><input name="is_pub" type="radio" size="30" value="0" checked>否 &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<input name="is_pub" type="radio" size="30" value="1">是</td>
 		  </tr>
 		</table>
 	</form>
@@ -116,7 +112,6 @@
 		    /*重置方法*/
 		    $("#choice-search-reset").click(function () {
 		        $("#choice-search-form").form('clear');
-		        $("#imgname").val('');
 		        $('#choice-datagrid').datagrid({
 		            queryParams: formChoiceJson()
 		        });
@@ -124,8 +119,6 @@
 		    //将表单数据转为json
 		    function formChoiceJson() {
 		        var imgname = $("#imgname").val();
-		        //alert(question1);
-		        //alert(question2);
 		        return {"imgname": imgname};
 		    }
 		  	//删除图片
@@ -151,6 +144,8 @@
 		        $('#addindex-dialog').dialog({
 		            closed: false,
 		            modal: true,
+		            width: 500,
+		            height: 350,
 		            title: "添加图片",
 		            buttons: [{
 		                text: '确定',

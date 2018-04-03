@@ -1,12 +1,18 @@
-package com.ctbu.javateach666.pojo.bo;
+package com.ctbu.javateach666.pojo.po.thcpo;
 
-public class THCJournalismListRspBO {
+import java.io.Serializable;
+import java.util.Date;
+
+public class THCJournalismPO implements Serializable{
+	
+	private static final long serialVersionUID = 909209112457930372L;
+	
 	private int id;//主页信息id
 	private String joutitle;//标题
 	private String joucontent;//内容
-	private String joutype;//新闻类型
-	private String starttime;//通知创建时间
-	private String endtime;//通知过期时间
+	private int joutype;//新闻类型
+	private Date starttime;//通知创建时间
+	private Date endtime;//通知过期时间
 	private int pubid;//发布人id
 	private int j_type;//1-新闻  2-公告
 	private int is_delete;//逻辑删除
@@ -28,22 +34,22 @@ public class THCJournalismListRspBO {
 	public void setJoucontent(String joucontent) {
 		this.joucontent = joucontent;
 	}
-	public String getJoutype() {
+	public int getJoutype() {
 		return joutype;
 	}
-	public void setJoutype(String joutype) {
+	public void setJoutype(int joutype) {
 		this.joutype = joutype;
 	}
-	public String getStarttime() {
+	public Date getStarttime() {
 		return starttime;
 	}
-	public void setStarttime(String starttime) {
+	public void setStarttime(Date starttime) {
 		this.starttime = starttime;
 	}
-	public String getEndtime() {
+	public Date getEndtime() {
 		return endtime;
 	}
-	public void setEndtime(String endtime) {
+	public void setEndtime(Date endtime) {
 		this.endtime = endtime;
 	}
 	public int getPubid() {

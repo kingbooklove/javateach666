@@ -1,11 +1,6 @@
-package com.ctbu.javateach666.pojo.po;
+package com.ctbu.javateach666.pojo.bo.thcbo;
 
-import java.io.Serializable;
-
-public class THCJournalismPO implements Serializable{
-	
-	private static final long serialVersionUID = 909209112457930372L;
-	
+public class THCJournalismListRspBO {
 	private int id;//主页信息id
 	private String joutitle;//标题
 	private String joucontent;//内容

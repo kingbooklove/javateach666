@@ -13,8 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ctbu.javateach666.pojo.po.THCCoursePO;
 import com.ctbu.javateach666.pojo.po.questions.Subjective;
+import com.ctbu.javateach666.pojo.po.thcpo.THCCoursePO;
 import com.ctbu.javateach666.service.interfac.questions.SubjectiveService;
 import com.ctbu.javateach666.util.PageUtil;
 

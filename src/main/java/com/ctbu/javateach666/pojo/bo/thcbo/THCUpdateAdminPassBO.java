@@ -1,4 +1,6 @@
-package com.ctbu.javateach666.pojo.bo;
+package com.ctbu.javateach666.pojo.bo.thcbo;
+
+import com.ctbu.javateach666.pojo.bo.BaseInfoBO;
 
 public class THCUpdateAdminPassBO extends BaseInfoBO{
 	public int id;

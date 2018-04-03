@@ -1,7 +1,7 @@
 package com.ctbu.javateach666.pojo.po.exam;
 
 import com.ctbu.javateach666.common.entity.DataEntity;
-import com.ctbu.javateach666.pojo.po.THCCoursePO;
+import com.ctbu.javateach666.pojo.po.thcpo.THCCoursePO;
 
 
 /**

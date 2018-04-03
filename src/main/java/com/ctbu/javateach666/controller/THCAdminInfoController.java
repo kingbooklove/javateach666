@@ -2,6 +2,9 @@ package com.ctbu.javateach666.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -25,17 +28,27 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.ctbu.javateach666.pojo.bo.PageInfoBo;
-import com.ctbu.javateach666.pojo.bo.THCDictionariesListRepBO;
-import com.ctbu.javateach666.pojo.bo.THCDictionariesListRspBO;
-import com.ctbu.javateach666.pojo.bo.THCIndexImgListRepBO;
-import com.ctbu.javateach666.pojo.bo.THCIndexImgListRspBO;
-import com.ctbu.javateach666.pojo.bo.THCJournalismListRepBO;
-import com.ctbu.javateach666.pojo.bo.THCJournalismListRspBO;
-import com.ctbu.javateach666.pojo.bo.THCUpdateAdminInBO;
-import com.ctbu.javateach666.pojo.bo.THCUpdateAdminPassBO;
-import com.ctbu.javateach666.pojo.po.THCAccountPO;
-import com.ctbu.javateach666.pojo.po.THCAdminInfoPO;
-import com.ctbu.javateach666.pojo.po.THCIndexImgPO;
+import com.ctbu.javateach666.pojo.bo.thcbo.THCAccountListRepBO;
+import com.ctbu.javateach666.pojo.bo.thcbo.THCAccountListRspBO;
+import com.ctbu.javateach666.pojo.bo.thcbo.THCCourseListRepBO;
+import com.ctbu.javateach666.pojo.bo.thcbo.THCCourseListRspBO;
+import com.ctbu.javateach666.pojo.bo.thcbo.THCDictionariesListRepBO;
+import com.ctbu.javateach666.pojo.bo.thcbo.THCDictionariesListRspBO;
+import com.ctbu.javateach666.pojo.bo.thcbo.THCIndexImgListRepBO;
+import com.ctbu.javateach666.pojo.bo.thcbo.THCIndexImgListRspBO;
+import com.ctbu.javateach666.pojo.bo.thcbo.THCJournalismListRepBO;
+import com.ctbu.javateach666.pojo.bo.thcbo.THCJournalismListRspBO;
+import com.ctbu.javateach666.pojo.bo.thcbo.THCProfessionalRanksListRepBO;
+import com.ctbu.javateach666.pojo.bo.thcbo.THCProfessionalRanksListRspBO;
+import com.ctbu.javateach666.pojo.bo.thcbo.THCTeaPostListRepBO;
+import com.ctbu.javateach666.pojo.bo.thcbo.THCTeaPostListRspBO;
+import com.ctbu.javateach666.pojo.bo.thcbo.THCUpdateAdminInBO;
+import com.ctbu.javateach666.pojo.bo.thcbo.THCUpdateAdminPassBO;
+import com.ctbu.javateach666.pojo.po.thcpo.THCAccountPO;
+import com.ctbu.javateach666.pojo.po.thcpo.THCAdminInfoPO;
+import com.ctbu.javateach666.pojo.po.thcpo.THCDictionariesPO;
+import com.ctbu.javateach666.pojo.po.thcpo.THCIndexImgPO;
+import com.ctbu.javateach666.pojo.po.thcpo.THCJournalismPO;
 import com.ctbu.javateach666.service.interfac.THCAdminInfoService;
 
 @Controller
@@ -167,7 +180,11 @@ public class THCAdminInfoController {
 		indeximg.setImgno(imgno);
 		indeximg.setImgname(imgname);
 		indeximg.setImgurl(imgurl);
-		indeximg.setIs_pub(Integer.parseInt(is_pub));
+		if(is_pub!=null||is_pub != ""){
+			indeximg.setIs_pub(Integer.parseInt(is_pub));
+		}else{
+			indeximg.setIs_pub(0);
+		}
 		
 		tHCAdminInfoService.addIndexImg(indeximg);
 		return null;
@@ -204,6 +221,82 @@ public class THCAdminInfoController {
 		return page;
 	}
 	
+	@ResponseBody
+	@RequestMapping("/getJoutypeList")
+	public List<THCDictionariesListRspBO> getJoutypeList(){
+		List<THCDictionariesListRspBO> list = tHCAdminInfoService.getJoutypeList();
+		System.out.println(list);
+		return list;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/addnews")
+	public String addNews(THCJournalismPO tHCJournalismPO){
+		Date sTime = new Date();
+		Date eTime = new Date();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(sTime);
+		calendar.add(calendar.MONTH, 1); 
+		eTime = calendar.getTime(); 
+		tHCJournalismPO.setStarttime(sTime);
+		tHCJournalismPO.setEndtime(eTime);
+		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		int id = tHCAdminInfoService.getAdminId(userDetails.getUsername());
+		tHCJournalismPO.setPubid(id);
+		tHCJournalismPO.setJ_type(1);
+		int m = tHCAdminInfoService.addNews(tHCJournalismPO);
+		if(m == 1){
+			return "OK";
+		}else{
+			return "NO";
+		}
+	}
+	
+	@ResponseBody
+	@RequestMapping("/updatenews")
+	public String updateNews(THCJournalismPO tHCJournalismPO){
+		System.out.println("1111");
+		System.out.println(tHCJournalismPO.getId());
+		System.out.println("2222");
+		int m = tHCAdminInfoService.updateNews(tHCJournalismPO);
+		if(m == 1){
+			return "OK";
+		}else{
+			return "NO";
+		}
+	}
+	
+	@ResponseBody
+	@RequestMapping("/getJoutypeList1")
+	public List<THCDictionariesListRspBO> getJoutypeList1(){
+		List<THCDictionariesListRspBO> list = tHCAdminInfoService.getJoutypeList1();
+		System.out.println(list);
+		return list;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/addpubs")
+	public String addPubs(THCJournalismPO tHCJournalismPO){
+		Date sTime = new Date();
+		Date eTime = new Date();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(sTime);
+		calendar.add(calendar.MONTH, 1); 
+		eTime = calendar.getTime(); 
+		tHCJournalismPO.setStarttime(sTime);
+		tHCJournalismPO.setEndtime(eTime);
+		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		int id = tHCAdminInfoService.getAdminId(userDetails.getUsername());
+		tHCJournalismPO.setPubid(id);
+		tHCJournalismPO.setJ_type(2);
+		int m = tHCAdminInfoService.addNews(tHCJournalismPO);
+		if(m == 1){
+			return "OK";
+		}else{
+			return "NO";
+		}
+	}
+	
 	//数据字典管理
 	@RequestMapping("/godiclist")
 	public String goDic(){
@@ -238,5 +331,86 @@ public class THCAdminInfoController {
 	@RequestMapping("/goadddic")
 	public String goAddDic(){
 		return "thcadmin/dictionaries/adddic";
+	}
+	
+	//学科信息管理
+	@RequestMapping("/gocourseinfo")
+	public String goCourseInfo(){
+		return "thcadmin/courseinfo/courseinfo";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/getcourselist")
+	public PageInfoBo<THCCourseListRspBO> getCourseList(THCCourseListRepBO tHCCourseListRepBO){
+		System.out.println("getcourselist");
+		PageInfoBo<THCCourseListRspBO> page = new PageInfoBo<THCCourseListRspBO>();
+		page = tHCAdminInfoService.getCourseList(tHCCourseListRepBO);
+		return page;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/getCtype")
+	public List<THCDictionariesPO> getCtypeList(){
+		List<THCDictionariesPO> list = tHCAdminInfoService.getCtypeList();
+		System.out.println(list);
+		return list;
+	}
+	
+	//教师信息管理
+	@RequestMapping("/goteaaccount")
+	public String goTeaAccount(){
+		return "thcadmin/teainfo/teaaccount";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/gettealist")
+	public PageInfoBo<THCAccountListRspBO> getTeaList(THCAccountListRepBO tHCAccountListRepBO){
+		System.out.println("gettealist");
+		PageInfoBo<THCAccountListRspBO> page = new PageInfoBo<THCAccountListRspBO>();
+		page = tHCAdminInfoService.getTeaList(tHCAccountListRepBO);
+		return page;
+	}
+	
+	@RequestMapping("/goteapost")
+	public String goTeaPost(){
+		return "thcadmin/teainfo/teapost";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/getteapostlist")
+	public PageInfoBo<THCTeaPostListRspBO> getTeaPostList(THCTeaPostListRepBO tHCTeaPostListRepBO){
+		System.out.println("gettealist");
+		PageInfoBo<THCTeaPostListRspBO> page = new PageInfoBo<THCTeaPostListRspBO>();
+		page = tHCAdminInfoService.getTeaPostList(tHCTeaPostListRepBO);
+		return page;
+	}
+	
+	@RequestMapping("/gopostrecord")
+	public String goPostRecord(){
+		return "thcadmin/teainfo/postapplyrecord";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/getpostrecordlist")
+	public PageInfoBo<THCProfessionalRanksListRspBO> getPostRecordList(THCProfessionalRanksListRepBO tHCProfessionalRanksListRepBO){
+		System.out.println("getpostrecordlist");
+		PageInfoBo<THCProfessionalRanksListRspBO> page = new PageInfoBo<THCProfessionalRanksListRspBO>();
+		page = tHCAdminInfoService.getPostRecordList(tHCProfessionalRanksListRepBO);
+		return page;
+	}
+	
+	//学生信息管理
+	@RequestMapping("/gostuaccount")
+	public String goStuAccount(){
+		return "thcadmin/stuinfo/stuaccount";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/getstulist")
+	public PageInfoBo<THCAccountListRspBO> getStuList(THCAccountListRepBO tHCAccountListRepBO){
+		System.out.println("getstulist");
+		PageInfoBo<THCAccountListRspBO> page = new PageInfoBo<THCAccountListRspBO>();
+		page = tHCAdminInfoService.getStuList(tHCAccountListRepBO);
+		return page;
 	}
 }

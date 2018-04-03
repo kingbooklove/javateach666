@@ -1,4 +1,4 @@
-package com.ctbu.javateach666.pojo.po;
+package com.ctbu.javateach666.pojo.po.thcpo;
 
 import java.io.Serializable;
 

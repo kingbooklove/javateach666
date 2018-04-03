@@ -3,7 +3,7 @@ package com.ctbu.javateach666.pojo.po.questions;
 import java.util.Date;
 
 import com.ctbu.javateach666.common.entity.DataEntity;
-import com.ctbu.javateach666.pojo.po.THCCoursePO;
+import com.ctbu.javateach666.pojo.po.thcpo.THCCoursePO;
 
 /**
  * 判断题题库
