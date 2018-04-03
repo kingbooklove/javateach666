@@ -41,6 +41,9 @@
 		 <if test="course != null and course.id !=null and course.id !=''">
 		  and a.couse_id = #{course.id}
 		 </if>
+		 <if test="course != null and course.couname !=null and course.couname !=''">
+		  and b.couname LIKE CONCAT('%',#{course.couname},'%')  
+		 </if>
 		 <if test="singleTitle !=null and singleTitle !=''">
 		  and a.single_title LIKE CONCAT('%',#{singleTitle},'%')  
 		 </if>

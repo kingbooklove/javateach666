@@ -32,7 +32,7 @@ public class ExamRule extends DataEntity<ExamRule>{
 	private Integer subjectiveNum;			// 主观数量
 	private Integer subjectiveScore;		// 主观分数
 	private Integer allScore;				// 总分数
-	private Integer ruleType;				// 规则类型
+	private Integer ruleType;				// 规则类型(1手动组卷 2自动组卷)
 	
 	public String getRuleName() {
 		return ruleName;

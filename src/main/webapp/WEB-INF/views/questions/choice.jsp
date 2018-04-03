@@ -25,8 +25,9 @@
                    <br/>
                 <form id="choice-search-form" style="display: inline-block">
 			                     科目：<input class="easyui-textbox" id="choice-course-value"/>
+			                     题目：<input class="easyui-textbox" id="choice-name-value"/>
 			                     难度等级：<input class="easyui-textbox" id="choice-degree-value"/>
-			                     时间：<input type="date" id="bdaytime-course-value"/>~<input type="date" id="edaytime-course-value"/>
+			                     时间：<input  class="easyui-textbox" type="date" id="bdaytime-course-value"/>~<input  class="easyui-textbox" type="date" id="edaytime-course-value"/>
                     <a id="choice-search-btn" class="easyui-linkbutton">搜索</a>
                     <a id="choice-search-reset" class="easyui-linkbutton">重置</a>
                 </form>
@@ -365,10 +366,11 @@
     //将表单数据转为json
     function formChoiceJson() {
         var bChoiceName = $("#choice-course-value").val();
+        var choiceTitle = $("#choice-name-value").val();
         var degree = $("#choice-degree-value").val();
         var bTime = $("#bdaytime-course-value").val();
         var eTime = $("#edaytime-course-value").val();
-        return {"couseId": bChoiceName,"degree":degree, "bTime": bTime,"eTime":eTime};
+        return {"couseId": bChoiceName,"choiceTitle":choiceTitle,"degree":degree, "bTime": bTime,"eTime":eTime};
     }
     /**
      * 创建课程的下拉框

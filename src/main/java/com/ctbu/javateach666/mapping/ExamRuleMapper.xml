@@ -17,6 +17,7 @@
 	a.judgment_score AS "judgmentScore",
 	a.completion_rules AS "completionRules",
 	a.completion_num AS "completionNum",
+	a.completion_score AS "completionScore",
 	a.subjective_rules AS "subjectiveRules",
 	a.subjective_num AS "subjectiveNum",
 	a.subjective_score AS "subjectiveScore",
@@ -24,7 +25,7 @@
 	a.rule_type AS "ruleType",
 	a.is_delete AS "isDelete",
 	
-	b.couname AS "course.id",
+	b.id AS "course.id",
 	b.couname AS "couname"
 	</sql>
 	
@@ -32,7 +33,7 @@
 	left join course b on b.id = a.couse_id
 	</sql>
 	
-	<select id="get" resultType="com.ctbu.javateach666.pojo.po.exam.ExamPaper">
+	<select id="get" resultType="com.ctbu.javateach666.pojo.po.exam.ExamRule">
 		SELECT 
 			<include refid="ExamRuleColumns"/>
 		FROM examrule a
@@ -40,22 +41,31 @@
 		WHERE a.id = #{id}
 	</select>
 	
-	<select id="findList" resultType="com.ctbu.javateach666.pojo.po.exam.ExamPaper">
+	<select id="findList" resultType="com.ctbu.javateach666.pojo.po.exam.ExamRule">
 		SELECT 
 			<include refid="ExamRuleColumns"/>
 		FROM examrule a
 		<include refid="ExamRuleJoins"/>
 		<where>
 		 a.is_delete = '0'
-		 <if test="course != null and course.id !=null and course.id !=''">
-		  and a.couse_id = #{couseId}
+		 <if test="couname != null and couname !=''">
+		  and b.couname LIKE CONCAT('%',#{couname},'%')  
 		 </if>
+		 <if test="ruleName != null and ruleName !=''">
+		  and a.rule_name LIKE CONCAT('%',#{ruleName},'%')  
+		 </if>
+		 <if test="ruleType != null and ruleType !=''">
+		  and a.rule_type = #{ruleType}
+		 </if>
+		 <if test="course != null and course.id !=null and course.id !=''">
+		  and a.couse_id = #{course.id}
+		 </if>
+		 
 		</where>
 	</select>
 	
 	<insert id="insert">
 		INSERT INTO examrule(
-			id,
 			couse_id,
 			rule_name,
 			single_rules,
@@ -77,7 +87,6 @@
 			rule_type,
 			is_delete
 		) VALUES (
-			#{id},
 			#{course.id},
 			#{ruleName},
 			#{singleRules},
@@ -93,6 +102,8 @@
 			#{completionNum},
 			#{completionScore},
 			#{subjectiveRules},
+			#{subjectiveNum},
+			#{subjectiveScore},
 			#{allScore},
 			#{ruleType},
 			0

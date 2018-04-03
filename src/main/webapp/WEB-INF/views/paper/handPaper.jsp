@@ -94,10 +94,10 @@
 			<h1>手动组卷 </h1>
 			<label> 
 				<span>选择课程:</span>
-				<input id="coursIDHand" name="coursID" required="required" value="请选择课程" editable="false">
+				<input id="coursIDHand" name="coursID" required="required" value="1" editable="false">
 			</label> 
 			<input type="hidden" name="ruleType" value="1">
-			<input type="hidden" name="ruleId" id="ruleId">
+			<input type="hidden" name="id" id="ruleId">
 			<input type="hidden" name="ruleName" id="ruleName">
 			
 			<span style="margin-left: 37%;display:inline-block;">---------------------------单选择题---------------------------</span>
@@ -150,8 +150,8 @@
 	
 	<script>
 		function getExam(url,name){
-			var courseId = 0;
-			// courseId = $("#coursIDHand").combobox('getValue');  
+			var courseId = 1;
+			// courseId = $("#coursIDHand").combobox('getValue'); 
 			$("#promptDiv").dialog({
 				title:"题型窗口",
 				width:1000,
@@ -161,7 +161,7 @@
 				closed:false,
 				modal:true,
 				href:url,
-				queryParams:{courseId:1},			// 传入课程编号
+				queryParams:{courseId : courseId},			// 传入课程编号
 				onLoad:function(){
 					var data =$("#"+name).val();
 					if(data != ""){
@@ -289,15 +289,16 @@
 	
 	function paperSubmit(){
 		$("#handPaper").form('submit',{
-			url:"paper.do?method=saveHandPaper",
+			url:"saveHandPaper",
 			onSubmit:function(){
-				var course = $("#coursIDHand").combobox("getValue");
+				/* var course = $("#coursIDHand").combobox("getValue");
 				if(course == "请选择课程") {
 					alert("请选择课程！");
 					return false;
-				}
+				} */
 			},
 			success:function(data){
+				alert(data);
 				if(data == "OK") {
 					alert("提交成功！");
 					clear();
@@ -312,7 +313,7 @@
 	
 	function paperSubmitUpdate(){
 		$("#handPaper").form('submit',{
-			url:"paper.do?method=updateHandRule",
+			url:"updateHandRule",
 			onSubmit:function(){
 				
 			},

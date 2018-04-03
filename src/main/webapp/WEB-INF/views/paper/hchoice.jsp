@@ -38,7 +38,7 @@
      * Name 载入数据
      */
     $('#choice-datagrid').datagrid({
-        url: 'single',
+        url: 'single?courseId='+${courseId},
         rownumbers: true,
         singleSelect: true,
         pageSize: 10,

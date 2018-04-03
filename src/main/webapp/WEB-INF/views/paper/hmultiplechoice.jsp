@@ -39,9 +39,9 @@
      * Name 载入数据
      */
     $('#choice-datagrid').datagrid({
-        url: 'multiple',
+        url: 'multiple?courseId='+${courseId},
         rownumbers: true,
-        singleSelect: false,
+        singleSelect: true,
         pageSize: 10,
         pagination: true,
         queryParams: formChoiceJson(),

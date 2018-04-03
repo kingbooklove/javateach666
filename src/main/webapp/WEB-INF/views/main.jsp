@@ -32,12 +32,12 @@
 			</div>
 			<!--菜单-->
 			<ul class="nav">
-				<li class="nav_top">
-					<a class="nav_top_link" href="#">
-						<span class="index">返回首页</span>
-					</a>
-				</li>
 				<security:authorize ifAnyGranted="STUDENT" >
+					<li class="nav_top">
+						<a class="nav_top_link" href="#">
+							<span class="index">返回首页</span>
+						</a>
+					</li>
 					<li class="nav_top">
 						<a class="nav_top_link">
 							<span class="down">我的考试</span>
@@ -45,10 +45,13 @@
 						
 						<ul class="sub">
 							<li>
-								<a href="#">考试考试111</a>
+								<a href="${basePath }/practice/initPractice" target="_son">练习导航</a>
 							</li>
 							<li>
-								<a href="#">考试考试222</a>
+								<a href="${basePath }/practice/initPractice" target="_son">参加考试</a>
+							</li>
+							<li>
+								<a href="${basePath }/practice/initPractice" target="_son">查询成绩</a>
 							</li>
 						</ul>
 					</li>
@@ -56,6 +59,11 @@
 						<a class="nav_top_link">
 							<span class="down">教学质量评价</span>
 						</a>
+						<ul class="sub">
+							<li>
+								<a href="gomyevaluate" target="_son">教学评价</a>
+							</li>
+						</ul>
 					</li>
 					<li class="nav_top">
 						<a class="nav_top_link">
@@ -70,7 +78,7 @@
 								<a href="myclassinfo" target="_son">我的班级</a>
 							</li>
 							<li>
-								<a href="#">我的文档</a>
+								<a href="myfile" target="_son">我的文档</a>
 							</li>
 						</ul>
 					</li>
@@ -81,10 +89,10 @@
 						
 						<ul class="sub">
 							<li>
-								<a href="#">查看我的课表</a>
+								<a href="myownclassinfo" target="_son">查看我的课表</a>
 							</li>
 							<li>
-								<a href="#">网上选课</a>
+								<a href="chooseclassonline" target="_son">网上选课</a>
 							</li>
 						</ul>
 					</li>
@@ -95,37 +103,37 @@
 						
 						<ul class="sub">
 							<li>
-								<a href="#">挂科科目</a>
+								<a href="myrepairlist" target="_son">挂科科目</a>
 							</li>
 						</ul>
 					</li>
 				</security:authorize>
-				<!-- 管理员菜单 -->
 				<security:authorize ifAnyGranted="ADMIN" >
 					<li class="nav_top">
 						<a class="nav_top_link">
-							<span class="down">个人设置</span>
+							<span class="down">网上选课管理员1</span>
 						</a>
 						
 						<ul class="sub">
 							<li>
-								<a href="admininfo" target="_son">个人资料</a>
+								<a href="#">全校性选课</a>
 							</li>
 							<li>
-								<a href="adminsetpass" target="_son">密码管理</a>
+								<a href="#">课程行课情况查询</a>
 							</li>
 						</ul>
 					</li>
 					<li class="nav_top">
 						<a class="nav_top_link">
-							<span class="down">首页管理</span>
+							<span class="down">网上选课管理员2</span>
 						</a>
 						
 						<ul class="sub">
 							<li>
-								<a href="indeximg" target="_son">轮播图片信息</a>
+								<a href="#">全校性选课</a>
 							</li>
 							<li>
+<<<<<<< HEAD
 								<a href="gonewsinfo" target="_son">新闻信息</a>
 							</li>
 							<li>
@@ -180,91 +188,65 @@
 						<ul class="sub">
 							<li>
 								<a href="gocourseinfo" target="_son">学科信息</a>
+=======
+								<a href="#">课程行课情况查询</a>
+>>>>>>> branch 'master' of https://github.com/kingbooklove/javateach666
 							</li>
 						</ul>
 					</li>
 				</security:authorize>
-				<!-- 教师菜单 -->
 				<security:authorize ifAnyGranted="TEACHER" >
 					<li class="nav_top">
 						<a class="nav_top_link">
-							<span class="down">个人设置</span>
+							<span class="down">网上选课教师</span>
 						</a>
 						
 						<ul class="sub">
 							<li>
-								<a href="#">个人资料</a>
+								<a href="#">全校性选课</a>
 							</li>
 							<li>
-								<a href="#">密码管理</a>
+								<a href="#">课程行课情况查询</a>
 							</li>
 						</ul>
-					</li>
+					</li>	
 					<li class="nav_top">
 						<a class="nav_top_link">
-							<span class="down">通知管理</span>
+							<span class="down">题库管理</span>
 						</a>
 						
 						<ul class="sub">
 							<li>
-								<a href="#">发布通知</a>
+								<a href="${basePath }/single/singlechoice" target="_son">单选题库</a>
 							</li>
 							<li>
-								<a href="#">通知管理</a>
+								<a href="${basePath }/multiple/multiplechoice" target="_son">多选题库</a>
+							</li>
+							<li>
+								<a href="${basePath }/judgment/judge" target="_son">判断题库</a>
+							</li>
+							<li>
+								<a href="${basePath }/completion/completion" target="_son">填空题库</a>
+							</li>
+							<li>
+								<a href="${basePath }/subjective/subjective" target="_son">主观题库</a>
 							</li>
 						</ul>
-					</li>
+					</li>	
 					<li class="nav_top">
 						<a class="nav_top_link">
-							<span class="down">资料管理</span>
+							<span class="down">试卷管理</span>
 						</a>
 						
 						<ul class="sub">
 							<li>
-								<a href="#">资料上传</a>
+								<a href="${basePath }/examrule/examrule" target="_son">试卷规则</a>
 							</li>
 							<li>
-								<a href="#">资料管理</a>
+								<a href="${basePath }/exampaper/exampaper" target="_son">试卷列表</a>
 							</li>
 						</ul>
-					</li>
-					<li class="nav_top">
-						<a class="nav_top_link">
-							<span class="down">课程管理</span>
-						</a>
-						
-						<ul class="sub">
-							<li>
-								<a href="#">发布选课</a>
-							</li>
-							<li>
-								<a href="#">学生选课信息</a>
-							</li>
-							<li>
-								<a href="#">教师课表</a>
-							</li>
-							<li>
-								<a href="#">查看教学评价</a>
-							</li>
-						</ul>
-					</li>
-					<li class="nav_top">
-						<a class="nav_top_link">
-							<span class="down">职称管理</span>
-						</a>
-						
-						<ul class="sub">
-							<li>
-								<a href="#">升职请求</a>
-							</li>
-							<li>
-								<a href="#">查看升职情况</a>
-							</li>
-							<li>
-								<a href="#">查看升职请求记录</a>
-							</li>
-						</ul>
-					</li>
+					</li>	
 					<li class="nav_top">
 						<a class="nav_top_link">
 							<span class="down">考试管理</span>
@@ -272,13 +254,19 @@
 						
 						<ul class="sub">
 							<li>
-								<a href="#">考试管理</a>
+								<a href="${basePath }/exam/exam" target="_son">考试发布</a>
 							</li>
 							<li>
-								<a href="#">考试管理</a>
+								<a href="${basePath }/exampaper/exampaper" target="_son">批改试卷</a>
+							</li>
+							<li>
+								<a href="${basePath }/exampaper/exampaper" target="_son">发布成绩</a>
+							</li>
+							<li>
+								<a href="${basePath }/exampaper/exampaper" target="_son">成绩统计</a>
 							</li>
 						</ul>
-					</li>											
+					</li>	
 				</security:authorize>
 			</ul>
 			<!--选项卡-->
@@ -293,14 +281,14 @@
 		</div>
 		
 		<!--中间-->
-		<div class="center">
-			<div>
-				<iframe name="_son" src="wel"  width="98%" height="463px" style="margin: 0px 12px;" scrolling="no" frameborder="0"></iframe>
+		<div class="center" style="height:  100%;overflow:  hidden;">
+			<div style="height:  100%;overflow:  hidden;">
+				<iframe name="_son" src="wel"  width="98%" height="80%"  style="margin: 0px 12px;overflow: hidden;" scrolling="no" frameborder="0"></iframe>
 			</div>
 		</div>
 		<!--底部-->
-		<div class="footer">
+		<!-- <div class="footer">
 			
-		</div>
+		</div> -->
 	</body>
 </html>

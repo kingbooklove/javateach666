@@ -37,9 +37,9 @@
      * Name 载入数据
      */
     $('#blank-datagrid').datagrid({
-        url: 'completions',
+        url: 'completions?courseId='+${courseId},
         rownumbers: true,
-        singleSelect: false,
+        singleSelect: true,
         pageSize: 20,
         pagination: true,
         multiSort: true,
@@ -47,7 +47,6 @@
         queryParams: formBlankJson(),
         fit: false,
         columns: [[
-            {field: '', checkbox: true},
             {field: 'id', title: '编号', width: 50, sortable: true, hidden: true},
             {field: 'completionTitle', title: '题目', width: 180, sortable: true},
             {field: 'completionAnswer', title: '正确答案', width: 100},

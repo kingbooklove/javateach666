@@ -76,3 +76,4 @@ public interface THCAdminInfoService {
 	public PageInfoBo<THCAccountListRspBO> getStuList(THCAccountListRepBO tHCAccountListRepBO);
 	public List<THCAccountListRspBO> getStuBySearch(THCAccountListRepBO tHCAccountListRepBO);
 }
+

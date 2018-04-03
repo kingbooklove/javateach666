@@ -29,7 +29,7 @@ public class UserController {
 		return user.toString();
 	}
 	
-	@RequestMapping("/hello")
+	//@RequestMapping("/hello")
 	public String goHello(){
 		return "helloword";
 	}

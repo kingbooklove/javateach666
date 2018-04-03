@@ -1,9 +1,10 @@
 package com.ctbu.javateach666.controller.paper;
 
-import java.awt.Choice;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -24,7 +25,6 @@ import com.ctbu.javateach666.pojo.po.questions.MultipleChoice;
 import com.ctbu.javateach666.pojo.po.questions.SingleChoice;
 import com.ctbu.javateach666.pojo.po.questions.Subjective;
 import com.ctbu.javateach666.pojo.po.thcpo.THCCoursePO;
-import com.ctbu.javateach666.service.impl.questions.SubjectiveServiceImpl;
 import com.ctbu.javateach666.service.interfac.paper.ExamRuleService;
 import com.ctbu.javateach666.service.interfac.questions.CompletionService;
 import com.ctbu.javateach666.service.interfac.questions.JudgmentService;
@@ -84,34 +84,20 @@ public class ExamRuleController {
         Integer rows = Integer.valueOf(request.getParameter("rows"));
         
         ExamRule examRule = new ExamRule();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         
         // 查询参数
-//        String couseId = request.getParameter("couseId");
-//        String degree = request.getParameter("degree");
-//        String bTime = request.getParameter("bTime");
-//        String eTime = request.getParameter("eTime");
-//        if(couseId != null && !"".equals(couseId)) {
-//        	examRule.setCouseId(couseId);
-//        }
-//        if(degree != null && !"".equals(degree)) {
-//        	examRule.setDegree(degree);
-//        }
-//        if(bTime != null && !"".equals(bTime)) {
-//        	try {
-//				examRule.setbTime(format.parse(bTime));
-//			} catch (ParseException e) {
-//				e.printStackTrace();
-//			}
-//        }
-//        if(eTime != null && !"".equals(eTime)) {
-//        	try {
-//        		examRule.seteTime(format.parse(eTime));
-//        	} catch (ParseException e) {
-//        		e.printStackTrace();
-//        	}
-//        }
-        
+        String cousename = request.getParameter("course");
+        String name = request.getParameter("name");
+        String type = request.getParameter("type");
+        if(cousename != null && !"".equals(cousename)) {
+        	examRule.setCouname(cousename);
+        }
+        if(name != null && !"".equals(name)) {
+        	examRule.setRuleName(name);
+        }
+        if(type != null && !"".equals(type)) {
+        	examRule.setRuleType(Integer.valueOf(type));
+        }
         
         List<ExamRule> list = ExamRuleService.findList(examRule);
 		String json = PageUtil.findPage(page, rows, list);
@@ -167,50 +153,14 @@ public class ExamRuleController {
     }
     
 
-    /**
-     * 初始化自动组卷
-     */
-	@RequestMapping("/initAutoPaper")
-    public String initAutoPaper(HttpServletRequest request, HttpServletResponse response) {
-    	// 查询所有单选题
-    	SingleChoice singleChoice = new SingleChoice();
-    	List<SingleChoice> singleChoiceList = SingleChoiceService.findList(singleChoice);
-    	// 查询所有多选题
-    	MultipleChoice multipleChoice = new MultipleChoice();
-    	List<MultipleChoice> multipleChoiceList = MultipleChoiceService.findList(multipleChoice);
-    	// 查询所有判断题
-    	Judgment judgment = new Judgment();
-    	List<Judgment> judgmentList = JudgmentService.findList(judgment);
-    	// 查询所有填空题
-    	Completion completion = new Completion();
-    	List<Completion> completionList = CompletionService.findList(completion);
-    	// 查询所有主观题
-    	Subjective subjective = new Subjective();
-    	List<Subjective> subjectiveList = subjectiveService.findList(subjective);
-    	
-        if(CollectionUtils.isNotBlank(singleChoiceList)){
-            request.setAttribute("sChoice",singleChoiceList.size());
-        }
-        if(CollectionUtils.isNotBlank(multipleChoiceList)){
-            request.setAttribute("mChoice",multipleChoiceList.size());
-        }
-        if(CollectionUtils.isNotBlank(completionList)){
-            request.setAttribute("blanks",completionList.size());
-        }
-        if(CollectionUtils.isNotBlank(judgmentList)){
-            request.setAttribute("judges",judgmentList.size());
-        }
-        if(CollectionUtils.isNotBlank(subjectiveList)){
-            request.setAttribute("subjectives",subjectiveList.size());
-        }
-        return "/WEB-INF/jsp/paper/autoPaper.jsp";
-    }
 
 	 /**
      * 跳转单选择题页面
      */
 	@RequestMapping("/getChoice")
     public String getChoice(Model model,HttpServletRequest request) {
+		String courseId = request.getParameter("courseId");
+		model.addAttribute("courseId", courseId);
         return "paper/hchoice";
     }
 	/**
@@ -231,11 +181,17 @@ public class ExamRuleController {
         
         // 查询参数
         String choicename = request.getParameter("choicename");
+        String courseId = request.getParameter("courseId");
         String degree = request.getParameter("degree");
         String bTime = request.getParameter("bTime");
         String eTime = request.getParameter("eTime");
         if(choicename != null && !"".equals(choicename)) {
         	singleChoice.setSingleTitle(choicename);
+        }
+        if(courseId != null && !"".equals(courseId)) {
+        	THCCoursePO course = new THCCoursePO();
+        	course.setId(Integer.valueOf(courseId));
+        	singleChoice.setCourse(course);
         }
         if(degree != null && !"".equals(degree)) {
         	singleChoice.setDegree(degree);
@@ -275,6 +231,8 @@ public class ExamRuleController {
      */
 	@RequestMapping("/getMultiple")
     public String getMultiple(Model model,HttpServletRequest request) {
+		String courseId = request.getParameter("courseId");
+		model.addAttribute("courseId", courseId);
         return "paper/hmultiplechoice";
 
     }
@@ -300,6 +258,12 @@ public class ExamRuleController {
         String degree = request.getParameter("degree");
         String bTime = request.getParameter("bTime");
         String eTime = request.getParameter("eTime");
+        String courseId = request.getParameter("courseId");
+        if(courseId != null && !"".equals(courseId)) {
+        	THCCoursePO course = new THCCoursePO();
+        	course.setId(Integer.valueOf(courseId));
+        	multipleChoice.setCourse(course);
+        }
         if(choicename != null && !"".equals(choicename)) {
         	multipleChoice.setMultipleTitle(choicename);
         }
@@ -341,6 +305,8 @@ public class ExamRuleController {
      */
 	@RequestMapping("/getBlank")
     public String getBlank(Model model,HttpServletRequest request) {
+		String courseId = request.getParameter("courseId");
+		model.addAttribute("courseId", courseId);
         return "paper/hcompletion";
     }
 	
@@ -361,16 +327,16 @@ public class ExamRuleController {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         
         // 查询参数
-        // String couseId = request.getParameter("couseId");
+        String couseId = request.getParameter("courseId");
         String completionname = request.getParameter("completionname");
         String degree = request.getParameter("degree");
         String bTime = request.getParameter("bTime");
         String eTime = request.getParameter("eTime");
-//        if(couseId != null && !"".equals(couseId)) {
-//        	THCCoursePO course = new THCCoursePO();
-//        	course.setId(Integer.valueOf(couseId));
-//        	completion.setCourse(course);
-//        }
+        if(couseId != null && !"".equals(couseId)) {
+        	THCCoursePO course = new THCCoursePO();
+        	course.setId(Integer.valueOf(couseId));
+        	completion.setCourse(course);
+        }
         if(completionname != null && !"".equals(completionname)) {
         	completion.setCompletionTitle(completionname);
         }
@@ -413,6 +379,8 @@ public class ExamRuleController {
      */
 	@RequestMapping("/getJudge")
     public String getJudge(Model model,HttpServletRequest request) {
+		String courseId = request.getParameter("courseId");
+		model.addAttribute("courseId", courseId);
         return "paper/hjudge";
 
     }
@@ -434,16 +402,16 @@ public class ExamRuleController {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         
         // 查询参数
-        // String couseId = request.getParameter("couseId");
+        String couseId = request.getParameter("courseId");
         String judgename = request.getParameter("judgename");
         String degree = request.getParameter("degree");
         String bTime = request.getParameter("bTime");
         String eTime = request.getParameter("eTime");
-//        if(couseId != null && !"".equals(couseId)) {
-//        	THCCoursePO course = new THCCoursePO();
-//        	course.setId(Integer.valueOf(couseId));
-//        	judgment.setCourse(course);
-//        }
+        if(couseId != null && !"".equals(couseId)) {
+        	THCCoursePO course = new THCCoursePO();
+        	course.setId(Integer.valueOf(couseId));
+        	judgment.setCourse(course);
+        }
         if(judgename != null && !"".equals(judgename)) {
         	judgment.setJudgmentTitle(judgename);
         }
@@ -485,6 +453,8 @@ public class ExamRuleController {
      */
 	@RequestMapping("/getSubjective")
     public String getSubjective(Model model,HttpServletRequest request) {
+		String courseId = request.getParameter("courseId");
+		model.addAttribute("courseId", courseId);
         return "paper/hsubjective";
     }
 	
@@ -505,7 +475,7 @@ public class ExamRuleController {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         
         // 查询参数
-        String couseId = request.getParameter("couseId");
+        String couseId = request.getParameter("courseId");
         String subjectivename = request.getParameter("subjectivename");
         String degree = request.getParameter("degree");
         String bTime = request.getParameter("bTime");
@@ -551,4 +521,227 @@ public class ExamRuleController {
 		 Subjective subjective = subjectiveService.get(Integer.valueOf(choiceId));
 		 return subjective.getSubjectiveTitle();
 	 }
+	 
+	 
+	/**
+     * 将手动组卷内容存储到数据库
+     */
+	@RequestMapping("/saveHandPaper")
+	@ResponseBody
+    public String saveHandPaper(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // 获取单选题数据
+        String choiceIds = request.getParameter("choiceIds");
+        // 获取单选题总分数
+        String choiceIdsScore = request.getParameter("choiceIdsScore");
+        // 获取单选题总数
+        String choiceIdsNum = request.getParameter("choiceIdsNum");
+
+        // 获取多选题数据
+        String multipleId = request.getParameter("multipleId");
+        // 获取多选题总分数
+        String multipleIdsScore = request.getParameter("multipleIdsScore");
+        // 获取多选题总数
+        String multipleIdsNum = request.getParameter("multipleIdsNum");
+
+        // 获取判断题数据
+        String blankIds = request.getParameter("blankIds");
+        // 获取判断题总分数
+        String blankIdsScore = request.getParameter("blankIdsScore");
+        // 获取判断题总数
+        String blankIdsNum = request.getParameter("blankIdsNum");
+
+        // 获取填空题数据
+        String judgeIds = request.getParameter("judgeIds");
+        // 获取填空题总分数
+        String judgeIdsScore = request.getParameter("judgeIdsScore");
+        // 获取填空题总数
+        String judgeIdsNum = request.getParameter("judgeIdsNum");
+
+        // 获取主观题数据
+        String subjectiveIds = request.getParameter("subjectiveIds");
+        // 获取主观题总分数
+        String subjectiveIdsScore = request.getParameter("subjectiveIdsScore");
+        // 获取主观题总数
+        String subjectiveIdsNum = request.getParameter("subjectiveIdsNum");
+        
+        // 获取班级id
+        String courseId = request.getParameter("coursID");
+        // 规则名设置
+        Date date = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd-HH:mm");
+        String ruleName = dateFormat.format(date);
+        
+        // 获取总分
+        Integer allScore = Integer.valueOf(choiceIdsScore) + Integer.valueOf(multipleIdsScore) + Integer.valueOf(blankIdsScore)
+                + Integer.valueOf(judgeIdsScore) + Integer.valueOf(subjectiveIdsScore);
+
+        ExamRule paperRule = new ExamRule();
+        paperRule.setSingleRules(choiceIds);
+        paperRule.setSingleScore(Integer.valueOf(choiceIdsScore));
+        paperRule.setSingleNum(Integer.valueOf(choiceIdsNum));
+
+        paperRule.setMultipleRules(multipleId);
+        paperRule.setMultipleScore(Integer.valueOf(multipleIdsScore));
+        paperRule.setMultipleNum(Integer.valueOf(multipleIdsNum));
+
+        paperRule.setCompletionRules(blankIds);
+        paperRule.setCompletionScore(Integer.valueOf(blankIdsScore));
+        paperRule.setCompletionNum(Integer.valueOf(blankIdsNum));
+
+        paperRule.setJudgmentRules(judgeIds);
+        paperRule.setJudgmentScore(Integer.valueOf(judgeIdsScore));
+        paperRule.setJudgmentNum(Integer.valueOf(judgeIdsNum));
+
+        paperRule.setSubjectiveRules(subjectiveIds);
+        paperRule.setSubjectiveScore(Integer.valueOf(subjectiveIdsScore));
+        paperRule.setSubjectiveNum(Integer.valueOf(subjectiveIdsNum));
+        	
+        // 设置课程id
+        THCCoursePO course = new THCCoursePO();
+        course.setId(Integer.valueOf(courseId));
+        paperRule.setCourse(course);
+        paperRule.setAllScore(allScore);
+        paperRule.setRuleType(Integer.valueOf(1));
+        paperRule.setRuleName(ruleName);
+
+        int row = ExamRuleService.insert(paperRule);
+        if(row == 1) {
+        	return "OK";
+        } else {
+        	return "NO";
+        }
+    }
+	
+	
+	 /**
+     * 修改手动提交
+     */
+	@RequestMapping("/updateHandRule")
+	@ResponseBody
+    public String updateHandRule(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	
+    	// 获取规则id
+    	Integer ruleId = Integer.valueOf(request.getParameter("id"));
+    	// 获取单选题数据
+        String choiceIds = request.getParameter("choiceIds");
+        // 获取单选题总分数
+        String choiceIdsScore = request.getParameter("choiceIdsScore");
+        // 获取单选题总数
+        String choiceIdsNum = request.getParameter("choiceIdsNum");
+
+        // 获取多选题数据
+        String multipleId = request.getParameter("multipleId");
+        // 获取多选题总分数
+        String multipleIdsScore = request.getParameter("multipleIdsScore");
+        // 获取多选题总数
+        String multipleIdsNum = request.getParameter("multipleIdsNum");
+
+        // 获取判断题数据
+        String blankIds = request.getParameter("blankIds");
+        // 获取判断题总分数
+        String blankIdsScore = request.getParameter("blankIdsScore");
+        // 获取判断题总数
+        String blankIdsNum = request.getParameter("blankIdsNum");
+
+        // 获取填空题数据
+        String judgeIds = request.getParameter("judgeIds");
+        // 获取填空题总分数
+        String judgeIdsScore = request.getParameter("judgeIdsScore");
+        // 获取填空题总数
+        String judgeIdsNum = request.getParameter("judgeIdsNum");
+
+        // 获取主观题数据
+        String subjectiveIds = request.getParameter("subjectiveIds");
+        // 获取主观题总分数
+        String subjectiveIdsScore = request.getParameter("subjectiveIdsScore");
+        // 获取主观题总数
+        String subjectiveIdsNum = request.getParameter("subjectiveIdsNum");
+        
+        // 获取班级id
+        String courseId = request.getParameter("coursID");
+        // 规则名设置
+        String ruleName = request.getParameter("ruleName");
+        
+        // 获取总分
+        Integer allScore = Integer.valueOf(choiceIdsScore) + Integer.valueOf(multipleIdsScore) + Integer.valueOf(blankIdsScore)
+                + Integer.valueOf(judgeIdsScore) + Integer.valueOf(subjectiveIdsScore);
+
+        ExamRule paperRule = new ExamRule();
+        paperRule.setSingleRules(choiceIds);
+        paperRule.setSingleScore(Integer.valueOf(choiceIdsScore));
+        paperRule.setSingleNum(Integer.valueOf(choiceIdsNum));
+
+        paperRule.setMultipleRules(multipleId);
+        paperRule.setMultipleScore(Integer.valueOf(multipleIdsScore));
+        paperRule.setMultipleNum(Integer.valueOf(multipleIdsNum));
+
+        paperRule.setCompletionRules(blankIds);
+        paperRule.setCompletionScore(Integer.valueOf(blankIdsScore));
+        paperRule.setCompletionNum(Integer.valueOf(blankIdsNum));
+
+        paperRule.setJudgmentRules(judgeIds);
+        paperRule.setJudgmentScore(Integer.valueOf(judgeIdsScore));
+        paperRule.setJudgmentNum(Integer.valueOf(judgeIdsNum));
+
+        paperRule.setSubjectiveRules(subjectiveIds);
+        paperRule.setSubjectiveScore(Integer.valueOf(subjectiveIdsScore));
+        paperRule.setSubjectiveNum(Integer.valueOf(subjectiveIdsNum));
+        	
+        // 设置课程id
+        THCCoursePO course = new THCCoursePO();
+        course.setId(Integer.valueOf(courseId));
+        paperRule.setCourse(course);
+        paperRule.setAllScore(allScore);
+        paperRule.setRuleType(Integer.valueOf(1));
+        paperRule.setRuleName(ruleName);
+        paperRule.setId(ruleId);
+        
+        int row = ExamRuleService.update(paperRule);
+        if(row == 1) {
+        	return "OK";
+        } else {
+        	return "NO";
+        }
+    }
+	
+	 /**
+     * 初始化自动组卷
+     */
+	@RequestMapping("/initAutoPaper")
+    public String initAutoPaper(HttpServletRequest request, HttpServletResponse response) {
+    	
+		// 查询所有单选题
+    	SingleChoice singleChoice = new SingleChoice();
+    	List<SingleChoice> singleChoiceList = SingleChoiceService.findList(singleChoice);
+    	// 查询所有多选题
+    	MultipleChoice multipleChoice = new MultipleChoice();
+    	List<MultipleChoice> multipleChoiceList = MultipleChoiceService.findList(multipleChoice);
+    	// 查询所有判断题
+    	Judgment judgment = new Judgment();
+    	List<Judgment> judgmentList = JudgmentService.findList(judgment);
+    	// 查询所有填空题
+    	Completion completion = new Completion();
+    	List<Completion> completionList = CompletionService.findList(completion);
+    	// 查询所有主观题
+    	Subjective subjective = new Subjective();
+    	List<Subjective> subjectiveList = subjectiveService.findList(subjective);
+    	
+        if(CollectionUtils.isNotBlank(singleChoiceList)){
+            request.setAttribute("sChoice",singleChoiceList.size());
+        }
+        if(CollectionUtils.isNotBlank(multipleChoiceList)){
+            request.setAttribute("mChoice",multipleChoiceList.size());
+        }
+        if(CollectionUtils.isNotBlank(completionList)){
+            request.setAttribute("blanks",completionList.size());
+        }
+        if(CollectionUtils.isNotBlank(judgmentList)){
+            request.setAttribute("judges",judgmentList.size());
+        }
+        if(CollectionUtils.isNotBlank(subjectiveList)){
+            request.setAttribute("subjectives",subjectiveList.size());
+        }
+        return "paper/autoPaper";
+    }
+	
 }

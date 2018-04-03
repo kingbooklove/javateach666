@@ -12,8 +12,19 @@
 	<a href="${basePath }/multiple/multiplechoice">多选题</a>
 	<a href="${basePath }/judgment/judge">判断题</a>
 	<a href="${basePath }/completion/completion">填空题</a>
-	<a href="${basePath }/subjective/subjective">填空题</a>
+	<a href="${basePath }/subjective/subjective">主观题</a>
 	<a href="${basePath }/examrule/examrule">组卷规则</a>
+	<a href="${basePath }/exampaper/exampaper">试卷列表</a>
+	<a href="${basePath }/exam/exam">发布考试</a>
+	
+	<a href="${basePath }/exampaper/exampaper">批改试卷</a>
+	<a href="${basePath }/exampaper/exampaper">发布成绩</a>
+	<a href="${basePath }/exampaper/exampaper">成绩统计</a>
+	<br/>
+	<a href="${basePath }/practice/initPractice">练习导航</a>
+	
+	<a href="${basePath }/practice/initPractice">参加考试</a>
+	<a href="${basePath }/practice/initPractice">查询成绩</a>
 	
 	<%-- <div id="cc" class="easyui-layout" data-options="fit:true" style="width:600px;height:400px;">
 			<div data-options="region:'north'" style="height:100px;">

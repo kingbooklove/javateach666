@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" isELIgnored="false"%>
 <%@include file="../../../common/jstl.jspf"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<%@include file="/common/easyui.jspf"%>
 </head>
 <body>
 	<div class="easyui-layout" data-options="fit:true">
@@ -32,29 +33,29 @@
 	    <form id="paper-list-form" method="post">
 	        <table>
 	            <tr>
-	                <td><input type="hidden" name="paperID" /></td>
+	                <td><input type="hidden" name="id" /></td>
 	            </tr>
 	            <tr>
 	                <td width="80" align="right">科目名称</td>
 	                <td>
-	                	<input id="coursIDPaper" name="courseID" required="required" value="请选择科目"  editable="false">
+	                	<input id="coursIDPaper" name="course.id" required="required" value="请选择科目"  editable="false">
 	                </td>
 	            </tr>
 	            <tr>
 	                <td align="right">试卷规则名</td>
 	                <td>
-						<input id="ruleID" name="ruleID" required="required" class="easyui-combobox" data-options="valueField:'id',textField:'name'" editable="false" panelMaxHeight="100"/>  
+						<input id="ruleID" name="examRule.id" required="required" class="easyui-combobox" data-options="valueField:'id',textField:'ruleName'" editable="false" panelMaxHeight="100"/>  
 	                </td>
 	            </tr>
 	            <tr>
 	                <td align="right">试卷名</td>
 	                <td>
-						<input id="paperName" name="paperName" required="required" class="easyui-textbox"/>  
+						<input id="paperName" name="examPaperName" required="required" class="easyui-textbox"/>  
 	                </td>
 	            </tr>
 	            <tr>
-	                <td align="right">考试时间</td>
-	                <td><input type="text" name="paperTime" class="easyui-textbox"/></td>
+	                <td align="right">试卷分数</td>
+	                <td><input type="text" name="examScore" class="easyui-textbox"/></td>
 	            </tr>
 	        </table>
 	    </form>
@@ -73,10 +74,10 @@
                 if (result) {
                     var ids = [];
                     $(items).each(function () {
-                        ids.push(this.paperID)
+                        ids.push(this.id)
                     });
-                    var url = 'paper.do?method=deletePaper';
-                    $.get(url, {paperId: ids.toString()}, function (data) {
+                    var url = 'deleteExamPaper';
+                    $.get(url, {"exampaperids": ids.toString()}, function (data) {
                         if (data == "OK") {
                             $.messager.alert('信息提示', '删除成功！', 'info');
                             $("#paper-list-datagrid").datagrid("reload");// 重新加载数据库
@@ -104,7 +105,7 @@
                 iconCls: 'icon-ok',
                 handler: function() {
                     $("#paper-list-form").form('submit',{
-                    	url:'paper.do?method=addPaper',
+                    	url:'saveExamPaper',
                     	onSubmit:function(){
                     		var isValid = $(this).form('validate');
                             return isValid;	// 返回false终止表单提交
@@ -150,9 +151,8 @@
                    text: '确定',
                    iconCls: 'icon-ok',
                    handler: function () {
-                	   
                        $('#paper-list-form').form('submit', {
-                           url: 'paper.do?method=updatePaper',
+                           url: 'updateExamPaper',
                    		   onSubmit:function(){
                    			   
                    		   },
@@ -177,9 +177,8 @@
                }]
            });
            $('#paper-list-form').form('load',rows[0]);
-           var url = 'paper.do?method=getPaperRuleJson&coursId='+rows[0].courseID;    
-           $('#ruleID').combobox('reload', url);
-           $('#ruleID').combobox('select', rows[0].ruleID);
+           $('#coursIDPaper').combobox('select', rows[0].course.id);
+           $('#ruleID').combobox('select', rows[0].examRule.id);
            
         } else {
         	$.messager.alert('信息提示', '请选择修改对象！');
@@ -194,7 +193,7 @@
          if (rows.length > 1) {
              $.messager.alert("提示信息", "只能选择一行!");
          } else if(rows.length > 0 ){
-         	window.open("paper.do?method=initPaper&paperId="+rows[0].paperID);
+         	window.open("initPaper?paperId="+rows[0].id);
          } else {
          	$.messager.alert('信息提示', '请选择查看对象！');
          }
@@ -206,7 +205,7 @@
      * Name 载入数据
      */
     $('#paper-list-datagrid').datagrid({
-        url: 'paper.do?method=jsonPaperList',
+        url: 'exampapers',
         rownumbers: true,
         singleSelect: false,
         pageSize: 20,
@@ -216,43 +215,29 @@
         fit: true,
         columns: [[
             {field:'',checkbox: true},
-            {field: 'paperID', title: '试卷编号', width: 50, sortable: true},
-            {field: 'courseID', title: '课程名', width: 80, sortable: true,formatter:function(value,row,index){
-            	$.ajaxSettings.async = false;
-            	var courseName ="";
-            	$.get('courseServlet.do?method=getCourseNameById',{'courseId':value},function(data){
-            		courseName = data;
-            	});
-            	$.ajaxSettings.async = true;
-            	return courseName;
-            }},
-            {field: 'paperName', title: '试卷名', width: 150, sortable: true},
-            {field: 'ruleID', title: '试卷规则名', width: 150, sortable: true,formatter:function(value,row,index){
-            	$.ajaxSettings.async = false;
-            	var ruleName ="";
-            	$.get('paper.do?method=getPaperRuleNameByRuleId',{'ruleId':value},function(data){
-            		ruleName = data;
-            	});
-            	$.ajaxSettings.async = true;
-            	return ruleName;
-            }},
-            {field: 'paperTime', title: '考试时间', width: 100}
+            {field: 'id', title: '试卷编号', width: 50, sortable: true,hidden: true},
+            {field: 'couname', title: '课程名', width: 80, sortable: true},
+            {field: 'examPaperName', title: '试卷名', width: 150, sortable: true},
+            {field: 'examRuleName', title: '试卷规则名', width: 150, sortable: true},
+            {field: 'examScore', title: '试卷分数', width: 80, sortable: true},
         ]]
     });
 	
   	/**
   	 * 创建课程的下拉框
   	 */
-  	 
   	$('#coursIDPaper').combobox({
-  	    url:'exam.do?method=getCourseJson',    
+  	    url:'coursejson',    
   	    valueField:'id',    
   	    textField:'name',
   	  	panelMaxHeight:'100',
   	    onSelect:function(rec){
   	    	$('#ruleID').combobox('select', "");
-  	    	var url = 'paper.do?method=getPaperRuleJson&coursId='+rec.id;    
-            $('#ruleID').combobox('reload', url);
+  	    	var url = 'listExamRule';    
+            $('#ruleID').combobox({
+            	url:url,
+            	queryParams: {"coursId" : rec.id}
+            });
   	    }
   	});  
 	

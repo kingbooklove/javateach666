@@ -92,8 +92,8 @@ public class SingleChoice extends DataEntity<SingleChoice>{
 	public THCCoursePO getCourse() {
 		return course;
 	}
-	public void setCourse(THCCoursePO course) {
-		this.course = course;
+	public void setCourse(THCCoursePO course2) {
+		this.course = course2;
 	}
 	public String getCouname() {
 		return couname;

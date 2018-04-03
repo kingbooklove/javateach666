@@ -56,14 +56,18 @@ public class SingleChoiceController {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         
         // 查询参数
-        String couseId = request.getParameter("couseId");
+        String cousename = request.getParameter("couseId");
+        String choiceTitle = request.getParameter("choiceTitle");
         String degree = request.getParameter("degree");
         String bTime = request.getParameter("bTime");
         String eTime = request.getParameter("eTime");
-        if(couseId != null && !"".equals(couseId)) {
+        if(cousename != null && !"".equals(cousename)) {
         	THCCoursePO course = new THCCoursePO();
-        	course.setId(Integer.valueOf(couseId));
+        	course.setCouname(cousename);
         	singleChoice.setCourse(course);
+        }
+        if(choiceTitle != null && !"".equals(choiceTitle)) {
+        	singleChoice.setSingleTitle(choiceTitle);
         }
         if(degree != null && !"".equals(degree)) {
         	singleChoice.setDegree(degree);
