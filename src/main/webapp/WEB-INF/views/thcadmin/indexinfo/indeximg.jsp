@@ -50,6 +50,24 @@
         <table id="imginfo-datagrid" toolbar="#imginfo-toolbar"></table>
     </div>
 </div>
+<div id="addindex-dialog" style="width:600px;height:500px; padding:10px;">
+	<form id="addindex-form" enctype="multipart/form-data" method = "post">
+		<table width="80%" height="100px" bgcolor="#f2f6fb" border="1" style="border-color: #99CCFF; border-collapse : collapse">
+		  <tr>
+		    <td width="20%">图片编号：</td>
+		    <td width="20%"><input type="text" id="imgno" name="imgno"/></td>
+		    <td width="20%">图片名称：</td>
+		    <td width="20%"><input type="text" id="imgname" name="imgname" /></td>
+		  </tr>
+  		  <tr>
+		    <td width="20%">选择图片：</td>
+		    <td width="20%"><input type="file" id="file" name="file" /></td>
+		    <td width="20%">是否展示：</td>
+		    <td width="20%"><input name="is_pub" type="radio" size="30" value="0" checked>否<input name="is_pub" type="radio" size="30" value="1">是</td>
+		  </tr>
+		</table>
+	</form>
+</div>
 	<script type="text/javascript">
 		
 			/**
@@ -128,37 +146,43 @@
 				  		$('#imginfo-datagrid').datagrid('reload');
 		  		});
 		  	}
-		  	function addImg(){
-		  		showMyWindow("添加图片",  
-	                    'goaddindeximg',  
-	                    800, 400);
+		  	function addImg() {
+		  		$('#addindex-form').form('clear');
+		        $('#addindex-dialog').dialog({
+		            closed: false,
+		            modal: true,
+		            title: "添加图片",
+		            buttons: [{
+		                text: '确定',
+		                iconCls: 'icon-ok',
+		                handler: function () {
+		                    $("#addindex-form").form('submit', {
+		                        url: 'addindeximg',
+		                        onSubmit: function () {
+
+		                        },
+		                        success: function (data) {
+		                            if (data == "OK") {
+		                                $.messager.alert('信息提示', '提交成功！');
+		                                $("#imginfo-datagrid").datagrid("reload");// 重新加载数据库
+		                                $('#addindex-dialog').dialog('close');
+		                            }
+		                            else {
+		                                $.messager.alert('信息提示', '提交失败！');
+		                            }
+		                        }
+
+		                    });
+		                }
+		            }, {
+		                text: '取消',
+		                iconCls: 'icon-cancel',
+		                handler: function () {
+		                    $('#addindex-dialog').dialog('close');
+		                }
+		            }]
+		        });
 		  	}
-		  	$(function() {
-		        $('body').append('<div id="myWindow" class="easyui-dialog" closed="true"></div>');  
-		    });  
-		    function showMyWindow(title, href, width, height, modal, minimizable,  
-		            maximizable) {
-		        $('#myWindow').window(
-                    {
-                        title : title,  
-                        width : width === undefined ? 800 : width,  
-                        height : height === undefined ? 400 : height,  
-                        content : '<iframe scrolling="yes" frameborder="0"  src="'  
-                                + href  
-                                + '" style="width:100%;height:98%;"></iframe>',  
-                        modal : modal === undefined ? true : modal,  
-                        minimizable : minimizable === undefined ? false  
-                                : minimizable,  
-                        maximizable : maximizable === undefined ? false  
-                                : maximizable,  
-                        shadow : false,  
-                        cache : false,  
-                        closed : false,  
-                        collapsible : false,  
-                        resizable : false,  
-                        loadingMessage : '正在加载数据，请稍等片刻......'  
-                    });  
-		    }  
 	</script>
 </body>
 </html>
