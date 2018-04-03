@@ -1,6 +1,7 @@
 package com.ctbu.javateach666.pojo.po.exam;
 
 import com.ctbu.javateach666.common.entity.DataEntity;
+import com.ctbu.javateach666.pojo.po.THCCoursePO;
 
 /**
  * 试卷信息
@@ -11,16 +12,24 @@ public class ExamPaper extends DataEntity<ExamPaper>{
 
 	private static final long serialVersionUID = 1L;
 	
-	private int couseId;			// 课程id
-	private String examPaperName;	// 试卷名
-	private int ruleId;			// 规则id
-	private String examScore;		// 试卷分数
+	private THCCoursePO course;			// 课程
+	private String couname;				// 课程名
+	private String examPaperName;		// 试卷名
+	private ExamRule examRule;			// 规则
+	private String examRuleName;		// 规则名
+	private String examScore;			// 试卷分数
 	
-	public int getCouseId() {
-		return couseId;
+	public THCCoursePO getCourse() {
+		return course;
 	}
-	public void setCouseId(int couseId) {
-		this.couseId = couseId;
+	public void setCourse(THCCoursePO course) {
+		this.course = course;
+	}
+	public String getCoursename() {
+		return couname;
+	}
+	public void setCoursename(String couname) {
+		this.couname = couname;
 	}
 	public String getExamPaperName() {
 		return examPaperName;
@@ -28,11 +37,23 @@ public class ExamPaper extends DataEntity<ExamPaper>{
 	public void setExamPaperName(String examPaperName) {
 		this.examPaperName = examPaperName;
 	}
-	public int getRuleId() {
-		return ruleId;
+	public String getCouname() {
+		return couname;
 	}
-	public void setRuleId(int ruleId) {
-		this.ruleId = ruleId;
+	public void setCouname(String couname) {
+		this.couname = couname;
+	}
+	public ExamRule getExamRule() {
+		return examRule;
+	}
+	public void setExamRule(ExamRule examRule) {
+		this.examRule = examRule;
+	}
+	public String getExamRuleName() {
+		return examRuleName;
+	}
+	public void setExamRuleName(String examRuleName) {
+		this.examRuleName = examRuleName;
 	}
 	public String getExamScore() {
 		return examScore;

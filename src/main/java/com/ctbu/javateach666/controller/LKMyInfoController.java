@@ -26,8 +26,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.ctbu.javateach666.pojo.bo.LKUpdateStuInfoBO;
+import com.ctbu.javateach666.pojo.bo.BaseInfoBO;
+import com.ctbu.javateach666.pojo.bo.DeleteMyFileReqBO;
 import com.ctbu.javateach666.pojo.bo.LKMyClassInfoListRepBO;
 import com.ctbu.javateach666.pojo.bo.LKMyClassInfoListRspBO;
+import com.ctbu.javateach666.pojo.bo.LKMyFileListReqBO;
+import com.ctbu.javateach666.pojo.bo.LKMyFileListRspBO;
+import com.ctbu.javateach666.pojo.bo.LKSendMessageToStuReqBO;
 import com.ctbu.javateach666.pojo.bo.PageInfoBo;
 import com.ctbu.javateach666.pojo.po.LKStudentInfoPO;
 import com.ctbu.javateach666.service.interfac.LKMyInfoService;
@@ -87,7 +92,7 @@ public class LKMyInfoController {
 		return page;
 	}
 	
-	@ResponseBody
+	//@ResponseBody
 	@RequestMapping("/exportclassinfo")
 	public String ExportClassInfo(LKMyClassInfoListRepBO lKMyClassInfoListRepBO, HttpServletResponse response){
 		String stuname = null;
@@ -153,6 +158,54 @@ public class LKMyInfoController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-        return "success";
+        return "lkmyinfo/stuowninfo";
 	}
+	
+	@ResponseBody
+	@RequestMapping("/sendmessagetostu")
+	public BaseInfoBO sendMessageToStu(@RequestBody LKSendMessageToStuReqBO lKSendMessageToStuReqBO){
+		//System.out.println("学号：" + lKSendMessageToStuReqBO.getStuno() + "消息" + lKSendMessageToStuReqBO.getMessage());
+		BaseInfoBO rsp = lKMyInfoService.sendMessageToStu(lKSendMessageToStuReqBO);
+		
+		return rsp;
+	}
+	
+	//我的文档小模块
+	
+	@RequestMapping("/myfile")
+	public String goMyFile(){
+		return "lkmyinfo/myfile";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/getmyfilelist")
+	public PageInfoBo<LKMyFileListRspBO> getMyFileList(LKMyFileListReqBO lKMyFileListReqBO){
+		PageInfoBo<LKMyFileListRspBO> page = new PageInfoBo<LKMyFileListRspBO>();
+		/*SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
+		try {
+			Date d1 = sdf.parse(lKMyFileListReqBO.getBeforeuploadtime());
+			Date d2 = sdf.parse(lKMyFileListReqBO.getAfteruploadtime());
+			System.out.println(d1 + " " + d2);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}*/
+		page = lKMyInfoService.getMyFileList(lKMyFileListReqBO);
+		return page;
+	}
+	
+	@ResponseBody
+	@RequestMapping("deletemyfile")
+	public BaseInfoBO deleteMyFile(@RequestBody DeleteMyFileReqBO deleteMyFileReqBO, HttpServletRequest request){
+		//lKMyInfoService.deleteMyFile(deleteMyFileReqBO, request);
+		return lKMyInfoService.deleteMyFile(deleteMyFileReqBO, request);
+	}
+	
+	@RequestMapping("uploadmyfile")
+	public String uploadMyFile(@RequestParam("file") CommonsMultipartFile file, HttpServletRequest request){
+		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		boolean issuccess = lKMyInfoService.uploadMyFile(userDetails.getUsername(), file, request);
+		return "lkmyinfo/myfile";
+	}
+	
+	
 }

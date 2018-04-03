@@ -102,14 +102,39 @@
 			  var stuno = $("#choice-course-value").val();
 		      var stuname = $("#choice-course-value2").val();
 		      //alert("学号：" + stuno + "学生姓名：" + stuname);
-			  window.location.href = "exportclassinfo?stuno=" + stuno + "&stuname=" + stuname;
+		      $.messager.confirm('提示', '是否确认导出查询出的班级列表 ', function(r){
+				if (r){
+					window.location.href = "exportclassinfo?stuno=" + stuno + "&stuname=" + stuname;
+				}
+			  });
+			  //window.location.href = "exportclassinfo?stuno=" + stuno + "&stuname=" + stuname;
 		  	}
 		  	//发送消息
 		  	function sendMessage(){
-		  		alert("发送消息");
+		  		//alert("发送消息");
 		  		var rows = $('#classinfo-datagrid').datagrid('getSelections');
-		  		alert(rows[0].stuno);
-		  		//更改
+		  		//alert(rows[0].stuno);
+		  		$.messager.prompt('消息框', '说点什么', function(message){
+					if (message){
+						//alert('我说的话: '+message);
+						var param = {
+								"stuno":rows[0].stuno,
+								"message":message
+						}
+						$.ajax({
+							type:'post',
+							url:'sendmessagetostu',
+							contentType:"application/json",    //必须配置
+							data:JSON.stringify(param),//转换成字符串，客户端作为生产者
+							success:function(result){
+								//alert(result.stuimage);
+								alert(result.responseDesc);
+							} 
+						});
+					}else{
+						alert("请输入你要发送的消息！");
+					}
+				});
 		  	}
 	</script>
 </body>

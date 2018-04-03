@@ -37,17 +37,16 @@
      * Name 载入数据
      */
     $('#judge-datagrid').datagrid({
-        url: 'judgement',
+        url: 'judgement?courseId='+${courseId},
         queryParams: formJudgeJson(),
         rownumbers: true,
-        singleSelect: false,
+        singleSelect: true,
         pageSize: 20,
         pagination: true,
         multiSort: true,
         fitColumns: true,
         fit: false,
         columns: [[
-            {field: '', checkbox: true},
             {field: 'id', title: '编号', width: 50, sortable: true, hidden: true},
             {field: 'judgmentTitle', title: '题目', width: 180, sortable: true},
             {field: 'judgmentAnswer', title: '正确答案', width: 100,formatter:function(value,row,index) {

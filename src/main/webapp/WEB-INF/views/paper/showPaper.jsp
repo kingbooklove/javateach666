@@ -1,14 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@include file="../../../common/jstl.jspf"%>
+    pageEncoding="UTF-8" isELIgnored="false"%>
+<%@include file="/common/easyui.jspf"%>
 <!DOCTYPE HTML>
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html;charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link href="${basePath }/css/main.css" rel="stylesheet" type="text/css" />
-<link href="${basePath }/css/iconfont.css" rel="stylesheet" type="text/css" />
-<link href="${basePath }/css/test.css" rel="stylesheet" type="text/css" />
+<link href="${basePath }/static/css/test/main.css" rel="stylesheet" type="text/css" />
+<link href="${basePath }/static/css/test/iconfont.css" rel="stylesheet" type="text/css" />
+<link href="${basePath }/static/css/test/test.css" rel="stylesheet" type="text/css" />
 <style>
 .hasBeenAnswer {
 	background: #5d9cec;
@@ -39,8 +39,8 @@
 							<li id="qu_0_${choiceNum }">
 								<div class="test_content_nr_tt">
 									<c:forEach items="${choiceQues }" var="choiceQue">
-										<c:if test="${choiceQue.id eq choices.choiceId}">
-											<i>${choiceNum }</i><span>(${choiceQue.score }分)</span><font>${choices.choiceTitle }</font>
+										<c:if test="${choiceQue.id eq choices.id}">
+											<i>${choiceNum }</i><span>(${choiceQue.score }分)</span><font>${choices.singleTitle }</font>
 										</c:if>
 									</c:forEach>
 									
@@ -98,8 +98,8 @@
 							<li id="qu_1_${mulNum }">
 								<div class="test_content_nr_tt">
 									<c:forEach items="${mulChoiceQues }" var="mulChoiceQues">
-										<c:if test="${mulChoiceQues.id == mulChoices.choiceId }">
-											<i>${mulNum }</i><span>(${mulChoiceQues.score }分)</span><font>${mulChoices.choiceTitle }</font>
+										<c:if test="${mulChoiceQues.id == mulChoices.id }">
+											<i>${mulNum }</i><span>(${mulChoiceQues.score }分)</span><font>${mulChoices.multipleTitle }</font>
 										</c:if>
 									</c:forEach>
 								</div>
@@ -153,8 +153,8 @@
 							<li id="qu_2_${judgeNum }">
 								<div class="test_content_nr_tt">
 									<c:forEach items="${judgeQues }" var="judgeQues">
-										<c:if test="${judgeQues.id == judges.judgeId }">
-											<i>${judgeNum }</i><span>(${judgeQues.score }分)</span><font>${judges.judgeTitle }</font>
+										<c:if test="${judgeQues.id == judges.id }">
+											<i>${judgeNum }</i><span>(${judgeQues.score }分)</span><font>${judges.judgmentTitle }</font>
 										</c:if>		
 									</c:forEach>
 								</div>
@@ -195,8 +195,8 @@
 							<li id="qu_3_${blankNum }">
 								<div class="test_content_nr_tt">
 									<c:forEach items="${blankQues}" var="blankQues">
-										<c:if test="${blankQues.id == blanks.blankId}">
-											<i>${blankNum }</i><span>(${blankQues.score }分)</span><font>${blanks.blankTitle }</font>
+										<c:if test="${blankQues.id == blanks.id}">
+											<i>${blankNum }</i><span>(${blankQues.score }分)</span><font>${blanks.completionTitle }</font>
 										</c:if>
 									</c:forEach>
 								</div>
@@ -230,8 +230,8 @@
 							<li id="qu_4_${subjectiveNum }">
 								<div class="test_content_nr_tt">
 									<c:forEach items="${subQues }" var="subQues">
-										<c:if test="${subQues.id == subjectives.subId}">
-											<i>${subjectiveNum }</i><span>(${subQues.score }分)</span><font>${subjectives.subTitle }</font>
+										<c:if test="${subQues.id == subjectives.id}">
+											<i>${subjectiveNum }</i><span>(${subQues.score }分)</span><font>${subjectives.subjectiveTitle }</font>
 										</c:if>
 									</c:forEach>
 								</div>
@@ -361,10 +361,9 @@
 	<div class="foot"></div>
 </div>
 
-<script src="${basePath }plugin/uimaker/js/jquery.min.js"></script>
-<script src="${basePath }/js/jquery.easy-pie-chart.js"></script>
+<script src="${basePath }/static/js/jquery.easy-pie-chart.js"></script>
 <!--时间js-->
-<script src="${basePath }/js/jquery.countdown.js"></script>
+<script src="${basePath }/static/js/jquery.countdown.js"></script>
 <script>
 	window.jQuery(function($) {
 		"use strict";

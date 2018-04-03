@@ -2,9 +2,9 @@
 ul,li{list-style: none;line-height: 150%;}
 a{text-decoration: none;}
 body{font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;font-size: 12px;font-weight: normal;color: #11449E;}
+html,body{height:100%;overflow: hidden;}
 
-
-.mainbody{border: 5px solid #678FC2;height:auto;}
+.mainbody{border: 5px solid #678FC2;height:100%;overflow: hidden;}
 
 .header{height: 105px;width: 100%;z-index: 999;}
 .header .logo_box{height: 60px;background: #FFFFFF url(../img/mainpage/icon/head_bg.gif) repeat-x left top;float: left;width: 100%;}

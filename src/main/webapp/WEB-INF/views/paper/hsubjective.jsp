@@ -37,17 +37,16 @@
      * Name 载入数据
      */
     $('#subjective-datagrid').datagrid({
-        url: 'subjectives',
+        url: 'subjectives?courseId='+${courseId},
         queryParams: formSubJson(),
         rownumbers: true,
-        singleSelect: false,
+        singleSelect: true,
         pageSize: 20,
         pagination: true,
         multiSort: true,
         fitColumns: true,
         fit: false,
         columns: [[
-            {field: '', checkbox: true},
             {field: 'id', title: '编号', width: 50, sortable: true, hidden: true},
             {field: 'subjectiveTitle', title: '题目', width: 180, sortable: true},
             {field: 'subjectiveAnswer', title: '正确答案', width: 100},
