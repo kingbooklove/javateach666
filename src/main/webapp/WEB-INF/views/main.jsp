@@ -48,10 +48,10 @@
 								<a href="${basePath }/practice/initPractice" target="_son">练习导航</a>
 							</li>
 							<li>
-								<a href="${basePath }/practice/initPractice" target="_son">参加考试</a>
+								<a href="${basePath }/stuexam/stuexam" target="_son">参加考试</a>
 							</li>
 							<li>
-								<a href="${basePath }/practice/initPractice" target="_son">查询成绩</a>
+								<a href="${basePath }/stuscore/initStuScore" target="_son">查询成绩</a>
 							</li>
 						</ul>
 					</li>
@@ -133,7 +133,6 @@
 								<a href="#">全校性选课</a>
 							</li>
 							<li>
-<<<<<<< HEAD
 								<a href="gonewsinfo" target="_son">新闻信息</a>
 							</li>
 							<li>
@@ -155,6 +154,9 @@
 							</li>
 							<li>
 								<a href="gopostrecord" target="_son">职位申请记录</a>
+							</li>
+							<li>
+								<a href="ProfessionFK" target="_son">升职请求</a>
 							</li>
 						</ul>
 					</li>
@@ -188,9 +190,7 @@
 						<ul class="sub">
 							<li>
 								<a href="gocourseinfo" target="_son">学科信息</a>
-=======
 								<a href="#">课程行课情况查询</a>
->>>>>>> branch 'master' of https://github.com/kingbooklove/javateach666
 							</li>
 						</ul>
 					</li>
@@ -198,16 +198,81 @@
 				<security:authorize ifAnyGranted="TEACHER" >
 					<li class="nav_top">
 						<a class="nav_top_link">
-							<span class="down">网上选课教师</span>
+							<span class="down">信息设置</span>
 						</a>
 						
 						<ul class="sub">
 							<li>
-								<a href="#">全校性选课</a>
+								<a href="teainfo" target="_son">个人资料</a>
+							</li>
+							
+							<li>
+								<a href="allteainfo" target="_son">教师信息</a>
+							</li>
+						</ul>
+					</li>
+					<li class="nav_top">
+						<a class="nav_top_link">
+							<span class="down">通知管理</span>
+						</a>
+						
+						<ul class="sub">
+							<li>
+								<a href="noticeinfo" target="_son">发布通知</a>
 							</li>
 							<li>
-								<a href="#">课程行课情况查询</a>
+								<a href="noticeinfolist" target="_son">通知管理</a>
 							</li>
+						</ul>
+					</li>
+					<li class="nav_top">
+						<a class="nav_top_link">
+							<span class="down">资料管理</span>
+						</a>
+						
+						<ul class="sub">
+							<li>
+								<a href="uploadinformation" target="_son">资料上传</a>
+							</li>
+							<li>
+								<a href="informationlist"  target="_son">资料管理</a>
+							</li>
+						</ul>
+					</li>
+					<li class="nav_top">
+						<a class="nav_top_link">
+							<span class="down">课程管理</span>
+						</a>
+						
+						<ul class="sub">
+							<li>
+								<a href="publishcourse" target="_son">发布选课</a>
+							</li>
+							<li>
+								<a href="stucourseinfo" target="_son">学生选课信息</a>
+							</li>
+							<li>
+								<a href="initmyteaclassinfo" target="_son">教师课表</a>
+							</li>
+							
+						</ul>
+					</li>
+					<li class="nav_top">
+						<a class="nav_top_link">
+							<span class="down">职称管理</span>
+						</a>
+						
+						<ul class="sub">
+							<li>
+								<a href="profession" target="_son">升职请求</a>
+							</li>
+							
+							<li>
+								<a href="professionlist?teano=${TeaInfo.teano }" target="_son">查看升职请求记录</a>
+							</li>
+							<!-- <li>
+								<a href="ProfessionFK">升职请求审批</a>
+							</li> -->
 						</ul>
 					</li>	
 					<li class="nav_top">
@@ -257,13 +322,10 @@
 								<a href="${basePath }/exam/exam" target="_son">考试发布</a>
 							</li>
 							<li>
-								<a href="${basePath }/exampaper/exampaper" target="_son">批改试卷</a>
+								<a href="${basePath }/exam/initCorrecting" target="_son">批改试卷</a>
 							</li>
 							<li>
-								<a href="${basePath }/exampaper/exampaper" target="_son">发布成绩</a>
-							</li>
-							<li>
-								<a href="${basePath }/exampaper/exampaper" target="_son">成绩统计</a>
+								<a href="${basePath }/teascore/initTeaScore" target="_son">成绩统计</a>
 							</li>
 						</ul>
 					</li>	

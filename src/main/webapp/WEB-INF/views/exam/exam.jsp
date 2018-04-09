@@ -18,11 +18,13 @@
             <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-remove" onclick="openExamRemove()"
                plain="true">删除</a>
             <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-edit" onclick="openExamEdit()" plain="true">修改</a>
-	  				<form style="display: inline-block;" name="searchstudentform" method="post" action="" id ="searchstudentform">
-					科目:<input id="stuPaperName" class="easyui-textbox"  name="couName"/>
-					<a id="stusearchbtn" class="easyui-linkbutton">搜索</a>
-					<a id="sturesetbtn" class="easyui-linkbutton">重置</a>
-					</form>
+	  			<br/>	
+ 			<form style="display: inline-block;" name="searchstudentform" method="post" action="" id ="searchstudentform">
+				科目:<input id="stuPaperName" editable="false" panelMaxHeight="100"  name="couName"/>
+				题目:<input id="stuTitleName" class="easyui-textbox"  name="exaName"/>
+				<a id="stusearchbtn" class="easyui-linkbutton">搜索</a>
+				<a id="sturesetbtn" class="easyui-linkbutton">重置</a>
+			</form>
         </div>
     </div>
     <!-- End of toolbar -->
@@ -34,40 +36,29 @@
         <table>
             <tr>
                 <td width="60" align="right"></td>
-                <td><input type="hidden" name="examID" /></td>
+                <td><input type="hidden" name="id" id="id"/></td>
             </tr>
             <tr>
                 <td width="60" align="right">考试科目:</td>
                 <td>
-                    <input id="courseID" name="courseID" required="required" editable="false">
+                    <input id="courseID" name="course.id" required="required" editable="false">
                 </td>
             </tr>
             <tr>
                 <td align="right">考试试卷:</td>
                 <td>
-                    <input id="paperID" name="paperID" required="required" class="easyui-combobox"
+                    <input id="paperID" name="examPaper.id" required="required" class="easyui-combobox"
                            data-options="valueField:'id',textField:'name'" editable="false" panelMaxHeight="100"/>
                 </td>
             </tr>
             <tr>
-                <td align="right">监考老师:</td>
-                <td>
-                    <input id="teaID" name="teaID" required="required" class="easyui-combobox"
-                           data-options="valueField:'id',textField:'name'" editable="false" panelMaxHeight="100"/>
-                </td>
+                <td align="right">考试时长:</td>
+                <td><input id="examTime" type="text" name="examTime" required="required" class="easyui-textbox" required="required"/></td>
             </tr>
             <tr>
                 <td align="right">考试时间:</td>
-                <td><input type="text" name="examTime" required="required" class="easyui-datetimebox" editable="false"
+                <td><input id="beginTime" type="text" name="beginTime" required="required" class="easyui-datetimebox" editable="false"
                            required="required"/></td>
-            </tr>
-            <tr>
-                <td align="right">考试班级:</td>
-                <td><input type="text" name="classId" id="examAddr" required="required"  editable="false"/></td>
-            </tr>
-            <tr>
-                <td align="right">考试地点:</td>
-                <td><input type="text" name="locationId" id="examLocation" required="required"  editable="false"/></td>
             </tr>
         </table>
     </form>
@@ -107,9 +98,9 @@
                 if (result) {
                     var ids = [];
                     $(items).each(function () {
-                        ids.push(this.examID);
+                        ids.push(this.id);
                     });
-                    var url = "exam.do?method=deleteExam";
+                    var url = "deleteExam";
                     $.get(url, {examID: ids.toString()}, function (data) {
                         if (data == 'OK') {
                             $.messager.alert('信息提示', '删除成功！', 'info');
@@ -119,8 +110,7 @@
                             $.messager.alert('信息提示', '删除部分！', 'info');
                             $("#exam-datagrid").datagrid("reload");// 重新加载数据库
                             $('#exam-dialog').dialog('close');
-                        }
-                        else {
+                        } else {
                             $.messager.alert('信息提示', '删除失败！', 'info');
                         }
                     });
@@ -145,7 +135,7 @@
                 text: '确定',
                 iconCls: 'icon-ok',
                 handler: function () {
-                    updateExamFuntion('exam.do?method=addExam');
+                    updateExamFuntion('saveExam');
                 }
             }, {
                 text: '取消',
@@ -168,6 +158,8 @@
         } else {
             var row = $('#exam-datagrid').datagrid('getSelected');
             if (row != null) {
+            	// 加载数据
+            	initdata(row);
                 $('#exam-dialog').dialog({
                     closed: false,
                     modal: true,
@@ -176,7 +168,7 @@
                         text: '确定',
                         iconCls: 'icon-ok',
                         handler: function () {
-                            updateExamFuntion('exam.do?method=updateExam');
+                            updateExamFuntion('updateExam');
                         }
                     }, {
                         text: '取消',
@@ -186,12 +178,32 @@
                         }
                     }]
                 });
-                $('#exam-form').form('load', row);
             } else {
                 $.messager.alert("提示信息", "请选择修改数据", 'info');
             }
         }
     }
+    
+    // form表单加载数据
+    function initdata(data) {
+    	$("#id").attr("value",data.id);
+    	$("#courseID").combobox('select', data.course.id);
+    	$("#paperID").combobox('select', data.examPaper.id);
+    	$("#beginTime").datetimebox('setValue', parsedate(data.beginTime));
+    	$("#examTime").textbox("setValue",data.examTime);
+    }
+    
+    // 格式化时间
+    function parsedate(value){  
+        var date = new Date(value);  
+	    var year = date.getFullYear();  
+	    var month = date.getMonth()+1; //月份+1     
+	    var day = date.getDate();   
+	    var hour = date.getHours();   
+	    var minutes = date.getMinutes();   
+	    var second = date.getSeconds();  
+	    return  day+"/"+month+"/"+year+" "+hour+":"+minutes +":"+second;  
+	}  
 
     /**
      * Name 载入数据
@@ -208,13 +220,20 @@
         fit: true,
         columns: [[
             {field: '', checkbox: true},
+            {field: 'id', hidden:true},
             {field: 'courseName', title: '考试科目', width: 180, sortable: true},
             {field: 'examPaperName', title: '考试试卷', width: 100, sortable: true},
             {field: 'examTime', title: '考试时长', width: 100},
-            {field: 'invigilator', title: '监考老师', width: 100, sortable: true},
-            {field: 'beginTime', title: '考试时间', width: 100},
-            // {field: 'classId', title: '考试班级', width: 100},
-            {field: 'examPlace', title: '考试地点', width: 100}
+            {field: 'beginTime', title: '考试时间', width: 100, formatter: function (value, row, index) {
+            	if(value != null) {
+	            	var date = new Date(value);
+	            	return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() +' '+date.getHours() +':'+ date.getMinutes() +':'+ date.getSeconds();
+            	} else {
+            		return "";
+            	}
+            }},
+            {field: 'couyear', title: '学年', width: 100},
+            {field: 'semester', title: '学期', width: 100}
         ]]
     });
 
@@ -238,8 +257,9 @@
     //将表单数据转为json
     function formExamJson() {
     	var couName = $("#stuPaperName").val();
+    	var exaName = $("#stuTitleName").val();
     	// 返回json
-        return {"couName":couName};
+        return {"couName":couName,"exaName":exaName};
     }
 
 
@@ -247,29 +267,19 @@
      * 创建课程的下拉框
      */
     $('#courseID').combobox({
-        url: 'getCourseJson',
+        url: '${basePath}/kingother/getCourseJson',
         valueField: 'id',
         textField: 'name',
         panelMaxHeight: '100',
         onSelect: function (rec) {
-        	debugger
             var url1 = '${basePath}/exampaper/getExamPaperBycourse?coursId=' + rec.id;
             $('#paperID').combobox('clear');
             $('#paperID').combobox('reload', url1);
-            /* var url2 = 'exam.do?method=getTeaJson&coursId=' + rec.id;
-            $('#teaID').combobox('clear');
-            $('#teaID').combobox('reload', url2); */
              
         }
     });
-    $("#examAddr").combobox({
-		url:'exam.do?method=getExamJson',
-		valueField: 'id',
-        textField: 'name',
-        panelMaxHeight: '100',
-    });
-    $("#examLocation").combobox({
-		url:'exam.do?method=getLocationJson',
+    $("#stuPaperName").combobox({
+		url:'${basePath}/kingother/getCourseJson',
 		valueField: 'id',
         textField: 'name',
         panelMaxHeight: '100',

@@ -1,6 +1,7 @@
 package com.ctbu.javateach666.pojo.bo.thcbo;
 
 public class THCAccountListRspBO {
+
 	public int id;
 	
 	public String username;

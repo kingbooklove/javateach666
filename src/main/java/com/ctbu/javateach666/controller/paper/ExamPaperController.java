@@ -19,12 +19,14 @@ import com.alibaba.fastjson.JSONArray;
 import com.ctbu.javateach666.pojo.bo.QuestionPaper;
 import com.ctbu.javateach666.pojo.po.exam.ExamPaper;
 import com.ctbu.javateach666.pojo.po.exam.ExamRule;
+import com.ctbu.javateach666.pojo.po.kingother.Account;
 import com.ctbu.javateach666.pojo.po.questions.Completion;
 import com.ctbu.javateach666.pojo.po.questions.Judgment;
 import com.ctbu.javateach666.pojo.po.questions.MultipleChoice;
 import com.ctbu.javateach666.pojo.po.questions.SingleChoice;
 import com.ctbu.javateach666.pojo.po.questions.Subjective;
 import com.ctbu.javateach666.pojo.po.thcpo.THCCoursePO;
+import com.ctbu.javateach666.service.interfac.kingother.AccountService;
 import com.ctbu.javateach666.service.interfac.paper.ExamPaperService;
 import com.ctbu.javateach666.service.interfac.paper.ExamRuleService;
 import com.ctbu.javateach666.service.interfac.questions.CompletionService;
@@ -34,6 +36,7 @@ import com.ctbu.javateach666.service.interfac.questions.SingleChoiceService;
 import com.ctbu.javateach666.service.interfac.questions.SubjectiveService;
 import com.ctbu.javateach666.util.CollectionUtils;
 import com.ctbu.javateach666.util.PageUtil;
+import com.ctbu.javateach666.util.UserMessageUtils;
 
 /**
  * 试卷control
@@ -65,16 +68,9 @@ public class ExamPaperController {
 	@Autowired
 	private SubjectiveService SubjectiveService;
 	
+	@Autowired
+	private AccountService AccountService;
 	
-	/**
-	 * 课程列表方法（测试）
-	 */
-	@RequestMapping(value="/coursejson",produces = "text/plain;charset=utf-8")
-	@ResponseBody
-	public String coursejson() {
-		String json = "[{\"name\":\"java基础开发\",\"id\":1},{\"name\":\"Oracle数据库\",\"id\":2},{\"name\":\"C#基础开发\",\"id\":3},{\"name\":\"Mysql数据库\",\"id\":4}]";
-		return json;
-	}
 	
 	/**
 	 * 转发到试卷页面
@@ -101,18 +97,30 @@ public class ExamPaperController {
         ExamPaper examPaper = new ExamPaper();
         
         // 查询参数
-//        String cousename = request.getParameter("course");
-//        String name = request.getParameter("name");
-//        String type = request.getParameter("type");
-//        if(cousename != null && !"".equals(cousename)) {
-//        	examRule.setCouname(cousename);
-//        }
-//        if(name != null && !"".equals(name)) {
-//        	examRule.setRuleName(name);
-//        }
-//        if(type != null && !"".equals(type)) {
-//        	examRule.setRuleType(Integer.valueOf(type));
-//        }
+        String couseId = request.getParameter("course");
+        String pname = request.getParameter("pname");
+        String rname = request.getParameter("rname");
+        if(couseId != null && !"".equals(couseId)) {
+        	THCCoursePO course = new THCCoursePO();
+        	course.setId(Integer.valueOf(couseId));
+        	examPaper.setCourse(course);
+        }
+        if(pname != null && !"".equals(pname)) {
+        	examPaper.setExamPaperName(pname);
+        }
+        if(rname != null && !"".equals(rname)) {
+        	examPaper.setExamRuleName(rname);
+        }
+        
+        // 传入当前教师id
+        String userName = UserMessageUtils.getNowUserName();
+        Account account = new Account();
+        account.setUsername(userName);
+        List<Account> accountlist = AccountService.findList(account);
+        if(CollectionUtils.isNotBlank(accountlist)) {
+        	account = accountlist.get(0);
+        }
+        examPaper.setTeaId(account.getUserdetailid());
         
         List<ExamPaper> list = ExamPaperService.findList(examPaper);
 		String json = PageUtil.findPage(page, rows, list);
@@ -346,15 +354,14 @@ public class ExamPaperController {
 		ExamPaper examPaper = new ExamPaper();
 		examPaper.setCourse(course);
 		List<ExamPaper> findList = ExamPaperService.findList(examPaper);
-		if(CollectionUtils.isNotBlank(findList)) {
-			examPaper = findList.get(0);
-		}
 		String jsonString = "";
-		HashMap<String, Object> map = new HashMap<>();
 		ArrayList<HashMap<String, Object>> list = new ArrayList<>();
-		map.put("id", examPaper.getId());
-		map.put("name", examPaper.getExamPaperName());
-		list.add(map);
+		for(ExamPaper ep : findList) {
+			HashMap<String, Object> map = new HashMap<>();
+			map.put("id", ep.getId());
+			map.put("name", ep.getExamPaperName());
+			list.add(map);
+		}
 		jsonString = JSON.toJSONString(list);
 		return jsonString;
 	}

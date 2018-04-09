@@ -21,8 +21,10 @@
                    plain="true">删除</a>
                 <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-ok" onclick="openImportJudge()"
                    plain="true">导入</a>
+                   <br/>
                 <form id="judge-search-form" style="display: inline-block">
-			                    科目：<input class="easyui-textbox" id="judge-course-value"/>
+			                    科目：<input id="judge-course-value" editable="false" panelMaxHeight="100"/>
+			                    题目：<input class="easyui-textbox" id="judge-name-value"/>
 			                    难度等级：<input class="easyui-textbox" id="judge-degree-value"/>
 			                     时间：<input type="date" id="bdaytime-course-value"/>~<input type="date" id="edaytime-course-value"/>
                     <a id="judge-search-btn" class="easyui-linkbutton">搜索</a>
@@ -47,8 +49,8 @@
             <tr>
                 <td width="60" align="right">课程</td>
                 <td>
-                	<input name="course.id"  panelMaxHeight="100" class="easyui-textbox"/>
-                	<!-- <input type="text" name="couseId" id="courseId"required="required" class="easyui-textbox"editable="false" panelMaxHeight="100"/> -->
+                	<!-- <input name="course.id"  panelMaxHeight="100" class="easyui-textbox"/> -->
+                	<input type="text" name="course.id" id="courseId"required="required" class="easyui-textbox"editable="false" panelMaxHeight="100"/>
                 </td>
             </tr>
             <tr>
@@ -321,17 +323,24 @@
     //将表单数据转为json
     function formJudgeJson() {
         var bJudgeName = $("#judge-course-value").val();
+        var title = $("#judge-name-value").val();
         var degree = $("#judge-degree-value").val();
         var bTime = $("#bdaytime-course-value").val();
         var eTime = $("#edaytime-course-value").val();
-        return {"couseId": bJudgeName,"degree":degree, "bTime": bTime,"eTime":eTime};
+        return {"couseId": bJudgeName,"title":title,"degree":degree, "bTime": bTime,"eTime":eTime};
     }
 
     /**
      * 创建课程的下拉框
      */
     $('#courseId').combobox({
-        url: 'courseServlet.do?method=getCourseByUserId',
+        url: '${basePath}/kingother/getCourseJson',
+        valueField: 'id',
+        textField: 'name',
+        panelMaxHeight: '100',
+    });
+    $('#judge-course-value').combobox({
+        url: '${basePath}/kingother/getCourseJson',
         valueField: 'id',
         textField: 'name',
         panelMaxHeight: '100',

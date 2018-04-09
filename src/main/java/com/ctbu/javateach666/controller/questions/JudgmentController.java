@@ -13,11 +13,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ctbu.javateach666.pojo.po.kingother.Account;
 import com.ctbu.javateach666.pojo.po.questions.Judgment;
-import com.ctbu.javateach666.pojo.po.questions.SingleChoice;
 import com.ctbu.javateach666.pojo.po.thcpo.THCCoursePO;
+import com.ctbu.javateach666.service.interfac.kingother.AccountService;
 import com.ctbu.javateach666.service.interfac.questions.JudgmentService;
+import com.ctbu.javateach666.util.CollectionUtils;
 import com.ctbu.javateach666.util.PageUtil;
+import com.ctbu.javateach666.util.UserMessageUtils;
 
 /**
  * 多选题control
@@ -31,6 +34,8 @@ public class JudgmentController {
 	@Autowired
 	private JudgmentService JudgmentService;
 	
+	@Autowired
+	private AccountService AccountService;
 	/**
 	 * 转发到选择题页面
 	 * @return
@@ -58,6 +63,7 @@ public class JudgmentController {
         
         // 查询参数
         String couseId = request.getParameter("couseId");
+        String title = request.getParameter("title");
         String degree = request.getParameter("degree");
         String bTime = request.getParameter("bTime");
         String eTime = request.getParameter("eTime");
@@ -65,6 +71,9 @@ public class JudgmentController {
         	THCCoursePO course = new THCCoursePO();
         	course.setId(Integer.valueOf(couseId));
         	judgment.setCourse(course);
+        }
+        if(title != null && !"".equals(title)) {
+        	judgment.setJudgmentTitle(title);
         }
         if(degree != null && !"".equals(degree)) {
         	judgment.setDegree(degree);
@@ -84,6 +93,15 @@ public class JudgmentController {
         	}
         }
         
+        // 传入当前教师id
+        String userName = UserMessageUtils.getNowUserName();
+        Account account = new Account();
+        account.setUsername(userName);
+        List<Account> accountlist = AccountService.findList(account);
+        if(CollectionUtils.isNotBlank(accountlist)) {
+        	account = accountlist.get(0);
+        }
+        judgment.setTeaId(account.getUserdetailid());
         
         List<Judgment> list = JudgmentService.findList(judgment);
 		String json = PageUtil.findPage(page, rows, list);

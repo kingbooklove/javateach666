@@ -13,11 +13,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ctbu.javateach666.pojo.po.kingother.Account;
 import com.ctbu.javateach666.pojo.po.questions.MultipleChoice;
-import com.ctbu.javateach666.pojo.po.questions.SingleChoice;
 import com.ctbu.javateach666.pojo.po.thcpo.THCCoursePO;
+import com.ctbu.javateach666.service.interfac.kingother.AccountService;
 import com.ctbu.javateach666.service.interfac.questions.MultipleChoiceService;
+import com.ctbu.javateach666.util.CollectionUtils;
 import com.ctbu.javateach666.util.PageUtil;
+import com.ctbu.javateach666.util.UserMessageUtils;
 
 /**
  * 多选题control
@@ -30,6 +33,9 @@ public class MultipleChoiceController {
 	
 	@Autowired
 	private MultipleChoiceService MultipleChoiceService;
+	
+	@Autowired
+	private AccountService AccountService;
 	
 	/**
 	 * 转发到选择题页面
@@ -58,6 +64,7 @@ public class MultipleChoiceController {
         
         // 查询参数
         String couseId = request.getParameter("couseId");
+        String title = request.getParameter("title");
         String degree = request.getParameter("degree");
         String bTime = request.getParameter("bTime");
         String eTime = request.getParameter("eTime");
@@ -65,6 +72,9 @@ public class MultipleChoiceController {
         	THCCoursePO course = new THCCoursePO();
         	course.setId(Integer.valueOf(couseId));
         	multipleChoice.setCourse(course);
+        }
+        if(title != null && !"".equals(title)) {
+        	multipleChoice.setMultipleTitle(title);
         }
         if(degree != null && !"".equals(degree)) {
         	multipleChoice.setDegree(degree);
@@ -83,6 +93,16 @@ public class MultipleChoiceController {
         		e.printStackTrace();
         	}
         }
+        
+        // 传入当前教师id
+        String userName = UserMessageUtils.getNowUserName();
+        Account account = new Account();
+        account.setUsername(userName);
+        List<Account> accountlist = AccountService.findList(account);
+        if(CollectionUtils.isNotBlank(accountlist)) {
+        	account = accountlist.get(0);
+        }
+        multipleChoice.setTeaId(account.getUserdetailid());
         
         List<MultipleChoice> list = MultipleChoiceService.findList(multipleChoice);
 		String json = PageUtil.findPage(page, rows, list);

@@ -20,9 +20,9 @@ public class ReleaseExam extends DataEntity<ReleaseExam>{
 	private String examPaperName;		// 试卷名
 	private String releaseUsername;		// 发布人姓名
 	private Integer examTime;			// 考试时长
-	private String examPlace;			// 考试地点
-	private String beginTime;			// 考试开始时间
-	private String invigilator;			// 监考人 
+	private Date beginTime;				// 考试开始时间
+	private Integer couyear;			// 学年
+	private Integer semester;			// 学期
 	
 	// 查询条件
 	private Date bTime;					// 查询开始时间
@@ -59,22 +59,10 @@ public class ReleaseExam extends DataEntity<ReleaseExam>{
 	public void setExamTime(Integer examTime) {
 		this.examTime = examTime;
 	}
-	public String getExamPlace() {
-		return examPlace;
-	}
-	public void setExamPlace(String examPlace) {
-		this.examPlace = examPlace;
-	}
-	public String getInvigilator() {
-		return invigilator;
-	}
-	public void setInvigilator(String invigilator) {
-		this.invigilator = invigilator;
-	}
-	public String getBeginTime() {
+	public Date getBeginTime() {
 		return beginTime;
 	}
-	public void setBeginTime(String beginTime) {
+	public void setBeginTime(Date beginTime) {
 		this.beginTime = beginTime;
 	}
 	public String getExamPaperName() {
@@ -94,6 +82,18 @@ public class ReleaseExam extends DataEntity<ReleaseExam>{
 	}
 	public void seteTime(Date eTime) {
 		this.eTime = eTime;
+	}
+	public Integer getCouyear() {
+		return couyear;
+	}
+	public void setCouyear(Integer couyear) {
+		this.couyear = couyear;
+	}
+	public Integer getSemester() {
+		return semester;
+	}
+	public void setSemester(Integer semester) {
+		this.semester = semester;
 	}
 	
 }

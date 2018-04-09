@@ -34,6 +34,9 @@ public class ExamRule extends DataEntity<ExamRule>{
 	private Integer allScore;				// 总分数
 	private Integer ruleType;				// 规则类型(1手动组卷 2自动组卷)
 	
+	// 查询条件
+	private Integer teaId;					// 教师id 
+	
 	public String getRuleName() {
 		return ruleName;
 	}
@@ -153,6 +156,12 @@ public class ExamRule extends DataEntity<ExamRule>{
 	}
 	public void setCouname(String couname) {
 		this.couname = couname;
+	}
+	public Integer getTeaId() {
+		return teaId;
+	}
+	public void setTeaId(Integer teaId) {
+		this.teaId = teaId;
 	}
 	
 }

@@ -31,6 +31,7 @@
 	
 	<sql id="ExamRuleJoins">
 	left join course b on b.id = a.couse_id
+	left join teacourse tc on tc.couid = b.id
 	</sql>
 	
 	<select id="get" resultType="com.ctbu.javateach666.pojo.po.exam.ExamRule">
@@ -60,7 +61,9 @@
 		 <if test="course != null and course.id !=null and course.id !=''">
 		  and a.couse_id = #{course.id}
 		 </if>
-		 
+		 <if test="teaId !=null and teaId !=''">
+		  and tc.teaid = #{teaId}
+		 </if>
 		</where>
 	</select>
 	

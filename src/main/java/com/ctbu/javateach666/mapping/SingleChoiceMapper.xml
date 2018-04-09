@@ -21,6 +21,7 @@
 	
 	<sql id="SingleJoins">
 	left join course b on b.id = a.couse_id
+	left join teacourse tc on tc.couid = b.id
 	</sql>
 	
 	<select id="get" resultType="com.ctbu.javateach666.pojo.po.questions.SingleChoice">
@@ -55,6 +56,9 @@
 		 </if>
 		 <if test="eTime !=null and eTime !=''">
 		  and a.create_time &lt;= #{eTime}
+		 </if>
+		 <if test="teaId !=null and teaId !=''">
+		  and tc.teaid = #{teaId}
 		 </if>
 		</where>
 	</select>

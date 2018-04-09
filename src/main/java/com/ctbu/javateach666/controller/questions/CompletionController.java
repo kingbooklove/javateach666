@@ -13,10 +13,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ctbu.javateach666.pojo.po.kingother.Account;
 import com.ctbu.javateach666.pojo.po.questions.Completion;
 import com.ctbu.javateach666.pojo.po.thcpo.THCCoursePO;
+import com.ctbu.javateach666.service.interfac.kingother.AccountService;
 import com.ctbu.javateach666.service.interfac.questions.CompletionService;
+import com.ctbu.javateach666.util.CollectionUtils;
 import com.ctbu.javateach666.util.PageUtil;
+import com.ctbu.javateach666.util.UserMessageUtils;
 
 /**
  * 单选题control
@@ -29,6 +33,9 @@ public class CompletionController {
 	
 	@Autowired
 	private CompletionService CompletionService;
+	
+	@Autowired
+	private AccountService AccountService;
 	
 	/**
 	 * 转发到填空题页面
@@ -57,6 +64,7 @@ public class CompletionController {
         
         // 查询参数
         String couseId = request.getParameter("couseId");
+        String bTitleName = request.getParameter("bTitleName");
         String degree = request.getParameter("degree");
         String bTime = request.getParameter("bTime");
         String eTime = request.getParameter("eTime");
@@ -64,6 +72,9 @@ public class CompletionController {
         	THCCoursePO course = new THCCoursePO();
         	course.setId(Integer.valueOf(couseId));
         	completion.setCourse(course);
+        }
+        if(bTitleName != null && !"".equals(bTitleName)) {
+        	completion.setCompletionTitle(bTitleName);
         }
         if(degree != null && !"".equals(degree)) {
         	completion.setDegree(degree);
@@ -82,6 +93,16 @@ public class CompletionController {
         		e.printStackTrace();
         	}
         }
+        
+        // 传入当前教师id
+        String userName = UserMessageUtils.getNowUserName();
+        Account account = new Account();
+        account.setUsername(userName);
+        List<Account> accountlist = AccountService.findList(account);
+        if(CollectionUtils.isNotBlank(accountlist)) {
+        	account = accountlist.get(0);
+        }
+        completion.setTeaId(account.getUserdetailid());
         
         
         List<Completion> list = CompletionService.findList(completion);

@@ -13,10 +13,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ctbu.javateach666.pojo.po.kingother.Account;
 import com.ctbu.javateach666.pojo.po.questions.Subjective;
 import com.ctbu.javateach666.pojo.po.thcpo.THCCoursePO;
+import com.ctbu.javateach666.service.interfac.kingother.AccountService;
 import com.ctbu.javateach666.service.interfac.questions.SubjectiveService;
+import com.ctbu.javateach666.util.CollectionUtils;
 import com.ctbu.javateach666.util.PageUtil;
+import com.ctbu.javateach666.util.UserMessageUtils;
 
 /**
  * 单选题control
@@ -29,6 +33,9 @@ public class SubjectiveController {
 	
 	@Autowired
 	private SubjectiveService subjectiveService;
+	
+	@Autowired
+	private AccountService AccountService;
 	
 	/**
 	 * 转发到选择题页面
@@ -57,6 +64,7 @@ public class SubjectiveController {
         
         // 查询参数
         String couseId = request.getParameter("couseId");
+        String title = request.getParameter("title");
         String degree = request.getParameter("degree");
         String bTime = request.getParameter("bTime");
         String eTime = request.getParameter("eTime");
@@ -64,6 +72,9 @@ public class SubjectiveController {
         	THCCoursePO course = new THCCoursePO();
         	course.setId(Integer.valueOf(couseId));
         	subjective.setCourse(course);
+        }
+        if(title != null && !"".equals(title)) {
+        	subjective.setSubjectiveTitle(title);
         }
         if(degree != null && !"".equals(degree)) {
         	subjective.setDegree(degree);
@@ -83,6 +94,15 @@ public class SubjectiveController {
         	}
         }
         
+        // 传入当前教师id
+        String userName = UserMessageUtils.getNowUserName();
+        Account account = new Account();
+        account.setUsername(userName);
+        List<Account> accountlist = AccountService.findList(account);
+        if(CollectionUtils.isNotBlank(accountlist)) {
+        	account = accountlist.get(0);
+        }
+        subjective.setTeaId(account.getUserdetailid());
         
         List<Subjective> list = subjectiveService.findList(subjective);
 		String json = PageUtil.findPage(page, rows, list);

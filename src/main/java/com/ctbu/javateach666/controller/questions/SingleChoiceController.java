@@ -13,10 +13,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ctbu.javateach666.pojo.po.kingother.Account;
 import com.ctbu.javateach666.pojo.po.questions.SingleChoice;
 import com.ctbu.javateach666.pojo.po.thcpo.THCCoursePO;
+import com.ctbu.javateach666.service.interfac.kingother.AccountService;
 import com.ctbu.javateach666.service.interfac.questions.SingleChoiceService;
+import com.ctbu.javateach666.util.CollectionUtils;
 import com.ctbu.javateach666.util.PageUtil;
+import com.ctbu.javateach666.util.UserMessageUtils;
 
 /**
  * 单选题control
@@ -29,6 +33,9 @@ public class SingleChoiceController {
 	
 	@Autowired
 	private SingleChoiceService SingleChoiceService;
+	
+	@Autowired
+	private AccountService AccountService;
 	
 	/**
 	 * 转发到选择题页面
@@ -86,6 +93,16 @@ public class SingleChoiceController {
         		e.printStackTrace();
         	}
         }
+        
+        // 传入当前教师id
+        String userName = UserMessageUtils.getNowUserName();
+        Account account = new Account();
+        account.setUsername(userName);
+        List<Account> accountlist = AccountService.findList(account);
+        if(CollectionUtils.isNotBlank(accountlist)) {
+        	account = accountlist.get(0);
+        }
+        singleChoice.setTeaId(account.getUserdetailid());
         
         
         List<SingleChoice> list = SingleChoiceService.findList(singleChoice);

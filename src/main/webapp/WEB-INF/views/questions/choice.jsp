@@ -24,7 +24,7 @@
                    plain="true">导入</a>
                    <br/>
                 <form id="choice-search-form" style="display: inline-block">
-			                     科目：<input class="easyui-textbox" id="choice-course-value"/>
+			                     科目：<input  id="choice-course-value"  editable="false" panelMaxHeight="100"/>
 			                     题目：<input class="easyui-textbox" id="choice-name-value"/>
 			                     难度等级：<input class="easyui-textbox" id="choice-degree-value"/>
 			                     时间：<input  class="easyui-textbox" type="date" id="bdaytime-course-value"/>~<input  class="easyui-textbox" type="date" id="edaytime-course-value"/>
@@ -50,8 +50,8 @@
             <tr>
                 <td width="60" align="right">科目</td>
                 <td>
-                    <input name="course.id"  panelMaxHeight="100" class="easyui-textbox"/>
-                    <!-- <input id="couseId" name="couseId" required="required" editable="false" panelMaxHeight="100"/> -->
+                    <!-- <input name="course.id"  panelMaxHeight="100" class="easyui-textbox"/> -->
+                    <input id="couseId" name="course.id" required="required" editable="false" panelMaxHeight="100"/>
                 </td>
             </tr>
             <tr>
@@ -215,7 +215,7 @@
      */
     function openAddChoice() {
         $('#choice-form').form('clear');
-        $('#courseId').combobox('reload');
+        $('#couseId').combobox('reload');
         $('#choice-dialog').dialog({
             closed: false,
             modal: true,
@@ -257,7 +257,6 @@
      */
     function openEditChoice() {
         var rows = $('#choice-datagrid').datagrid('getSelections');
-        alert(JSON.stringify(rows[0]));
         if (rows.length > 1) {
             $.messager.alert("提示信息", "只能选择一行");
         } else if (rows.length > 0) {
@@ -375,8 +374,14 @@
     /**
      * 创建课程的下拉框
      */
-    $('#courseId').combobox({
-        url: 'courseServlet.do?method=getCourseByUserId',
+    $('#couseId').combobox({
+        url: '${basePath}/kingother/getCourseJson',
+        valueField: 'id',
+        textField: 'name',
+        panelMaxHeight: '100',
+    });
+    $('#choice-course-value').combobox({
+        url: '${basePath}/kingother/getCourseJson',
         valueField: 'id',
         textField: 'name',
         panelMaxHeight: '100',

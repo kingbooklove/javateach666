@@ -24,6 +24,8 @@ public class Subjective extends DataEntity<Subjective>{
 	// 查询条件
 	private Date bTime;				// 查询开始时间
 	private Date eTime;				// 查询结束时间 
+	private Integer teaId;			// 教师id 
+	
 	public String getSubjectiveTitle() {
 		return subjectiveTitle;
 	}
@@ -71,6 +73,12 @@ public class Subjective extends DataEntity<Subjective>{
 	}
 	public void setCouname(String couname) {
 		this.couname = couname;
+	}
+	public Integer getTeaId() {
+		return teaId;
+	}
+	public void setTeaId(Integer teaId) {
+		this.teaId = teaId;
 	}
 	
 }

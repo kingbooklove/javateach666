@@ -391,19 +391,29 @@
 	
 	<script src="${basePath }/static/js/jquery.easy-pie-chart.js"></script>
 	<script>
-		$(function() {
-			$('li.option label').click(
-					function() {
-						;
-						var examId = $(this).closest('.test_content_nr_main')
-								.closest('li').attr('id'); // 得到题目ID
-						var cardLi = $('a[href=#' + examId + ']'); // 根据题目ID找到对应答题卡
-						// 设置已答题
-						if (!cardLi.hasClass('hasBeenAnswer')) {
-							cardLi.addClass('hasBeenAnswer');
-						}
-					});
+	$(function() {
+		$('li.option label').click(
+		function() {
+			var examId = $(this).closest('.test_content_nr_main')
+					.closest('li').attr('id'); // 得到题目ID
+			var cardLi = $('a[href="#' + examId + '"]'); // 根据题目ID找到对应答题卡
+			// 设置已答题
+			if (!cardLi.hasClass('hasBeenAnswer')) {
+				cardLi.addClass('hasBeenAnswer');
+			}
 		});
+		$('li.option input').click(
+		function() {
+			var examId = $(this).closest('.test_content_nr_main')
+					.closest('li').attr('id'); // 得到题目ID
+			var cardLi = $('a[href="#' + examId + '"]'); // 根据题目ID找到对应答题卡
+			// 设置已答题
+			if (!cardLi.hasClass('hasBeenAnswer')) {
+				cardLi.addClass('hasBeenAnswer');
+			}
+		});
+		
+	});
 
 		function tijiao() {
 			var single = $(".single");

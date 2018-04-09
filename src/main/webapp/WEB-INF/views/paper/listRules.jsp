@@ -19,7 +19,7 @@
                 <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-remove" onclick="removeListRules()" plain="true">删除</a>
 	            <br/>
 	            <form id="Rule-search-form" style="display: inline-block">
-			                     课程：<input class="easyui-textbox" id="rule-course-value"/>
+			                     课程：<input id="rule-course-value"  editable="false" panelMaxHeight="100"/>
 			                     规则名(yyyy/MM/dd-hh:mm)：<input class="easyui-textbox" id="rule-name-value"/>
 			                     组卷方式： <select id="rule-type-value" class="easyui-combobox" style="width:100px;panelMaxHeight:50px;">
 			               		<option></option>
@@ -287,6 +287,16 @@
         var type = $("#rule-type-value").val();
         return {"course": course,"name":name, "type": type};
     }
+    
+    /**
+     * 创建课程的下拉框
+     */
+    $('#rule-course-value').combobox({
+        url: '${basePath}/kingother/getCourseJson',
+        valueField: 'id',
+        textField: 'name',
+        panelMaxHeight: '100',
+    });
 </script>
 </body>
 </html>

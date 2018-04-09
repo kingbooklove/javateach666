@@ -22,8 +22,10 @@
                    plain="true">删除</a>
                 <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-ok" onclick="openImportChoice()"
                    plain="true">导入</a>
+                   <br/>
                 <form id="choice-search-form" style="display: inline-block">
-			                    科目：<input class="easyui-textbox" id="choice-course-value"/>
+			                    科目：<input id="choice-course-value"  editable="false" panelMaxHeight="100"/>
+			                    题目：<input class="easyui-textbox" id="choice-name-value"/>
 			                     难度等级：<input class="easyui-textbox" id="choice-degree-value"/>
 			                     时间：<input type="date" id="bdaytime-course-value"/>~<input type="date" id="edaytime-course-value"/>
                     <a id="choice-search-btn" class="easyui-linkbutton">搜索</a>
@@ -49,8 +51,8 @@
             <tr>
                 <td width="60" align="right">课程</td>
                 <td>
-                	<input name="course.id"  panelMaxHeight="100" class="easyui-textbox"/>
-                    <!-- <input id="couseId" name="couseId" required="required" editable="false" panelMaxHeight="100"/> -->
+                	<!-- <input name="course.id"  panelMaxHeight="100" class="easyui-textbox"/> -->
+                    <input id="couseId" name="course.id" required="required" editable="false" panelMaxHeight="100"/>
                 </td>
             </tr>
             <tr>
@@ -214,7 +216,7 @@
      */
     function openAddChoice() {
         $('#choice-form').form('clear');
-        $('#courseId').combobox('reload');
+        $('#couseId').combobox('reload');
         $('#choice-dialog').dialog({
             closed: false,
             modal: true,
@@ -364,16 +366,23 @@
     //将表单数据转为json
     function formChoiceJson() {
         var bChoiceName = $("#choice-course-value").val();
+        var title = $("#choice-name-value").val();
         var degree = $("#choice-degree-value").val();
         var bTime = $("#bdaytime-course-value").val();
         var eTime = $("#edaytime-course-value").val();
-        return {"couseId": bChoiceName,"degree":degree, "bTime": bTime,"eTime":eTime};
+        return {"couseId": bChoiceName,"title":title,"degree":degree, "bTime": bTime,"eTime":eTime};
     }
     /**
      * 创建课程的下拉框
      */
-    $('#courseId').combobox({
-        url: 'courseServlet.do?method=getCourseByUserId',
+    $('#couseId').combobox({
+        url: '${basePath}/kingother/getCourseJson',
+        valueField: 'id',
+        textField: 'name',
+        panelMaxHeight: '100',
+    }); 
+    $('#choice-course-value').combobox({
+        url: '${basePath}/kingother/getCourseJson',
         valueField: 'id',
         textField: 'name',
         panelMaxHeight: '100',
