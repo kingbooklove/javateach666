@@ -8,6 +8,12 @@ public class THCCourseListRepBO {
 	public int getPage() {
 		return page;
 	}
+	public String getCtype() {
+		return ctype;
+	}
+	public void setCtype(String ctype) {
+		this.ctype = ctype;
+	}
 	public void setPage(int page) {
 		this.page = page;
 	}
@@ -22,11 +28,5 @@ public class THCCourseListRepBO {
 	}
 	public void setCouname(String couname) {
 		this.couname = couname;
-	}
-	public String getCtype() {
-		return ctype;
-	}
-	public void setCtype(String ctype) {
-		this.ctype = ctype;
 	}
 }

@@ -14,20 +14,11 @@
 <title>个人信息修改</title>
 </head>
 <body>
-	<!--选项卡-->
-	<div class="tab">
-		<p class="location">
-			<em>当前位置 --
-				<span id="dqwz">个人信息修改</span>
-			</em>
-		</p>
-	</div>
-	<!--选项卡-->
 	<div id="bod">
 		<table width="80%" height="400px" bgcolor="#f2f6fb" border="1" style="border-color: #99CCFF; border-collapse : collapse">
 		  <tr>
 		    <td width="20%">头像：</td>
-		    <td width="20%" colspan="3"><img width="100px" height="100px" src="${basePath}/static/img/header/img14.png"></td>
+		    <td width="20%" colspan="3"><img width="100px" height="100px" src=""></td>
 		  </tr>
 		  <tr>
 		    <td width="20%">姓名：</td>
@@ -71,7 +62,7 @@
 							contentType: "application/json",    //必须配置
 							success: function(result){
 								man.AdminInfo = result;
-								//alert(man.AdminInfo);
+								alert(JSON.stringify(man.AdminInfo));
 							} 
 						});
 					},

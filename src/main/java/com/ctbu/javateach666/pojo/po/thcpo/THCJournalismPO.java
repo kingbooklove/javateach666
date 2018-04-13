@@ -3,11 +3,14 @@ package com.ctbu.javateach666.pojo.po.thcpo;
 import java.io.Serializable;
 import java.util.Date;
 
-public class THCJournalismPO implements Serializable{
+import com.ctbu.javateach666.common.entity.DataEntity;
+import com.ctbu.javateach666.pojo.po.exam.ReleaseExam;
+
+public class THCJournalismPO extends DataEntity<THCJournalismPO> implements Serializable{
 	
 	private static final long serialVersionUID = 909209112457930372L;
 	
-	private int id;//主页信息id
+	private Integer id;//主页信息id
 	private String joutitle;//标题
 	private String joucontent;//内容
 	private int joutype;//新闻类型
@@ -16,10 +19,11 @@ public class THCJournalismPO implements Serializable{
 	private int pubid;//发布人id
 	private int j_type;//1-新闻  2-公告
 	private int is_delete;//逻辑删除
-	public int getId() {
+
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public String getJoutitle() {

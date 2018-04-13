@@ -11,18 +11,9 @@
 <meta name="_csrf_header"  content="${_csrf.headerName}"/> --%>
 <%@include file="/common/easyui.jspf"%>
 <link rel="stylesheet" type="text/css" href="${basePath}/static/css/main.css"/>
-<title>首页图片管理</title>
+<title>教师职位信息</title>
 </head>
 <body>
-	<!--选项卡-->
-	<div class="tab">
-		<p class="location">
-			<em>当前位置 --
-				<span id="dqwz">教师职位管理</span>
-			</em>
-		</p>
-	</div>
-	<!--选项卡-->
 <div class="easyui-layout" data-options="fit:true">
     <div data-options="region:'center',border:false">
         <!-- Begin of toolbar -->
@@ -49,24 +40,38 @@
         <table style="margin:0 auto; height:250px">
 			<tr>
 			  <td>教师编号：</td>
-			  <td><input type="text" id="teano" name="teano" readonly/></td>
+			  <td><input class="easyui-textbox" id="teano" name="teano" readonly/></td>
 			</tr>
 			<tr>
 			  <td>教师姓名：</td>
-			  <td><input type="text" id="teaname" name="teaname" readonly/></td>
+			  <td><input class="easyui-textbox" id="teaname" name="teaname" readonly/></td>
 			</tr>
 			<tr>
 			  <td>学院：</td>
-			  <td><input type="text" id="teacollage" name="teacollage"/></td>
+			  <td><input class="easyui-combobox" id="teacollage" name="teacollage"/></td>
 			</tr>
 			<tr>
-			  <td>职位：</td>
-			  <td><input type="text" id="professional" name="professional" /></td>
+			  <td>职称：</td>
+			  <td><input type="easyui-combobox" id="professional" name="professional"/></td>
 			</tr>
         </table>
     </form>
 </div>
 	<script type="text/javascript">
+		    $('#teacollage').combobox({
+		    	url: 'getCollegeList',
+		    	editable: true,//不可编辑，只能选择
+		    	valueField: 'college',
+		        textField: 'college'
+		    });
+		    var dtype2 = "职称";
+		    $('#professional').combobox({
+		    	url: 'getSexList?dtype='+dtype2,
+		    	editable: true,//不可编辑，只能选择
+		    	panelMaxHeight: '100',
+		    	valueField: 'dicname',
+		        textField: 'dicname'}
+		    );
 			/**
 		     * Name 载入数据
 		     */
@@ -83,14 +88,14 @@
 		        fitColumns: true,
 		        fit: true,
 		        columns: [[
-		            //{field: '', checkbox: true},
+		            {field: '', checkbox: true, hidden: true},
 		            {field: 'id', title: '编号', width: 50, sortable: true, hidden: true},
 		            {field: 'teano', title: '教师编号', width: 50, sortable: false},
 		            {field: 'teaname', title: '教师姓名', width: 50, sortable: false},
 		            {field: 'teacollage', title: '学院', width: 50, sortable: false},
 		            {field: 'professional', title: '职称', width: 50, sortable: false},
 		            {field: 'operate', title: '操作', align:'center',width:$(this).width()*0.1,formatter:function(value, row, index){  
-						var str = '<a href="#" name="edit" class="easyui-linkbutton" onclick="editTeaPost()" ></a>';  
+						var str = '<a href="javascript:;" name="edit" class="easyui-linkbutton" onclick="editTeaPost()" ></a>';  
 						return str;  
 					}}
 				]],

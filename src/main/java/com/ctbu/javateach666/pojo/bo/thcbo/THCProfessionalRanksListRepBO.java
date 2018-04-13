@@ -3,15 +3,8 @@ package com.ctbu.javateach666.pojo.bo.thcbo;
 public class THCProfessionalRanksListRepBO {
 	private int page;
 	private int rows;
-	private String is_prof;//申请结果
-
-	public String getIs_prof() {
-		return is_prof;
-	}
-	public void setIs_prof(String is_prof) {
-		this.is_prof = is_prof;
-	}
-	private String prof_person_name;//求职人姓名
+	private String s_is_prof;//申请结果
+	private String s_prof_person_name;//求职人姓名
 	public int getPage() {
 		return page;
 	}
@@ -24,10 +17,17 @@ public class THCProfessionalRanksListRepBO {
 	public void setRows(int rows) {
 		this.rows = rows;
 	}
-	public String getProf_person_name() {
-		return prof_person_name;
+	public String getS_is_prof() {
+		return s_is_prof;
 	}
-	public void setProf_person_name(String prof_person_name) {
-		this.prof_person_name = prof_person_name;
+	public void setS_is_prof(String s_is_prof) {
+		this.s_is_prof = s_is_prof;
 	}
+	public String getS_prof_person_name() {
+		return s_prof_person_name;
+	}
+	public void setS_prof_person_name(String s_prof_person_name) {
+		this.s_prof_person_name = s_prof_person_name;
+	}
+
 }

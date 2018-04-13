@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class THCAdminInfoPO implements Serializable{
 	
 	private static final long serialVersionUID = 7930270998068153910L;
-	private int id;//管理员id
+	private Integer id;//管理员id
 	private String adminno;//管理员编号
 	private String adminname;//姓名
 	private String adminimg;//头像
@@ -14,10 +14,11 @@ public class THCAdminInfoPO implements Serializable{
 	private String admincollage;//学院
 	private String adminphone;//电话号码
 	private int isdelete;//逻辑删除
-	public int getId() {
+
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public String getAdminno() {

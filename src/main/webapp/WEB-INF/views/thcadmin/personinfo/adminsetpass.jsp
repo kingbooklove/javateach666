@@ -14,22 +14,13 @@
 <title>密码管理</title>
 </head>
 <body>
-	<!--选项卡-->
-	<div class="tab">
-		<p class="location">
-			<em>当前位置 --
-				<span id="dqwz">密码管理</span>
-			</em>
-		</p>
-	</div>
-	<!--选项卡-->
 	<div id="bod">
 		<table width="80%" height="100px" bgcolor="#f2f6fb" border="1" style="border-color: #99CCFF; border-collapse : collapse">
 		  <tr>
 		    <td width="20%">账号：</td>
 		    <td width="20%">{{ AdminPass.username }}</td>
 		    <td width="20%">密码：</td>
-		    <td width="20%"><input type="text" v-model="AdminPass.password" /></td>
+		    <td width="20%"><input type="password" v-model="AdminPass.password" /></td>
 		  </tr>
   		  <tr>
 		    <td colspan="4">

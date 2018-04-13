@@ -108,36 +108,36 @@
 						</ul>
 					</li>
 				</security:authorize>
+				<!-- 管理员菜单 -->
 				<security:authorize ifAnyGranted="ADMIN" >
 					<li class="nav_top">
 						<a class="nav_top_link">
-							<span class="down">网上选课管理员1</span>
+							<span class="down">个人设置</span>
 						</a>
 						
 						<ul class="sub">
 							<li>
-								<a href="#">全校性选课</a>
+								<a onclick="subtab('个人资料')" href="admininfo" target="_son">个人资料</a>
 							</li>
 							<li>
-								<a href="#">课程行课情况查询</a>
+								<a onclick="subtab('密码管理')" href="adminsetpass" target="_son">密码管理</a>
 							</li>
 						</ul>
 					</li>
 					<li class="nav_top">
 						<a class="nav_top_link">
-							<span class="down">网上选课管理员2</span>
+							<span class="down">首页管理</span>
 						</a>
 						
 						<ul class="sub">
 							<li>
-								<a href="#">全校性选课</a>
+								<a onclick="subtab('轮播图片信息')" href="indeximg" target="_son">轮播图片信息</a>
 							</li>
 							<li>
-<<<<<<< HEAD
-								<a href="gonewsinfo" target="_son">新闻信息</a>
+								<a onclick="subtab('新闻信息')" href="gonewsinfo" target="_son">新闻信息</a>
 							</li>
 							<li>
-								<a href="gopubinfo" target="_son">公告信息</a>
+								<a onclick="subtab('公告信息')" href="gopubinfo" target="_son">公告信息</a>
 							</li>
 						</ul>
 					</li>
@@ -148,13 +148,13 @@
 						
 						<ul class="sub">
 							<li>
-								<a href="goteaaccount" target="_son">教师账户信息</a>
+								<a onclick="subtab('教师账户信息')" href="goteaaccount" target="_son">教师账户信息</a>
 							</li>
 							<li>
-								<a href="goteapost" target="_son">教师职位信息</a>
+								<a onclick="subtab('教师职位信息')" href="goteapost" target="_son">教师职位信息</a>
 							</li>
 							<li>
-								<a href="gopostrecord" target="_son">职位申请记录</a>
+								<a onclick="subtab('职位申请记录')" href="gopostrecord" target="_son">职位申请记录</a>
 							</li>
 						</ul>
 					</li>
@@ -165,7 +165,7 @@
 						
 						<ul class="sub">
 							<li>
-								<a href="gostuaccount" target="_son">学生账户信息</a>
+								<a onclick="subtab('学生账户信息')" href="gostuaccount" target="_son">学生账户信息</a>
 							</li>
 						</ul>
 					</li>
@@ -176,7 +176,7 @@
 						
 						<ul class="sub">
 							<li>
-								<a href="godiclist" target="_son">数据字典信息</a>
+								<a onclick="subtab('数据字典信息')" href="godiclist" target="_son">数据字典信息</a>
 							</li>
 						</ul>
 					</li>
@@ -187,10 +187,7 @@
 						
 						<ul class="sub">
 							<li>
-								<a href="gocourseinfo" target="_son">学科信息</a>
-=======
-								<a href="#">课程行课情况查询</a>
->>>>>>> branch 'master' of https://github.com/kingbooklove/javateach666
+								<a onclick="subtab('学科信息')" href="gocourseinfo" target="_son">学科信息</a>
 							</li>
 						</ul>
 					</li>
@@ -270,13 +267,13 @@
 				</security:authorize>
 			</ul>
 			<!--选项卡-->
-			<!-- <div class="tab">
+			<div class="tab">
 				<p class="location">
 					<em>当前位置 --
-						<span id="dqwz">通知公告</span>
+						<span id="subtab">通知公告</span>
 					</em>
 				</p>
-			</div> -->
+			</div>
 			<!--选项卡-->
 		</div>
 		
@@ -291,4 +288,9 @@
 			
 		</div> -->
 	</body>
+	<script type="text/javascript">
+	function subtab(param) { 
+		$("#subtab").text(param);
+	}
+	</script>
 </html>

@@ -11,18 +11,9 @@
 <meta name="_csrf_header"  content="${_csrf.headerName}"/> --%>
 <%@include file="/common/easyui.jspf"%>
 <link rel="stylesheet" type="text/css" href="${basePath}/static/css/main.css"/>
-<title>首页图片管理</title>
+<title>学生账户管理</title>
 </head>
 <body>
-	<!--选项卡-->
-	<div class="tab">
-		<p class="location">
-			<em>当前位置 --
-				<span id="dqwz">学生账户管理</span>
-			</em>
-		</p>
-	</div>
-	<!--选项卡-->
 <div class="easyui-layout" data-options="fit:true">
     <div data-options="region:'center',border:false">
         <!-- Begin of toolbar -->
@@ -35,6 +26,8 @@
                 </form>
                 <a href="javascript:;" style="text-align: right;" class="easyui-linkbutton" iconAlign="left" iconCls="icon-add" onclick="addstu()"
                    plain="true">添加账户</a>
+                <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-remove" onclick="delAccount()"
+                   plain="true">禁用账户</a>
                 <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-ok" onclick="openImportstuinfo()"
                    plain="true">导入</a>
             </div>
@@ -47,30 +40,121 @@
 <!-- 添加修改页面 -->
 <div id="addstu-dialog" style="width:600px;height:500px; padding:10px;">
     <form id="addstu-form" method="post" >
-        <table style="margin:0 auto; height:250px">
+    	<input type="hidden" name="id" class="easyui-textbox"/>
+        <table style="margin:0 auto; height:350px">
 			<tr>
 			  <td>用户名：</td>
-			  <td><input type="text" id="username" name="username"/></td>
+			  <td><input class="easyui-textbox" id="username" name="username"/></td>
 			</tr>
 			<tr>
 			  <td>密码：</td>
-			  <td><input type="text" id="password" name="password" /></td>
+			  <td><input class="easyui-textbox" id="password" name="password" /></td>
 			</tr>
 			<tr>
 			  <td>是否启用：</td>
-			  <td><input type="text" id="enable" name="enable" /></td>
+			  <td>
+			  	<select class="easyui-combobox" style="width:173px;" id="enable" name="enable">
+			  		<option value="1">是</option>
+			  		<option value="0">否</option>
+			  	</select>
+			  </td>
+			</tr>
+			<tr><td colspan="2">--------------------------------------------</td></tr>
+			<tr>
+			  <td>学生学号：</td>
+			  <td><input class="easyui-textbox" id="stuno" name="stuno"/></td>
+			</tr>
+			<tr>
+			  <td>学生姓名：</td>
+			  <td><input class="easyui-textbox" id="stuname" name="stuname"/></td>
+			</tr>
+			<tr>
+			  <td>性别：</td>
+			  <td><input class="easyui-combobox" id="stusex" name="stusex"/></td>
+			</tr>
+			<tr>
+			  <td>政治面貌：</td>
+			  <td><input class="easyui-combobox" id="political" name="political"/></td>
+			</tr>
+			<tr>
+			  <td>民族：</td>
+			  <td><input class="easyui-textbox" id="nation" name="nation"/></td>
+			</tr>
+			<tr>
+			  <td>年龄：</td>
+			  <td><input class="easyui-textbox" id="stuage" name="stuage"/></td>
+			</tr>
+			<tr>
+			  <td>学院：</td>
+			  <td><input class="easyui-combobox" id="college" name="college"/></td>
+			</tr>
+			<tr>
+			  <td>年级：</td>
+			  <td><input class="easyui-textbox" id="classyear" name="classyear"/></td>
+			</tr>
+			<tr>
+			  <td>专业：</td>
+			  <td><input class="easyui-combobox" id="major" name="major"/></td>
+			</tr>
+			<tr>
+			  <td>班级：</td>
+			  <td><input class="easyui-combobox" id="classname" name="classname"/></td>
+			</tr>
+			<tr>
+			  <td>电话：</td>
+			  <td><input class="easyui-textbox" id="stuphone" name="stuphone"/></td>
 			</tr>
         </table>
     </form>
 </div>
 	<script type="text/javascript">
+			var dtype = "性别";
+			var dtype1 = "政治面貌";
+		    $('#stusex').combobox({
+		    	url: 'getSexList?dtype='+dtype,
+		    	editable: true,//不可编辑，只能选择
+		    	panelMaxHeight: '100',
+		    	valueField: 'dicname',
+		        textField: 'dicname'}
+		    );	
+		    $('#political').combobox({
+		    	url: 'getPoliticalList?dtype='+dtype1,
+		    	editable: true,//不可编辑，只能选择
+		    	valueField: 'dicname',
+		        textField: 'dicname'}
+		    );	
+		    $('#college').combobox({
+		    	url: 'getCollegeList',
+		    	editable: true,//不可编辑，只能选择
+		    	valueField: 'college',
+		        textField: 'college',
+		    	onSelect: function(rec){
+		    		$('#major').combobox({
+				    	url: 'getMajorList?college='+rec.college,
+				    	editable: true,//不可编辑，只能选择
+				    	valueField: 'major',
+				        textField: 'major',
+				        onSelect: function(recc){
+						    $('#classname').combobox({
+						    	url: 'getClassnameList?major='+recc.major,
+						    	editable: true,//不可编辑，只能选择
+						    	valueField: 'claname',
+						        textField: 'claname'}
+						    );
+				        }
+				        }
+				    )
+		    	}    
+		    
+		    }
+		    );	
 			/**
 		     * Name 载入数据
 		     */
 		    $('#stuinfo-datagrid').datagrid({
 		        url: 'getstulist',
 		        rownumbers: true,
-		        singleSelect: true,
+		        singleSelect: false,
 		        checkOnSelect:false,
 	            selectOncheck:false,
 		        pageSize: 10,
@@ -80,19 +164,25 @@
 		        fitColumns: true,
 		        fit: true,
 		        columns: [[
-		            //{field: '', checkbox: true},
+		            {field: '', checkbox: true, hidden: true},
 		            {field: 'id', title: '编号', width: 50, sortable: true, hidden: true},
-		            {field: 'username', title: '用户名', width: 50, sortable: true},
+		            {field: 'username', title: '用户名', width: 50, sortable: false},
 		            {field: 'password', title: '密码', width: 50, sortable: false},
-		            {field: 'enable', title: '是否启用', width: 50, sortable: true},
+		            {field: 'enable', title: '是否启用', width: 50, sortable: false,formatter: function (value, row, index) {
+		            	if(value == 1){
+		            		return "是";
+		            	}else{
+		            		return "否";
+		            	}
+		            }},
+		            {field: 'stuno', title: '学生学号', width: 50, sortable: false},
 		            {field: 'operate', title: '操作', align:'center',width:$(this).width()*0.1,formatter:function(value, row, index){  
-						var str = '<a href="#" name="edit" class="easyui-linkbutton" onclick="editStu()" ></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" name="del" class="easyui-linkbutton" onclick="delStu()" ></a>';  
+						var str = '<a href="javascript:;" name="edit" class="easyui-linkbutton" onclick="editStu()" ></a>';  
 						return str;  
 					}}
 				]],
 				onLoadSuccess:function(data){  
 					$("a[name='edit']").linkbutton({text:'编辑',plain:true,iconCls:'icon-edit'});    
-					$("a[name='del']").linkbutton({text:'禁用',plain:true,iconCls:'icon-cancel'});   
 				},
 		    });
 		    /* 搜索方法*/
@@ -114,13 +204,37 @@
 		        var username = $("#username").val();
 		        return {"username": username};
 		    }
-		  	//删除教师账号
-		  	function delStu(){
+		  	//禁用学生账号
+		  	function delAccount(){
+		        var items = $('#stuinfo-datagrid').datagrid('getSelections');
+		        if (items.length != 0) {
+		            $.messager.confirm('信息提示', '确定要禁用该记录？', function (result) {
+		                if (result) {
+		                    var ids = [];
+		                    $(items).each(function () {
+		                        ids.push(this.id)
+		                    });
+		                    var url = 'delstuaccounts';
+		                    $.get(url, {accountids: ids.toString()}, function (data) {
+		                        if (data == "OK") {
+		                            $.messager.alert('信息提示', '禁用成功！', 'info');
+		                            $("#stuinfo-datagrid").datagrid("reload");// 重新加载数据库
+		                            $('#addstu-dialog').dialog('close');
+		                        } else if (data == "NO") {
+		                            $.messager.alert('信息提示', '禁用部分！', 'info');
+		                            $('#addstu-dialog').dialog('close');
+		                        }
+		                        else {
+		                            $.messager.alert('信息提示', '禁用失败！', 'info');
+		                        }
+		                    });
+		                }
+		            });
+		        }
 		  		
 		  	}
 		  	function addstu(){
-
-		  		//$('#addnews-form').form('clear');
+		  		$('#addstu-form').form('clear');
 		        $('#addstu-dialog').dialog({
 		            closed: false,
 		            modal: true,

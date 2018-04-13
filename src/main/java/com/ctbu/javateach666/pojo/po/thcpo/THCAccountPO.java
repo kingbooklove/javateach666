@@ -2,25 +2,27 @@ package com.ctbu.javateach666.pojo.po.thcpo;
 
 import java.io.Serializable;
 
-public class THCAccountPO implements Serializable{
+import com.ctbu.javateach666.common.entity.DataEntity;
+
+public class THCAccountPO extends DataEntity<THCAccountPO> implements Serializable{
 
 	private static final long serialVersionUID = -7565870336366851901L;
 
-	public int id;
+	private Integer id;
 	
-	public String username;
+	private String username;
 	
-	public String password;
+	private String password;
 	
-	public int enable;
+	private Integer enable;
 	
-	public int userdetailid;
+	private Integer userdetailid;
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -40,21 +42,22 @@ public class THCAccountPO implements Serializable{
 		this.password = password;
 	}
 
-	public int getEnable() {
+	public Integer getEnable() {
 		return enable;
 	}
 
-	public void setEnable(int enable) {
+	public void setEnable(Integer enable) {
 		this.enable = enable;
 	}
 
-	public int getUserdetailid() {
+	public Integer getUserdetailid() {
 		return userdetailid;
 	}
 
-	public void setUserdetailid(int userdetailid) {
+	public void setUserdetailid(Integer userdetailid) {
 		this.userdetailid = userdetailid;
 	}
+
 	
 	
 }

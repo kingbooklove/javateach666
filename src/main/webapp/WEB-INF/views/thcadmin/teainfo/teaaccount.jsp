@@ -11,18 +11,9 @@
 <meta name="_csrf_header"  content="${_csrf.headerName}"/> --%>
 <%@include file="/common/easyui.jspf"%>
 <link rel="stylesheet" type="text/css" href="${basePath}/static/css/main.css"/>
-<title>首页图片管理</title>
+<title>教师账号管理</title>
 </head>
 <body>
-	<!--选项卡-->
-	<div class="tab">
-		<p class="location">
-			<em>当前位置 --
-				<span id="dqwz">教师账户管理</span>
-			</em>
-		</p>
-	</div>
-	<!--选项卡-->
 <div class="easyui-layout" data-options="fit:true">
     <div data-options="region:'center',border:false">
         <!-- Begin of toolbar -->
@@ -35,6 +26,8 @@
                 </form>
                 <a href="javascript:;" style="text-align: right;" class="easyui-linkbutton" iconAlign="left" iconCls="icon-add" onclick="addTea()"
                    plain="true">添加账户</a>
+                <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-remove" onclick="delAccount()"
+                   plain="true">禁用账户</a>
                 <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-ok" onclick="openImportTeaInfo()"
                    plain="true">导入</a>
             </div>
@@ -47,23 +40,99 @@
 <!-- 添加修改页面 -->
 <div id="addtea-dialog" style="width:600px;height:500px; padding:10px;">
     <form id="addtea-form" method="post" >
+    	<input type="hidden" name="id" class="easyui-textbox"/>
         <table style="margin:0 auto; height:250px">
 			<tr>
 			  <td>用户名：</td>
-			  <td><input type="text" id="username" name="username"/></td>
+			  <td><input class="easyui-textbox" id="username" name="username"/></td>
 			</tr>
 			<tr>
 			  <td>密码：</td>
-			  <td><input type="text" id="password" name="password" /></td>
+			  <td><input class="easyui-textbox" id="password" name="password" /></td>
 			</tr>
 			<tr>
 			  <td>是否启用：</td>
-			  <td><input type="text" id="enable" name="enable" /></td>
+			  <td>
+			  	<select class="easyui-combobox" style="width:173px;" id="enable" name="enable">
+			  		<option value="1">是</option>
+			  		<option value="0">否</option>
+			  	</select>
+			  </td>
+			</tr>
+			<tr><td colspan="2">--------------------------------------------</td></tr>
+			<tr>
+			  <td>教师编号：</td>
+			  <td><input class="easyui-textbox" id="teano" name="teano"/></td>
+			</tr>
+			<tr>
+			  <td>教师姓名：</td>
+			  <td><input class="easyui-textbox" id="teaname" name="teaname"/></td>
+			</tr>
+			<tr>
+			  <td>性别：</td>
+			  <td><input class="easyui-combobox" id="teasex" name="teasex"/></td>
+			</tr>
+			<tr>
+			  <td>年龄：</td>
+			  <td><input class="easyui-textbox" id="teaage" name="teaage"/></td>
+			</tr>
+			<tr>
+			  <td>政治面貌：</td>
+			  <td><input class="easyui-combobox" id="political" name="political"/></td>
+			</tr>
+			<tr>
+			  <td>民族：</td>
+			  <td><input class="easyui-textbox" id="teanation" name="teanation"/></td>
+			</tr>
+			<tr>
+			  <td>学院：</td>
+			  <td><input class="easyui-combobox" id="teacollage" name="teacollage"/></td>
+			</tr>
+			<tr>
+			  <td>职称：</td>
+			  <td><input type="easyui-combobox" id="professional" name="professional"/></td>
+			</tr>
+ 			<tr>
+			  <td>入职时间：</td>
+			  <td><input class="easyui-textbox" type="date" style="width:173px;" id="joined_date" name="joined_date"/></td>
+			</tr>
+			<tr>
+			  <td>电话：</td>
+			  <td><input class="easyui-textbox" id="teaphone" name="teaphone"/></td>
 			</tr>
         </table>
     </form>
 </div>
 	<script type="text/javascript">
+			var dtype = "性别";
+			var dtype1 = "政治面貌";
+		    $('#teasex').combobox({
+		    	url: 'getSexList?dtype='+dtype,
+		    	editable: true,//不可编辑，只能选择
+		    	panelMaxHeight: '100',
+		    	valueField: 'dicname',
+		        textField: 'dicname'}
+		    );
+		    $('#political').combobox({
+		    	url: 'getPoliticalList?dtype='+dtype1,
+		    	editable: true,//不可编辑，只能选择
+		    	valueField: 'dicname',
+		        textField: 'dicname'}
+		    );	
+		    $('#teacollage').combobox({
+		    	url: 'getCollegeList',
+		    	editable: true,//不可编辑，只能选择
+		    	valueField: 'college',
+		        textField: 'college'
+		    });
+		    var dtype2 = "职称";
+		    $('#professional').combobox({
+		    	url: 'getSexList?dtype='+dtype2,
+		    	editable: true,//不可编辑，只能选择
+		    	panelMaxHeight: '100',
+		    	valueField: 'dicname',
+		        textField: 'dicname'}
+		    );
 			/**
 		     * Name 载入数据
 		     */
@@ -80,19 +149,25 @@
 		        fitColumns: true,
 		        fit: true,
 		        columns: [[
-		            //{field: '', checkbox: true},
+		            {field: '', checkbox: true, hidden: true},
 		            {field: 'id', title: '编号', width: 50, sortable: true, hidden: true},
-		            {field: 'username', title: '用户名', width: 50, sortable: true},
+		            {field: 'username', title: '用户名', width: 50, sortable: false},
 		            {field: 'password', title: '密码', width: 50, sortable: false},
-		            {field: 'enable', title: '是否启用', width: 50, sortable: true},
+		            {field: 'enable', title: '是否启用', width: 50, sortable: false,formatter: function (value, row, index) {
+		            	if(value == 1){
+		            		return "是";
+		            	}else{
+		            		return "否";
+		            	}
+		            }},
+		            {field: 'teano', title: '教师编号', width: 50, sortable: false},
 		            {field: 'operate', title: '操作', align:'center',width:$(this).width()*0.1,formatter:function(value, row, index){  
-						var str = '<a href="#" name="edit" class="easyui-linkbutton" onclick="editTea()" ></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" name="del" class="easyui-linkbutton" onclick="delTea()" ></a>';  
+						var str = '<a href="javascript:;" name="edit" class="easyui-linkbutton" onclick="editTea()" ></a>';  
 						return str;  
 					}}
 				]],
 				onLoadSuccess:function(data){  
 					$("a[name='edit']").linkbutton({text:'编辑',plain:true,iconCls:'icon-edit'});    
-					$("a[name='del']").linkbutton({text:'删除',plain:true,iconCls:'icon-cancel'});   
 				},
 		    });
 		    /* 搜索方法*/
@@ -114,13 +189,37 @@
 		        var username = $("#username").val();
 		        return {"username": username};
 		    }
-		  	//删除教师账号
-		  	function delTea(){
+		    //禁用教师账号
+		  	function delAccount(){
+		        var items = $('#teainfo-datagrid').datagrid('getSelections');
+		        if (items.length != 0) {
+		            $.messager.confirm('信息提示', '确定要禁用该记录？', function (result) {
+		                if (result) {
+		                    var ids = [];
+		                    $(items).each(function () {
+		                        ids.push(this.id)
+		                    });
+		                    var url = 'delteaaccounts';
+		                    $.get(url, {accountids: ids.toString()}, function (data) {
+		                        if (data == "OK") {
+		                            $.messager.alert('信息提示', '禁用成功！', 'info');
+		                            $("#teainfo-datagrid").datagrid("reload");// 重新加载数据库
+		                            $('#addtea-dialog').dialog('close');
+		                        } else if (data == "NO") {
+		                            $.messager.alert('信息提示', '禁用部分！', 'info');
+		                            $('#addtea-dialog').dialog('close');
+		                        }
+		                        else {
+		                            $.messager.alert('信息提示', '禁用失败！', 'info');
+		                        }
+		                    });
+		                }
+		            });
+		        }
 		  		
 		  	}
 		  	function addTea(){
-
-		  		//$('#addnews-form').form('clear');
+		  		$('#addtea-form').form('clear');
 		        $('#addtea-dialog').dialog({
 		            closed: false,
 		            modal: true,

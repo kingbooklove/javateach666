@@ -2,27 +2,30 @@ package com.ctbu.javateach666.pojo.po.thcpo;
 
 import java.io.Serializable;
 
-public class THCIndexImgPO implements Serializable{
+import com.ctbu.javateach666.common.entity.DataEntity;
+
+public class THCIndexImgPO extends DataEntity<THCIndexImgPO> implements Serializable{
 
 	private static final long serialVersionUID = 2929070710959003129L;
 
-	private int id;//图片id
+	private Integer id;//图片id
 	private String imgno;//图片编号
 	private String imgname;//图片名称
 	private String imgurl;//图片地址
 	private String create_time;//上传时间
-	private int is_pub;//是否发布
-	public int getIs_pub() {
-		return is_pub;
-	}
-	public void setIs_pub(int is_pub) {
-		this.is_pub = is_pub;
-	}
-	public int getId() {
+	private Integer is_pub;//是否发布
+
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
+	}
+	public Integer getIs_pub() {
+		return is_pub;
+	}
+	public void setIs_pub(Integer is_pub) {
+		this.is_pub = is_pub;
 	}
 	public String getImgno() {
 		return imgno;

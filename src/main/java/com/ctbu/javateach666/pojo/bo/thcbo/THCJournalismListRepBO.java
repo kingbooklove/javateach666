@@ -6,6 +6,13 @@ public class THCJournalismListRepBO {
 	private String joutitle;
 	private String joucontent;
 	private int j_type;
+	private String dtype;
+	public String getDtype() {
+		return dtype;
+	}
+	public void setDtype(String dtype) {
+		this.dtype = dtype;
+	}
 	public int getJ_type() {
 		return j_type;
 	}

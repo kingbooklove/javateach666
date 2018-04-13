@@ -3,15 +3,17 @@ package com.ctbu.javateach666.pojo.po.thcpo;
 import java.io.Serializable;
 import java.util.Date;
 
-public class THCTeachersInfo implements Serializable{
+import com.ctbu.javateach666.common.entity.DataEntity;
+
+public class THCTeachersInfoPO extends DataEntity<THCTeachersInfoPO> implements Serializable{
 
 	private static final long serialVersionUID = -8163739882225639971L;
-	private int id;
+	private Integer id;
 	private String teaname;//教师姓名
 	private String email;//邮箱
-	private int teaage;//年龄
+	private Integer teaage;//年龄
 	private String teano;//教师编号
-	private Date joined_date;//入职时间
+	private String joined_date;//入职时间
 	private String professional;//职称
 	private String prosonal_statement;//个人说明
 	private String teaphone;//电话
@@ -21,11 +23,18 @@ public class THCTeachersInfo implements Serializable{
 	private String teanation;//民族
 	private String political;//政治面貌
 	private int isdelete;//逻辑删除
-	public int getId() {
+
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
+	}
+	public Integer getTeaage() {
+		return teaage;
+	}
+	public void setTeaage(Integer teaage) {
+		this.teaage = teaage;
 	}
 	public String getTeaname() {
 		return teaname;
@@ -39,22 +48,16 @@ public class THCTeachersInfo implements Serializable{
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public int getTeaage() {
-		return teaage;
-	}
-	public void setTeaage(int teaage) {
-		this.teaage = teaage;
-	}
 	public String getTeano() {
 		return teano;
 	}
 	public void setTeano(String teano) {
 		this.teano = teano;
 	}
-	public Date getJoined_date() {
+	public String getJoined_date() {
 		return joined_date;
 	}
-	public void setJoined_date(Date joined_date) {
+	public void setJoined_date(String joined_date) {
 		this.joined_date = joined_date;
 	}
 	public String getProfessional() {
@@ -87,10 +90,10 @@ public class THCTeachersInfo implements Serializable{
 	public void setTeasex(String teasex) {
 		this.teasex = teasex;
 	}
-	public String getTeacollage() {
+	public String getteacollage() {
 		return teacollage;
 	}
-	public void setTeacollage(String teacollage) {
+	public void setteacollage(String teacollage) {
 		this.teacollage = teacollage;
 	}
 	public String getTeanation() {
