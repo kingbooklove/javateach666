@@ -21,6 +21,7 @@
 							</select>
 						<a id="scoresearchbtn" class="easyui-linkbutton">搜索</a>
 						<a id="scoreresetbtn" class="easyui-linkbutton">重置</a>
+						<a id="reportbtn" class="easyui-linkbutton">导出</a>
 						</form>
 		            </div>
 		        </div>
@@ -72,6 +73,16 @@
  		$('#sc-datagrit').datagrid({ 
  				queryParams: formJson()
  			}); 
+ 	});
+	
+	/*导出方法*/
+ 	$("#reportbtn").click(function(){
+ 		var couyear = $("#couyear").val();
+    	var semester = $("#semester").val();
+    	if(couyear != null && couyear != "" && !semester != null && semester != "") {
+    		window.location.href="${basePath}/stuscore/getScoreExcel?couyear="+couyear+"&semester="+semester;
+    	}
+ 		
  	});
 
     //将表单数据转为json

@@ -18,6 +18,7 @@
 						学生姓名:<input id="stuId"  class="easyui-textbox"/>
 						<a id="scoresearchbtn" class="easyui-linkbutton">搜索</a>
 						<a id="scoreresetbtn" class="easyui-linkbutton">重置</a>
+						<a id="reportbtn" class="easyui-linkbutton">导出</a>
 						</form>
 		            </div>
 		        </div>
@@ -122,7 +123,7 @@
  		// 重新加载数据
  		$('#sc-datagrit').datagrid({ 
  				queryParams: formJson()
- 			}); 
+ 		}); 
  	});
 
     //将表单数据转为json
@@ -132,6 +133,22 @@
     	// 返回json
         return {"paperId":paperId,"stuName":stuId};
     }
+    
+    /*导出方法*/
+ 	$("#reportbtn").click(function(){
+ 		var paperId = $("#paperId").val();
+    	var stuId = $("#stuId").val();
+    	if(paperId != null && paperId != "") {
+    		if(stuId != null && stuId != "") {
+	    		window.location.href="${basePath}/teascore/getScoreExcel?paperId="+paperId+"&stuId="+stuId;
+    		} else {
+	    		window.location.href="${basePath}/teascore/getScoreExcel?paperId="+paperId+"&stuId=";
+    		}
+    	} else {
+    		alert("请选择需要导出的试卷！");
+    	}
+ 		
+ 	});
     
     /**
      * 创建试卷的下拉框

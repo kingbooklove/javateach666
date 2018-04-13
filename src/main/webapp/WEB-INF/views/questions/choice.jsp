@@ -26,7 +26,13 @@
                 <form id="choice-search-form" style="display: inline-block">
 			                     科目：<input  id="choice-course-value"  editable="false" panelMaxHeight="100"/>
 			                     题目：<input class="easyui-textbox" id="choice-name-value"/>
-			                     难度等级：<input class="easyui-textbox" id="choice-degree-value"/>
+			                     难度等级： <select class="easyui-combobox" id="choice-degree-value" style="width:80px;" panelMaxHeight="100" editable="false">
+			               	<option></option>
+			               	<option value="1">1</option>
+			               	<option value="2">2</option>
+			               	<option value="3">3</option>
+			               	<option value="4">4</option>
+			               </select>
 			                     时间：<input  class="easyui-textbox" type="date" id="bdaytime-course-value"/>~<input  class="easyui-textbox" type="date" id="edaytime-course-value"/>
                     <a id="choice-search-btn" class="easyui-linkbutton">搜索</a>
                     <a id="choice-search-reset" class="easyui-linkbutton">重置</a>
@@ -50,14 +56,19 @@
             <tr>
                 <td width="60" align="right">科目</td>
                 <td>
-                    <!-- <input name="course.id"  panelMaxHeight="100" class="easyui-textbox"/> -->
                     <input id="couseId" name="course.id" required="required" editable="false" panelMaxHeight="100"/>
                 </td>
             </tr>
             <tr>
                 <td width="60" align="right">题目难度</td>
                 <td>
-                    <input id="degree" name="degree"  class="easyui-textbox"/>
+                    <select class="easyui-combobox" id="degree" name="degree" style="width:174px;" panelMaxHeight="100" editable="false">
+		               	<option></option>
+		               	<option value="1">1</option>
+		               	<option value="2">2</option>
+		               	<option value="3">3</option>
+		               	<option value="4">4</option>
+	                </select>
                 </td>
             </tr>
             <tr>
@@ -110,13 +121,11 @@
 </div>
 <div id="choice-import-dialog"class="easyui-dialog" data-options="closed:true" style="padding: 30px">
     <form style="text-align: center" id="choice-import-form" method="post" enctype="multipart/form-data">
-        <input id="choice-import-input" name="excel" style="width:300px">
+        <input id="choice-import-input" name="excel" style="width:300px"/>
     </form>
 </div>
 <!-- End of easyui-dialog -->
 <script type="text/javascript">
-
-
     //倒入
     function openImportChoice() {
         $('#choice-import-form').form('clear');
@@ -131,7 +140,7 @@
                 iconCls: 'icon-ok',
                 handler: function () {
                     $("#choice-import-form").form('submit', {
-                        url: 'choices.do?method=importExcel',
+                        url: 'importExcel',
                         onSubmit: function () {
                             var isValid = $(this).form('validate');
                             if (isValid) {
@@ -144,11 +153,8 @@
                         },
                         success: function (data) {
                             $.messager.progress('close');
-                            $('#choice-import-form').dialog('close');
-                            alert(1 + data)
                             if (data == "OK") {
                                 $.messager.alert('信息提示', '提交成功！');
-
                             } else {
                                 $.messager.alert('信息提示', '提交失败！');
                             }
@@ -169,13 +175,14 @@
         });
     }
 
-    $(function () {
+   $(function () {
         $('#choice-import-input').filebox({
             buttonText: '选择导入的excel文件',
             buttonAlign: 'right',
             height: 40
         });
-    });
+        $("#choice-import-dialog").find("a").css("margin-left","176px");
+    }); 
 
 
     /**

@@ -15,6 +15,7 @@ public class MultipleChoice extends DataEntity<MultipleChoice>{
 	private static final long serialVersionUID = 1L;
 	
 	private THCCoursePO course;		// 课程
+	private String courseId;		// 课程id
 	private String couname;			// 课程名
 	private String multipleTitle;	// 多选题目
 	private String answera;			// A选项
@@ -107,6 +108,12 @@ public class MultipleChoice extends DataEntity<MultipleChoice>{
 	}
 	public void setTeaId(Integer teaId) {
 		this.teaId = teaId;
+	}
+	public String getCourseId() {
+		return courseId;
+	}
+	public void setCourseId(String courseId) {
+		this.courseId = courseId;
 	}
 	
 	

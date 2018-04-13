@@ -25,7 +25,13 @@
                 <form id="blank-search-form" style="display: inline-block">
 			                     科目：<input  id="blank-course-value" editable="false" panelMaxHeight="100"/>
 			                     题目：<input class="easyui-textbox" id="blank-name-value"/>
-			                    难度等级：<input class="easyui-textbox" id="choice-degree-value"/>
+			                    难度等级：<select class="easyui-combobox" id="choice-degree-value" style="width:80px;" panelMaxHeight="100" editable="false">
+			               	<option></option>
+			               	<option value="1">1</option>
+			               	<option value="2">2</option>
+			               	<option value="3">3</option>
+			               	<option value="4">4</option>
+			              </select>
 			                     时间：<input type="date" id="bdaytime-course-value"/>~<input type="date" id="edaytime-course-value"/>
                     <a id="blank-search-btn" class="easyui-linkbutton">搜索</a>
                     <a id="blank-search-reset" class="easyui-linkbutton">重置</a>
@@ -56,7 +62,13 @@
             <tr>
                 <td width="60" align="right">题目难度</td>
                 <td>
-                    <input id="degree" name="degree"  class="easyui-textbox"/>
+                    <select class="easyui-combobox" id="degree" name="degree" style="width:174px;" panelMaxHeight="100" editable="false">
+		               	<option></option>
+		               	<option value="1">1</option>
+		               	<option value="2">2</option>
+		               	<option value="3">3</option>
+		               	<option value="4">4</option>
+	                </select>
                 </td>
             </tr>
             <tr>
@@ -75,7 +87,7 @@
     </form>
 </div>
 <div id="blank-import-dialog" class="easyui-dialog" data-options="closed:true" style="padding: 30px" >
-    <form id="blank-import-form" method="post" enctype="multipart/form-data">
+    <form style="text-align: center;" id="blank-import-form" method="post" enctype="multipart/form-data">
         <input id="fb" name="excel" style="width:300px">
     </form>
 </div>
@@ -97,7 +109,7 @@
                 iconCls: 'icon-ok',
                 handler: function () {
                     $("#blank-import-form").form('submit', {
-                        url: 'blank.do?method=importExcel',
+                        url: 'importExcel',
                         onSubmit: function () {
                             var validate =  $(this).form('validate');
                             if (validate){
@@ -114,7 +126,8 @@
                             $.messager.progress('close');
                             if (data == "OK") {
                                 $.messager.alert('信息提示', '提交成功！');
-
+                            } else {
+                                $.messager.alert('信息提示', '提交失败！');
                             }
                             $('#blank-import-dialog').dialog('close');
                             $('#blank-datagrid').datagrid('reload');
@@ -137,7 +150,8 @@
             buttonText: '选择导入的excel文件',
             buttonAlign: 'right',
             height: 40,
-        })
+        });
+        $("#blank-import-dialog").find("a").css("margin-left","176px");
     });
 
     /**
@@ -264,7 +278,7 @@
         url: 'completions',
         rownumbers: true,
         singleSelect: false,
-        pageSize: 20,
+        pageSize: 10,
         pagination: true,
         multiSort: true,
         fitColumns: true,

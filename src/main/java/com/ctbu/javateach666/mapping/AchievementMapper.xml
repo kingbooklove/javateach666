@@ -29,7 +29,7 @@
 	<sql id="AchievementJoins">
 	left join studentinfo stu on stu.id = a.stu_id
 	left join exampaper e on e.id = a.paper_id
-	left join course c on c.id = e.course_id
+	left join course c on c.id = e.couse_id
 	</sql>
 	
 	<select id="get" resultType="com.ctbu.javateach666.pojo.po.exam.Achievement">
@@ -63,6 +63,7 @@
 		 	and a.semester = #{semester}
 		 </if>
 		</where>
+		order by a.score desc
 	</select>
 	
 	<insert id="insert">

@@ -15,6 +15,7 @@ public class Subjective extends DataEntity<Subjective>{
 	private static final long serialVersionUID = 1L;
 	
 	private THCCoursePO course;			// 课程
+	private String courseId;			// 课程id
 	private String couname;				// 课程名
 	private String subjectiveTitle;		// 主观题目
 	private String subjectiveAnswer;	// 主观答案
@@ -22,9 +23,9 @@ public class Subjective extends DataEntity<Subjective>{
 	private Date createTime;			// 创建时间
 	
 	// 查询条件
-	private Date bTime;				// 查询开始时间
-	private Date eTime;				// 查询结束时间 
-	private Integer teaId;			// 教师id 
+	private Date bTime;					// 查询开始时间
+	private Date eTime;					// 查询结束时间 
+	private Integer teaId;				// 教师id 
 	
 	public String getSubjectiveTitle() {
 		return subjectiveTitle;
@@ -79,6 +80,12 @@ public class Subjective extends DataEntity<Subjective>{
 	}
 	public void setTeaId(Integer teaId) {
 		this.teaId = teaId;
+	}
+	public String getCourseId() {
+		return courseId;
+	}
+	public void setCourseId(String courseId) {
+		this.courseId = courseId;
 	}
 	
 }

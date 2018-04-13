@@ -15,6 +15,7 @@ public class Judgment extends DataEntity<Judgment>{
 	private static final long serialVersionUID = 1L;
 	
 	private THCCoursePO course;		// 课程
+	private String courseId;		// 课程id
 	private String couname;			// 课程名
 	private String judgmentTitle;	// 判断题目
 	private String judgmentAnswer;	// 判断答案
@@ -79,6 +80,12 @@ public class Judgment extends DataEntity<Judgment>{
 	}
 	public void setTeaId(Integer teaId) {
 		this.teaId = teaId;
+	}
+	public String getCourseId() {
+		return courseId;
+	}
+	public void setCourseId(String courseId) {
+		this.courseId = courseId;
 	}
 	
 	

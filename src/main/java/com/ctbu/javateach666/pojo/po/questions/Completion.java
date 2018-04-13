@@ -15,6 +15,7 @@ public class Completion extends DataEntity<Completion>{
 	private static final long serialVersionUID = 1L;
 	
 	private THCCoursePO course;			// 课程
+	private String courseId;			// 课程id
 	private String couname;				// 课程名
 	private String completionTitle;		// 填空题目
 	private String completionAnswer;	// 填空答案
@@ -78,6 +79,12 @@ public class Completion extends DataEntity<Completion>{
 	}
 	public void setTeaId(Integer teaId) {
 		this.teaId = teaId;
+	}
+	public String getCourseId() {
+		return courseId;
+	}
+	public void setCourseId(String courseId) {
+		this.courseId = courseId;
 	}
 	
 	
