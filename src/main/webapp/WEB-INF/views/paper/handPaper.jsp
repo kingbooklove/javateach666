@@ -91,10 +91,10 @@
 	</style>	
 	<div id="handBox" class="easyui-panel" style="background:#eee;">
 		<form id="handPaper" method="post" class="elegant-aero">
-			<h1>手动组卷 </h1>
+			<h1>创建规则 </h1>
 			<label> 
 				<span>选择课程:</span>
-				<input id="coursIDHand" name="coursID" required="required" value="1" editable="false">
+				<input id="coursIDHand" name="coursID" required="required" editable="false">
 			</label> 
 			<input type="hidden" name="ruleType" value="1">
 			<input type="hidden" name="id" id="ruleId">
@@ -150,8 +150,7 @@
 	
 	<script>
 		function getExam(url,name){
-			var courseId = 1;
-			// courseId = $("#coursIDHand").combobox('getValue'); 
+			var courseId = $("#coursIDHand").combobox('getValue'); 
 			$("#promptDiv").dialog({
 				title:"题型窗口",
 				width:1000,
@@ -291,11 +290,11 @@
 		$("#handPaper").form('submit',{
 			url:"saveHandPaper",
 			onSubmit:function(){
-				/* var course = $("#coursIDHand").combobox("getValue");
+				var course = $("#coursIDHand").combobox("getValue");
 				if(course == "请选择课程") {
 					alert("请选择课程！");
 					return false;
-				} */
+				} 
 			},
 			success:function(data){
 				alert(data);
@@ -334,12 +333,12 @@
   	 * 创建课程的下拉框
   	 */
   	 
-  	/* $('#coursIDHand').combobox({    
-  	    url:'exam.do?method=getCourseJson',    
+  	$('#coursIDHand').combobox({    
+  	    url:'${basePath}/kingother/getCourseJson',    
   	    valueField:'id',    
   	    textField:'name',
   	  	panelMaxHeight:'100'
-  	});  */
+  	}); 
 	</script>
 	
 		

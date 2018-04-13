@@ -52,7 +52,7 @@
             {field: 'subjectiveAnswer', title: '正确答案', width: 100},
             {field: 'degree', title: '难度等级', width: 50},
             {field: '_operate', title: '操作', width: 30,formatter:function(value,row,index){
-            	return '<a href="#" onclick="selectTitle('+index+')">选择</a>';
+            	return '<a href="javascript:;" onclick="selectTitle('+index+')">选择</a>';
             }}
         ]]
     });
@@ -61,7 +61,7 @@
     function selectTitle(index) {
     	$('#subjective-datagrid').datagrid('selectRow',index);// 关键在这里
         var row = $('#subjective-datagrid').datagrid('getSelected');  
-    	$("#singles").append("<tr><td><input type='checkbox' checked='checked' style='display:none;' id ='"+row.id+"' value='"+row.id+"'/>"+row.subjectiveTitle+"</td><td><input type='text' id ='score"+row.id+"' placeholder='输入分数' name='score' size='4' /></td><td><a href='#' onclick='removeTitle(this);' >删除</a></td></tr>");
+    	$("#singles").append("<tr><td><input type='checkbox' checked='checked' style='display:none;' id ='"+row.id+"' value='"+row.id+"'/>"+row.subjectiveTitle+"</td><td><input type='text' id ='score"+row.id+"' placeholder='输入分数' name='score' size='4' /></td><td><a href='javascript:;' onclick='removeTitle(this);' >删除</a></td></tr>");
     }
     // 删除选择题目
     function removeTitle(nowtr){

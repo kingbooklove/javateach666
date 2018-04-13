@@ -19,6 +19,9 @@ public class ExamPaper extends DataEntity<ExamPaper>{
 	private String examRuleName;		// 规则名
 	private String examScore;			// 试卷分数
 	
+	//查询条件
+	private Integer teaId;				// 教师id 
+	
 	public THCCoursePO getCourse() {
 		return course;
 	}
@@ -60,6 +63,12 @@ public class ExamPaper extends DataEntity<ExamPaper>{
 	}
 	public void setExamScore(String examScore) {
 		this.examScore = examScore;
+	}
+	public Integer getTeaId() {
+		return teaId;
+	}
+	public void setTeaId(Integer teaId) {
+		this.teaId = teaId;
 	}
 	
 	

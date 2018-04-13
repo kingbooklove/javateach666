@@ -8,14 +8,14 @@
 	a.paper_id AS "examPaper.id",
 	a.release_username AS "releaseUsername",
 	a.exam_time AS "examTime",
-	a.exam_place AS "examPlace",
 	a.begin_time AS "beginTime",
-	a.invigilator AS "invigilator",
 	a.is_delete AS "isDelete",
+	a.couyear AS "couyear",
+	a.semester AS "semester",
 	
 	
 	b.couname AS "course.couname",
-	b.couname AS "couname",
+	b.couname AS "courseName",
 	
 	p.exam_paper_name AS "examPaper.examPaperName",
 	p.exam_score AS "examPaper.examScore",
@@ -45,11 +45,11 @@
 		 <if test="course != null and course.id !=null and course.id !=''">
 		  and a.couse_id = #{course.id}
 		 </if>
-		 <if test="bTime !=null and bTime !=''">
-		  and a.create_time &gt;= #{bTime}
+		 <if test="courseName != null and courseName !=''">
+		  and b.couname LIKE CONCAT('%',#{courseName},'%')  
 		 </if>
-		 <if test="eTime !=null and eTime !=''">
-		  and a.create_time &lt;= #{eTime}
+		 <if test="examPaperName != null and examPaperName !=''">
+		  and p.exam_paper_name LIKE CONCAT('%',#{examPaperName},'%')  
 		 </if>
 		</where>
 	</select>
@@ -61,9 +61,9 @@
 			paper_id,
 			release_username,
 			exam_time,
-			exam_place,
-			invigilator,
 			begin_time,
+			couyear,
+			semester,
 			is_delete
 		) VALUES (
 			#{id},
@@ -71,9 +71,9 @@
 			#{examPaper.id},
 			#{releaseUsername},
 			#{examTime},
-			#{examPlace},
-			#{invigilator},
 			#{beginTime},
+			#{couyear},
+			#{semester},
 			0
 		)
 	</insert>
@@ -83,9 +83,9 @@
 			paper_id = #{examPaper.id},
 			release_username = #{releaseUsername},
 			exam_time = #{examTime},
-			exam_place = #{examPlace},
-			invigilator = #{invigilator},
 			begin_time = #{beginTime},
+			couyear = #{couyear},
+			semester = #{semester}
 		WHERE id = #{id}
 	</update>
 	

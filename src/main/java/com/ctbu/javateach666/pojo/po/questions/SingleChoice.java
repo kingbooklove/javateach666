@@ -15,6 +15,7 @@ public class SingleChoice extends DataEntity<SingleChoice>{
 	private static final long serialVersionUID = 1L;
 	
 	private THCCoursePO course;		// 课程
+	private String courseId;		// 课程id
 	private String couname;			// 课程名
 	private String singleTitle;		// 单选题目
 	private String answera;			// A选项
@@ -28,6 +29,7 @@ public class SingleChoice extends DataEntity<SingleChoice>{
 	// 查询条件
 	private Date bTime;				// 查询开始时间
 	private Date eTime;				// 查询结束时间 
+	private Integer teaId;			// 教师id 
 	
 	public String getSingleTitle() {
 		return singleTitle;
@@ -100,6 +102,18 @@ public class SingleChoice extends DataEntity<SingleChoice>{
 	}
 	public void setCouname(String couname) {
 		this.couname = couname;
+	}
+	public Integer getTeaId() {
+		return teaId;
+	}
+	public void setTeaId(Integer teaId) {
+		this.teaId = teaId;
+	}
+	public String getCourseId() {
+		return courseId;
+	}
+	public void setCourseId(String courseId) {
+		this.courseId = courseId;
 	}
 	
 	

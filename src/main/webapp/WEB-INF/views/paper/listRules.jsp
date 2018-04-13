@@ -13,19 +13,13 @@
         <!-- Begin of toolbar -->
         <div id="rules-list-toolbar">
             <div class="wu-toolbar-button">
-                <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-add" onclick="addListRulesByHand()" plain="true">手动添加</a>
-                <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-add" onclick="addListRulesByAuto()" plain="true">自动添加</a>
+                <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-add" onclick="addListRulesByHand()" plain="true">添加规则</a>
                 <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-edit" onclick="updateListRules()" plain="true">修改</a>
                 <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-remove" onclick="removeListRules()" plain="true">删除</a>
 	            <br/>
 	            <form id="Rule-search-form" style="display: inline-block">
-			                     课程：<input class="easyui-textbox" id="rule-course-value"/>
+			                     课程：<input id="rule-course-value"  editable="false" panelMaxHeight="100"/>
 			                     规则名(yyyy/MM/dd-hh:mm)：<input class="easyui-textbox" id="rule-name-value"/>
-			                     组卷方式： <select id="rule-type-value" class="easyui-combobox" style="width:100px;panelMaxHeight:50px;">
-			               		<option></option>
-			               		<option value="1">手动组卷</option>
-			               		<option value="2">自动组卷</option>
-			               </select>
 	                <a id="choice-search-btn" class="easyui-linkbutton">搜索</a>
 	                <a id="choice-search-reset" class="easyui-linkbutton">重置</a>
 	            </form>
@@ -80,8 +74,8 @@
     	$("#handPaperDialog").dialog({
     		width:800,
     		height:600,
-    		top:100,
-    		title:'手动添加试卷',
+    		top:20,
+    		title:'创建规则',
     		href:"initHandPaper",
     		modal:true,
     		onLoad:function(){
@@ -94,26 +88,6 @@
     	});
      }
     
-    /**
-     * 自动添加试卷
-     */
-     function addListRulesByAuto() {
-     	$("#autoPaperDialog").dialog({
-     		width:800,
-     		height:600,
-     		top:100,
-     		title:'自动添加试卷规则',
-     		href:"initAutoPaper",
-     		modal:true,
-     		onLoad:function(){
-     			clearAuto();
-    			$("#subbutton1").attr("onclick","paperSubmitAuto()");
-    		},
-     		onBeforeClose:function(){
-     			$('#AutoBox').remove();
-     		}
-     	});
-      }
     
     /**
      * 修改规则
@@ -127,7 +101,7 @@
         		 $("#handPaperDialog").dialog({
        	     		width:800,
        	     		height:600,
-       	     		top:100,
+       	     		top:20,
        	     		title:'修改规则',
        	     		href:"initHandPaper",
        	     		modal:true,
@@ -173,54 +147,6 @@
        	     		}
        	     	});
 	            $('#paper-list-form').form('load',rows[0]);
-        	 } else if(rows[0].ruleType == 0) {
-        		 // 修改自动组卷
-        		 $("#autoPaperDialog").dialog({
-        	     		width:800,
-        	     		height:600,
-        	     		top:100,
-        	     		title:'修改规则',
-        	     		href:"paper.do?method=initAutoPaper",
-        	     		modal:true,
-        	     		onLoad:function(){
-        	     			clearAuto();
-        	     			$("#subbutton1").attr("onclick","paperSubmitUpdate1()");
-	 	       	     		$.ajaxSettings.async =false;
-	 	                	var ruleJson ="";
-	 	                	$.get('getExamRuleById',{'ruleId':rows[0].ruleID},function(data){
-	 	                		ruleJson = data;
-	 	                	});
-	 	                	$.ajaxSettings.async =true;
-	 	                	if(ruleJson != "") {
-	 	                		var rule = eval('('+ruleJson+')');
-	 	                		$("#coursIDAuto").combobox('select', rule.courseID);
-	 	                		$("#coursIDAuto").combobox('readonly', true);
-	 	                		$("#choiceIdsNum1").val(rule.singleChoiceNum);
-	 	                		$("#choiceIdsScore1").val(rule.singleScore);
-	 	                		$("#multipleIdsNum1").val(rule.mulChoiceNum);
-	 	                		$("#multipleIdsScore1").val(rule.mulScore);
-	 	                		$("#blankIdsNum1").val(rule.fileBlankChoiceNum);
-	 	                		$("#blankIdsScore1").val(rule.fileBlankScore);
-	 	                		$("#judgeIdsNum1").val(rule.judgeNum);
-	 	                		$("#judgeIdsScore1").val(rule.judgeScore);
-	 	                		$("#subjectiveIdsNum1").val(rule.subChoiceNum);
-	 	                		$("#subjectiveIdsScore1").val(rule.subScore);
-	 	                		$("#autoAllNum").val(rule.singleChoiceNum+rule.mulChoiceNum+
-		                				 rule.fileBlankChoiceNum+rule.judgeNum+rule.subChoiceNum);
-	 	                		$("#autoAllScore").val(rule.paperScore);
-	 	                		$("#ruleId").attr("value",rows[0].ruleID);
-	 	                		$("#ruleName1").attr("value",rule.ruleName);
-	 	                		num = rule.singleChoiceNum+rule.mulChoiceNum+rule.fileBlankChoiceNum+rule.judgeNum+rule.subChoiceNum;
-	 	                		score = rule.paperScore;
-	 	                		$(".score").attr("readonly",false);
-		 	                }
-        	     		},
-        	     		onBeforeClose:function(){
-        	     			$("#AutoBox").remove();
-        	     		}
-        	     	});
- 	            $('#paper-list-form').form('load',rows[0]);
-        		 
         	 }
          } else {
          	$.messager.alert('信息提示', '请选择修改对象！');
@@ -256,13 +182,6 @@
             {field: 'subjectiveNum', title: '主观题数量', width: 100},
             {field: 'subjectiveScore', title: '主观题分数', width: 100},
             {field: 'allScore', title: '总分数', width: 100},
-            {field: 'ruleType', title: '组卷类型', width: 100,formatter:function(value,row,index){
-            	if(value == 0){
-            		return "自动组卷";
-            	} else if(value == 1) {
-            		return "手动组卷";
-            	}
-            }}
         ]]
     });
     
@@ -287,6 +206,16 @@
         var type = $("#rule-type-value").val();
         return {"course": course,"name":name, "type": type};
     }
+    
+    /**
+     * 创建课程的下拉框
+     */
+    $('#rule-course-value').combobox({
+        url: '${basePath}/kingother/getCourseJson',
+        valueField: 'id',
+        textField: 'name',
+        panelMaxHeight: '100',
+    });
 </script>
 </body>
 </html>

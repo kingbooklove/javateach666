@@ -2,6 +2,7 @@ package com.ctbu.javateach666.pojo.po;
 
 public class LKTeacoursePO {
 	private int id;
+	private Integer teaid;		// 教师id  王书杰添加
 	private String teaname;
 	private String couname;
 	private int couyear;
@@ -92,4 +93,11 @@ public class LKTeacoursePO {
 	public void setAlcounumber(int alcounumber) {
 		this.alcounumber = alcounumber;
 	}
+	public Integer getTeaid() {
+		return teaid;
+	}
+	public void setTeaid(Integer teaid) {
+		this.teaid = teaid;
+	}
+	
 }

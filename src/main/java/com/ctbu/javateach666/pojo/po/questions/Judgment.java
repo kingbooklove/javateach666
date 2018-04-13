@@ -15,6 +15,7 @@ public class Judgment extends DataEntity<Judgment>{
 	private static final long serialVersionUID = 1L;
 	
 	private THCCoursePO course;		// 课程
+	private String courseId;		// 课程id
 	private String couname;			// 课程名
 	private String judgmentTitle;	// 判断题目
 	private String judgmentAnswer;	// 判断答案
@@ -24,6 +25,7 @@ public class Judgment extends DataEntity<Judgment>{
 	// 查询条件
 	private Date bTime;				// 查询开始时间
 	private Date eTime;				// 查询结束时间 
+	private Integer teaId;			// 教师id 
 	
 	public String getJudgmentTitle() {
 		return judgmentTitle;
@@ -72,6 +74,18 @@ public class Judgment extends DataEntity<Judgment>{
 	}
 	public void setCouname(String couname) {
 		this.couname = couname;
+	}
+	public Integer getTeaId() {
+		return teaId;
+	}
+	public void setTeaId(Integer teaId) {
+		this.teaId = teaId;
+	}
+	public String getCourseId() {
+		return courseId;
+	}
+	public void setCourseId(String courseId) {
+		this.courseId = courseId;
 	}
 	
 	

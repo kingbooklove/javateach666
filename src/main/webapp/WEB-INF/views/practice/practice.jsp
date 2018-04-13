@@ -183,6 +183,16 @@
                     </td>
                 </tr>
                 <tr>
+                    <th>难度</th>
+                    <td>
+                    	<select name="degree" id="practiceDegree" class="easyui-combobox" required="required" editable="false" style="width: 174px;" panelMaxHeight="100">
+                    		<option value="1">1</option>
+                    		<option value="2">2</option>
+                    		<option value="3">3</option>
+                    	</select>
+                    </td>
+                </tr>
+                <tr>
                     <th>数量</th>
                     <td><input type="text" name="practiceNum" id="practiceNum" class="easyui-numberbox"
                                required="required"></td>
@@ -208,13 +218,13 @@
 
 <script type="text/javascript">
     $('#practiceCourseId').combobox({
-        url: '${basePath}/exampaper/coursejson',
+        url: '${basePath}/kingother/getCourseJson',
         valueField: 'id',
         textField: 'name',
         panelMaxHeight: '100'
     });
     $('#examinationCourseId').combobox({
-        url: '${basePath}/exampaper/coursejson',
+        url: '${basePath}/kingother/getCourseJson',
         valueField: 'id',
         textField: 'name',
         panelMaxHeight: '100'

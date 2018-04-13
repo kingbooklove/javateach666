@@ -20,6 +20,7 @@
 	<sql id="ExamPaperJoins">
 	left join course b on b.id = a.couse_id
 	left join examrule r on r.id = a.rule_id
+	left join teacourse tc on tc.couid = b.id
 	</sql>
 	
 	<select id="get" resultType="com.ctbu.javateach666.pojo.po.exam.ExamPaper">
@@ -40,11 +41,17 @@
 		 <if test="couname != null and couname !=''">
 		  and b.couname LIKE CONCAT('%',#{couname},'%')  
 		 </if>
+		 <if test="course != null and course.id !=null and course.id !=''">
+		  and a.couse_id = #{course.id}
+		 </if>
 		 <if test="examPaperName != null and examPaperName !=''">
 		  and a.exam_paper_name LIKE CONCAT('%',#{examPaperName},'%')  
 		 </if>
 		 <if test="examRuleName != null and examRuleName !=''">
 		  and r.rule_name LIKE CONCAT('%',#{examRuleName},'%')  
+		 </if>
+		 <if test="teaId !=null and teaId !=''">
+		  and tc.teaid = #{teaId}
 		 </if>
 		</where>
 	</select>

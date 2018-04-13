@@ -107,6 +107,7 @@ public class PracticeController {
     	String subjectType = request.getParameter("ctype");
     	String courseId = request.getParameter("courseId");
     	String subjectNum = request.getParameter("practiceNum");
+    	String degree = request.getParameter("degree");
     	Integer number = Integer.valueOf(subjectNum);
     	List<?> subList = null;
     	THCCoursePO course = new THCCoursePO();
@@ -115,6 +116,7 @@ public class PracticeController {
 		case "choice":
 			SingleChoice singleChoice = new SingleChoice();
 			singleChoice.setCourse(course);
+			singleChoice.setDegree(degree);
 			List<SingleChoice> allChoice = SingleChoiceService.findList(singleChoice);
 	    	Collections.shuffle(allChoice);
 	    	subList = allChoice.subList(0, number > allChoice.size() ? allChoice.size() : number);
@@ -123,6 +125,7 @@ public class PracticeController {
 		case "multiple":
 			MultipleChoice multipleChoice = new MultipleChoice();
 			multipleChoice.setCourse(course);
+			multipleChoice.setDegree(degree);
 			List<MultipleChoice> allMChoice = MultipleChoiceService.findList(multipleChoice);
 	    	Collections.shuffle(allMChoice);
 	    	subList = allMChoice.subList(0, number > allMChoice.size() ? allMChoice.size() : number);
@@ -131,6 +134,7 @@ public class PracticeController {
 		case "blank":
 			Completion completion = new Completion();
 			completion.setCourse(course);
+			completion.setDegree(degree);
 			List<Completion> allBlank = CompletionService.findList(completion);
 			Collections.shuffle(allBlank);
 	    	subList = allBlank.subList(0, number > allBlank.size() ? allBlank.size() : number);
@@ -139,6 +143,7 @@ public class PracticeController {
 		case "judge":
 			Judgment judgment = new Judgment();
 			judgment.setCourse(course);
+			judgment.setDegree(degree);
 			List<Judgment> allJudge = JudgmentService.findList(judgment);
 			Collections.shuffle(allJudge);
 	    	subList = allJudge.subList(0, number > allJudge.size() ? allJudge.size() : number);
@@ -147,6 +152,7 @@ public class PracticeController {
 		case "subjective":
 			Subjective subjective = new Subjective();
 			subjective.setCourse(course);
+			subjective.setDegree(degree);
 			List<Subjective> allSubjective = SubjectiveService.findList(subjective);
 			Collections.shuffle(allSubjective);
 	    	subList = allSubjective.subList(0, number > allSubjective.size() ? allSubjective.size() : number);

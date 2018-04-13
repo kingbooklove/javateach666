@@ -1,6 +1,12 @@
 package com.ctbu.javateach666.util;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.ctbu.javateach666.pojo.bo.QuestionPaper;
+
 
 
 /**
@@ -17,6 +23,17 @@ public class CollectionUtils {
      */
     public static boolean isNotBlank(Collection<?> collection) {
         return collection != null && collection.size() > 0;
+    }
+    
+    
+    public static Map<Integer,Integer> parseQuestionPaper(List<QuestionPaper> questionPapers){
+        Map<Integer,Integer> map = new HashMap<>();
+        if (isNotBlank(questionPapers)){
+            for (QuestionPaper questionPaper : questionPapers){
+                map.put(questionPaper.getId(),questionPaper.getScore());
+            }
+        }
+        return map;
     }
 
 }

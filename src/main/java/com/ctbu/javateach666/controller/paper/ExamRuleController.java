@@ -19,12 +19,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 import com.ctbu.javateach666.pojo.po.exam.ExamRule;
+import com.ctbu.javateach666.pojo.po.kingother.Account;
 import com.ctbu.javateach666.pojo.po.questions.Completion;
 import com.ctbu.javateach666.pojo.po.questions.Judgment;
 import com.ctbu.javateach666.pojo.po.questions.MultipleChoice;
 import com.ctbu.javateach666.pojo.po.questions.SingleChoice;
 import com.ctbu.javateach666.pojo.po.questions.Subjective;
 import com.ctbu.javateach666.pojo.po.thcpo.THCCoursePO;
+import com.ctbu.javateach666.service.interfac.kingother.AccountService;
 import com.ctbu.javateach666.service.interfac.paper.ExamRuleService;
 import com.ctbu.javateach666.service.interfac.questions.CompletionService;
 import com.ctbu.javateach666.service.interfac.questions.JudgmentService;
@@ -33,6 +35,7 @@ import com.ctbu.javateach666.service.interfac.questions.SingleChoiceService;
 import com.ctbu.javateach666.service.interfac.questions.SubjectiveService;
 import com.ctbu.javateach666.util.CollectionUtils;
 import com.ctbu.javateach666.util.PageUtil;
+import com.ctbu.javateach666.util.UserMessageUtils;
 
 /**
  * 试卷规则control
@@ -61,6 +64,9 @@ public class ExamRuleController {
 	@Autowired
 	private SubjectiveService subjectiveService;
 	
+	@Autowired
+	private AccountService AccountService;
+	
 	/**
 	 * 转发到试卷规则页面
 	 * @return
@@ -86,11 +92,13 @@ public class ExamRuleController {
         ExamRule examRule = new ExamRule();
         
         // 查询参数
-        String cousename = request.getParameter("course");
+        String couseId = request.getParameter("course");
         String name = request.getParameter("name");
         String type = request.getParameter("type");
-        if(cousename != null && !"".equals(cousename)) {
-        	examRule.setCouname(cousename);
+        if(couseId != null && !"".equals(couseId)) {
+        	THCCoursePO course = new THCCoursePO();
+        	course.setId(Integer.valueOf(couseId));
+        	examRule.setCourse(course);
         }
         if(name != null && !"".equals(name)) {
         	examRule.setRuleName(name);
@@ -98,6 +106,17 @@ public class ExamRuleController {
         if(type != null && !"".equals(type)) {
         	examRule.setRuleType(Integer.valueOf(type));
         }
+        
+        
+        // 传入当前教师id
+        String userName = UserMessageUtils.getNowUserName();
+        Account account = new Account();
+        account.setUsername(userName);
+        List<Account> accountlist = AccountService.findList(account);
+        if(CollectionUtils.isNotBlank(accountlist)) {
+        	account = accountlist.get(0);
+        }
+        examRule.setTeaId(account.getUserdetailid());
         
         List<ExamRule> list = ExamRuleService.findList(examRule);
 		String json = PageUtil.findPage(page, rows, list);

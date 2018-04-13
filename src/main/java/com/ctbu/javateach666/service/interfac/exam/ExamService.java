@@ -10,5 +10,4 @@ import com.ctbu.javateach666.pojo.po.exam.ReleaseExam;
  *
  */
 public interface ExamService extends BaseService<ExamDao, ReleaseExam>{
-	
 }

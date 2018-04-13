@@ -18,6 +18,15 @@
 	                <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-edit" onclick="openEditListPaper()" plain="true">修改</a>
 	                <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-remove" onclick="removeListPaper()" plain="true">删除</a>
 	                <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-search" onclick="showListPaper()" plain="true">查看</a>
+	           		<br/>
+		            <form id="Paper-search-form" style="display: inline-block">
+				                     课程：<input id="paper-course-value"  editable="false" panelMaxHeight="100"/>
+				                     试卷名：<input class="easyui-textbox" id="paper-name-value"/>
+				                     规则名(yyyy/MM/dd-hh:mm)：<input class="easyui-textbox" id="rule-name-value"/>
+		                <a id="choice-search-btn" class="easyui-linkbutton">搜索</a>
+		                <a id="choice-search-reset" class="easyui-linkbutton">重置</a>
+		            </form>
+		             <br/>
 	            </div>
 	
 	        </div>
@@ -210,6 +219,7 @@
         singleSelect: false,
         pageSize: 20,
         pagination: true,
+        queryParams: formChoiceJson(),
         multiSort: true,
         fitColumns: true,
         fit: true,
@@ -222,12 +232,35 @@
             {field: 'examScore', title: '试卷分数', width: 80, sortable: true},
         ]]
     });
+    
+    
+    /* 搜索方法*/
+    $("#choice-search-btn").click(function () {
+        //点击搜索
+        $('#paper-list-datagrid').datagrid({
+            queryParams: formChoiceJson()
+        });
+    });
+    /*重置方法*/
+    $("#choice-search-reset").click(function () {
+        $("#Paper-search-form").form('clear');
+        $('#paper-list-datagrid').datagrid({
+            queryParams: formChoiceJson()
+        });
+    });
+    //将表单数据转为json
+    function formChoiceJson() {
+        var course = $("#paper-course-value").val();
+        var pname = $("#paper-name-value").val();
+        var rname = $("#rule-name-value").val();
+        return {"course": course,"pname":pname, "rname": rname};
+    }
 	
   	/**
   	 * 创建课程的下拉框
   	 */
   	$('#coursIDPaper').combobox({
-  	    url:'coursejson',    
+  	    url:'${basePath}/kingother/getCourseJson',    
   	    valueField:'id',    
   	    textField:'name',
   	  	panelMaxHeight:'100',
@@ -239,7 +272,14 @@
             	queryParams: {"coursId" : rec.id}
             });
   	    }
-  	});  
+  	});
+  	
+    $('#paper-course-value').combobox({
+        url: '${basePath}/kingother/getCourseJson',
+        valueField: 'id',
+        textField: 'name',
+        panelMaxHeight: '100',
+    });
 	
 	</script>
 </body>

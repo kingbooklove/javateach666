@@ -21,9 +21,17 @@
                    plain="true">删除</a>
                 <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-ok" onclick="openImportJudge()"
                    plain="true">导入</a>
+                   <br/>
                 <form id="judge-search-form" style="display: inline-block">
-			                    科目：<input class="easyui-textbox" id="judge-course-value"/>
-			                    难度等级：<input class="easyui-textbox" id="judge-degree-value"/>
+			                    科目：<input id="judge-course-value" editable="false" panelMaxHeight="100"/>
+			                    题目：<input class="easyui-textbox" id="judge-name-value"/>
+			                    难度等级：<select class="easyui-combobox" id="judge-degree-value" style="width:80px;" panelMaxHeight="100" editable="false">
+			               	<option></option>
+			               	<option value="1">1</option>
+			               	<option value="2">2</option>
+			               	<option value="3">3</option>
+			               	<option value="4">4</option>
+			               </select>
 			                     时间：<input type="date" id="bdaytime-course-value"/>~<input type="date" id="edaytime-course-value"/>
                     <a id="judge-search-btn" class="easyui-linkbutton">搜索</a>
                     <a id="judge-search-reset" class="easyui-linkbutton">重置</a>
@@ -47,14 +55,20 @@
             <tr>
                 <td width="60" align="right">课程</td>
                 <td>
-                	<input name="course.id"  panelMaxHeight="100" class="easyui-textbox"/>
-                	<!-- <input type="text" name="couseId" id="courseId"required="required" class="easyui-textbox"editable="false" panelMaxHeight="100"/> -->
+                	<!-- <input name="course.id"  panelMaxHeight="100" class="easyui-textbox"/> -->
+                	<input type="text" name="course.id" id="courseId"required="required" class="easyui-textbox"editable="false" panelMaxHeight="100"/>
                 </td>
             </tr>
             <tr>
                 <td width="60" align="right">题目难度</td>
                 <td>
-                    <input id="degree" name="degree"  class="easyui-textbox"/>
+                	<select class="easyui-combobox" id="degree" name="degree" style="width:174px;" panelMaxHeight="100" editable="false">
+		               	<option></option>
+		               	<option value="1">1</option>
+		               	<option value="2">2</option>
+		               	<option value="3">3</option>
+		               	<option value="4">4</option>
+	                </select>
                 </td>
             </tr>
             <tr>
@@ -76,7 +90,7 @@
     </form>
 </div>
 <div id="judge-import-dialog"class="easyui-dialog" data-options="closed:true" style="padding: 30px" >
-    <form id="judge-import-form" method="post" enctype="multipart/form-data">
+    <form style="text-align: center" id="judge-import-form" method="post" enctype="multipart/form-data">
         <input id="judge-import-form-input" name="excel" style="width:300px">
     </form>
 </div>
@@ -96,7 +110,7 @@
                 iconCls: 'icon-ok',
                 handler: function () {
                     $("#judge-import-form").form('submit', {
-                        url: 'judge.do?method=importExcel',
+                        url: 'importExcel',
                         onSubmit: function () {
                             var validate =  $(this).form('validate');
                             if (validate){
@@ -116,9 +130,7 @@
                                 $('#judge-import-dialog').dialog('close');
                                 $('#judge-datagrid').datagrid('reload');
                             }
-
                         }
-
                     });
                 }
             }, {
@@ -136,7 +148,8 @@
             buttonText: '选择导入的excel文件',
             buttonAlign: 'right',
             height: 40,
-        })
+        });
+        $("#judge-import-dialog").find("a").css("margin-left","176px");
     }); 
 
 
@@ -265,7 +278,7 @@
         queryParams: formJudgeJson(),
         rownumbers: true,
         singleSelect: false,
-        pageSize: 20,
+        pageSize: 10,
         pagination: true,
         multiSort: true,
         fitColumns: true,
@@ -321,17 +334,24 @@
     //将表单数据转为json
     function formJudgeJson() {
         var bJudgeName = $("#judge-course-value").val();
+        var title = $("#judge-name-value").val();
         var degree = $("#judge-degree-value").val();
         var bTime = $("#bdaytime-course-value").val();
         var eTime = $("#edaytime-course-value").val();
-        return {"couseId": bJudgeName,"degree":degree, "bTime": bTime,"eTime":eTime};
+        return {"couseId": bJudgeName,"title":title,"degree":degree, "bTime": bTime,"eTime":eTime};
     }
 
     /**
      * 创建课程的下拉框
      */
     $('#courseId').combobox({
-        url: 'courseServlet.do?method=getCourseByUserId',
+        url: '${basePath}/kingother/getCourseJson',
+        valueField: 'id',
+        textField: 'name',
+        panelMaxHeight: '100',
+    });
+    $('#judge-course-value').combobox({
+        url: '${basePath}/kingother/getCourseJson',
         valueField: 'id',
         textField: 'name',
         panelMaxHeight: '100',
